@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<menupopup onOpen="@command('onPopupOpen')" id="viewPopup" >  
+    <menuitem image="/images/icons/22x22/edit-delete-icon22.png" autodisable="self" label="- Delete" onClick="@command('onDeletePopup')" />        
+    <menuseparator />        
+    <menuitem image="/images/icons/22x22/edit-icon22.png" autodisable="self"  label="* Edit" onClick="@command('onEditPopup')" />       
+</menupopup>     

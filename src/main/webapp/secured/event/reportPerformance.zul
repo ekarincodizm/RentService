@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" > 
+    <window border="none" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.event.ReportPerformanceVM')" >   
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/reportHeader.zul" />
+                <grid >
+                    <columns>
+                        <column width="150px" />
+                        <column /> 
+                    </columns>
+                    <rows>  
+                        <row style="border:none" height="15px" />  
+                        <row style="border:none"> 
+                            <label value="Statement Date : " /> 
+                            <hbox align="middle">
+                                <datebox value="@bind(vm.startdate)" format="dd/MM/yyyy" mold="rounded" width="120px" /> 
+                                <space/>
+                                <label value="To : " /> 
+                                <datebox value="@bind(vm.enddate)" format="dd/MM/yyyy" mold="rounded" width="120px" />  
+                            </hbox>
+                        </row>        
+                        <row style="border:none">
+                            <label value="" />  
+                            <toolbar style="background-color:transparent;" >
+                                <toolbarbutton autodisable="self" onClick="@command('search')" label=" Preview" image="/images/icons/24x24/PDF-icon.png" tooltiptext="คลิกเพื่อแสดงรายงาน" />
+                            </toolbar>
+                        </row> 
+                    </rows>
+                </grid> 
+            </panelchildren>
+        </panel>    
+    </window>
+</zk>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<div style="background-color:#002244;" >
+    <hbox align="middle">
+        <toolbar style="background-color:transparent;" >
+            <toolbarbutton autodisable="self" onClick="@command('search')" label=" Refresh" image="/images/icons/24x24/refresh24.png" tooltiptext="ค้นหาข้อมูล" />
+            <toolbarbutton autodisable="self" onClick="@command('onClickAdd')" label="+ New" style="color:green" image="/images/icons/24x24/file_add24.png" tooltiptext="เพิ่มรายการใหม่" />
+            <toolbarbutton autodisable="self" disabled="@load(empty vm.selectItems)" style="color:black" onClick="@command('onClickDelete')" label="- Delete" image="/images/icons/24x24/edit-delete-icon24.png" tooltiptext="ลบรายการที่เลือกไว้" />  
+            <toolbarbutton autodisable="self" disabled="@load(empty vm.selectItem)" style="color:red" onClick="@command('onEditPopup')" label="* Edit " image="/images/icons/24x24/edit-icon24.png" tooltiptext="แก้ไขรายการที่เลือก" />   
+        </toolbar>  
+        <image src="/images/icons/32x32/search32.png"/>
+        <textbox id="keyword" value="@bind(vm.keyword)" onOK="@command('search')" style="background-color:#EEEEEE;" height="29px;" width="250px" />
+        <paging height="20px" width="350px" onPaging="@command('search')"  pageSize="@bind(vm.pageSize)"  activePage="@bind(vm.activePage)" totalSize="@load(vm.items.totalElements)" detailed="true" />
+        <image src="@load(vm.icon)"/>  
+        <label value="@load(vm.headerLabel)" style="font-size:22px;color:#ccccff;" />
+    </hbox>
+    <script type="text/javascript">
+        zk.afterMount(function() {
+        jq("$keyword").Watermark("พิมพ์คำที่ต้องการค้น แล้วกดปุ่ม &lt;Enter&gt;","#AAAAAA");  
+        });
+    </script>
+</div> 
+                 

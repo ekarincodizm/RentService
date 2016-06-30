@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+        Created by ZK Studio
+-->
+
+<zk>
+    <device-config>
+        <device-type>ajax</device-type>
+        <timeout-uri>/index.zul</timeout-uri>
+        <!--
+                An empty URL can cause the browser to reload the same URL
+        -->
+    </device-config>
+    <listener>
+        <description>ThreadLocal Synchronization Listener</description>
+        <listener-class>org.zkoss.zkplus.util.ThreadLocalListener
+        </listener-class>
+    </listener>
+    <preference>
+        <name>ThreadLocal</name>
+        <value>
+            org.springframework.security.context.ThreadLocalSecurityContextHolderStrategy=contextHolder
+        </value>
+    </preference>
+    <!--	<listener>
+            <listener-class>th.co.geniustree.web.zk.ZkInit</listener-class>
+    </listener>-->
+    <preference>
+        <name>org.zkoss.zul.Window.defaultActionOnShow</name>
+        <value></value>
+    </preference>
+    <preference>
+        <name>PollingServerPush.delay.min</name>
+        <value>8000</value>
+    </preference>
+    <preference>
+        <name>PollingServerPush.delay.max</name>
+        <value>16000</value>
+    </preference>
+    <preference>
+        <name>PollingServerPush.delay.factor</name>
+        <value>7</value>
+    </preference>
+    <library-property>
+        <name>org.zkoss.zul.theme.fontSizeM</name>
+        <value>13px</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.theme.fontSizeS</name>
+        <value>11px</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.theme.fontSizeXS</name>
+        <value>9px</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.theme.fontFamilyT</name>
+        <value>Tahoma,Verdana,Arial, Helvetica, sans-serif</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.theme.fontFamilyC</name>
+        <value>Tahoma,Verdana,Arial, serif</value>
+    </library-property>
+    <library-property>
+        <name>org.zkoss.zul.progressbox.position</name>
+        <value>center,center</value>
+    </library-property> 
+    <library-property>
+        <name>org.zkoss.web.preferred.locale</name>
+        <value>th_TH</value>
+    </library-property>
+    <system-config>
+        <max-upload-size>2048</max-upload-size>
+        <response-charset>UTF-8</response-charset>
+        <upload-charset>UTF-8</upload-charset>
+        <ui-factory-class>org.zkoss.zk.ui.http.SerializableUiFactory</ui-factory-class>
+    </system-config>
+</zk>

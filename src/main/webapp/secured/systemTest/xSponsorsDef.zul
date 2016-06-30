@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"  xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <window apply="org.zkoss.bind.BindComposer" width="100%" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.XSponsorsVM')" >    
+        <panel style="overflow:auto" width="100%" >
+            <panelchildren>
+                <include src="/secured/commons/header.zul" />  
+                <separator height="2px" style="background-color:#CCCCCC;" />  
+                 
+                <listbox multiple="true" checkmark="true" 
+                         model="@load(vm.items.content)" 
+                         selectedItem="@bind(vm.selectItem)" 
+                         selectedItems="@bind(vm.selectItems)" 
+                         sizedByContent="true" sclass="vertical-scroll" > 
+                    <listhead sizable="true" menupopup="auto" children="@load(vm.headers)"  >  
+                        <template name="children" var="header" > 
+                            <listheader align="center" width="@load(header[1])" label="@load(header[0])" />   
+                        </template> 
+                    </listhead>
+                    <template name="model"  var="item">
+                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
+                            <listcell style="@load(item.style)" label="@load(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                            <listcell style="@load(item.style)" >
+                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" tooltiptext="คลิกเพื่อแก้ไช" style="cursor:pointer" /> 
+                            </listcell>   
+                            <listcell  style="@load(item.style)" label="@load(item.id.position.name)" />     
+                            <listcell  style="@load(item.style)" label="@load(item.bonus) @converter('formatedNumber', format='#,##0.##')" />    
+                            
+                            <zk forEach="${item.items}"  >
+                                <listcell >  
+                                    <label style="font-weight:bold;" value="{ " /> 
+                                    <label style="${each.style}"  value="${c:formatNumber(each.pcent,'#,###.##')}" /> 
+                                    <label style="font-weight:bold;" value="," /> 
+                                    <label style="${each.style}"  value="${c:formatNumber(each.pcentDiff,'#,###.##')}" /> 
+                                    <label style="font-weight:bold;" value=" }" /> 
+                                </listcell>
+                            </zk>
+                            
+                        </listitem> 
+                    </template> 
+                </listbox>
+                
+            </panelchildren>
+        </panel>
+        <include src="/secured/commons/popup.zul" />   
+    </window> 
+    
+</zk>
