@@ -18,7 +18,7 @@
             window.open("viewPdf.zul"); 
         }  
     </h:script>
-    <h:link href="./css/bootstrap.css" rel="stylesheet"/>
+    <h:link href="./css/bootstrap.css" rel="stylesheet" />
     <h:link href="./css/style.css" rel="stylesheet" />  
     <window width="100%" style="overflow:auto;" 
             apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.IndexVM')"  > 
