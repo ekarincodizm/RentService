@@ -38,7 +38,7 @@
                                 <h:button onclick="onOpenPdf();" type="button" class="btn btn-link">คู่มือการใช้งาน</h:button> 
                             </h:div>
                             <h:div class="box_member">
-                                <h:h5>Rent Income Expenses Service V1.0</h:h5>
+                                <h:h5>Rent Income Expenses Service/MLM Test Plan V1.0</h:h5>
                                 <h:div class="control-group clearfix">
                                     <h:label for="" class="text-update control-label pull-left text-error">Update : 26/09/2557</h:label>
                                 </h:div>
