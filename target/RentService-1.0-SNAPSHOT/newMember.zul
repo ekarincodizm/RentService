@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="โปรแกรมจัดการรับ/จ่ายรายเดือน"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <script type="text/javascript" src="/script/maskedinput-1.2.2.min.js" />
+    <script type="text/javascript" src="/script/jquery.watermarkinput.js" /> 
+    <style> 
+        body{
+        background:url(./images/bg_top.jpg) no-repeat center top;
+        }
+    </style> 
+    <h:script language="JavaScript">
+        function onIndexPage() {
+        var w = window.location.assign("index.zul"); 
+        }  
+    </h:script>
+    <h:link href="./css/bootstrap.css" rel="stylesheet"/>
+    <h:link href="./css/style.css" rel="stylesheet"/>  
+    <zscript><![CDATA[
+        import org.zkforge.bwcaptcha.Captcha;
+         
+        void verifyCaptcha(Textbox tbox,Captcha capt){
+            if(!capt.getValue().equals(tbox.getValue())){  
+                throw new WrongValueException(tbox,"Wrong Code Error!\r\nClick captcha for new generate character."); 
+            } 
+        }
+        
+        char[] captchars = {'0','1','2','3','4','5','6','7','8','9'}; 
+        
+    ]]></zscript>
+    <window width="100%" style="overflow:auto;" 
+            apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.NewMemberVM')"  > 
+        <h:div class="main">
+            <h:div id="wrapper">
+                <h:header>
+                    <h:div class="clearfix">
+                        <h:div class="logo pull-left">
+                            <h:a href="#">
+                                <h:img src="images/logo.png"/>
+                            </h:a>
+                        </h:div>
+                        <h:div class="member pull-right">
+                            <h:div class="box_member">
+                                <h:h5>New Member</h:h5> 
+                                <h:div class="control-group row-fluid">
+                                    <h:div class="span9"> 
+                                        <h:div class="row-fluid">
+                                            <label value="Name " />
+                                            <separator/>
+                                            <hbox align="middle">
+                                                <textbox id="name" value="@bind(vm.name)" placeholder="" constraint="no empty:Name required!"  />
+                                                <label value="*" style="color:red" />
+                                            </hbox>
+                                        </h:div>
+                                        <h:div class="row-fluid">
+                                            <label value="Email " />
+                                            <separator/>
+                                            <hbox align="middle">
+                                                <textbox id="email" value="@bind(vm.email)" placeholder="" width="250px;" constraint="no empty, /.+@.+\.[a-z]+/:email ไม่ถูกต้อง!" />
+                                                <label value="*" style="color:red" />
+                                            </hbox>
+                                        </h:div>
+                                        <h:div class="row-fluid">
+                                            <label value="Mobile" />
+                                            <separator/> 
+                                            <textbox id="mobile" value="@bind(vm.mobile)" placeholder="" maxlength="200" />  
+                                        </h:div>
+                                        <h:div class="row-fluid">
+                                            <label value="Username" />
+                                            <separator/>
+                                            <hbox align="middle">
+                                                <textbox id="username" value="@bind(vm.username)" placeholder="" maxlength="20" constraint="no empty:username required!" />
+                                                <label value="*" style="color:red" />
+                                            </hbox>
+                                        </h:div>
+                                        <h:div class="row-fluid">
+                                            <label value="New password" />
+                                            <separator/>
+                                            <hbox align="middle">
+                                                <textbox value="@bind(vm.password)" placeholder="" maxlength="20" constraint="no empty:new password required!" type="password" />
+                                                <label value="*" style="color:red" />
+                                            </hbox>
+                                        </h:div>
+                                        <h:div class="row-fluid">
+                                            <label value="Re-password" />
+                                            <separator/>
+                                            <hbox align="middle">
+                                                <textbox value="@bind(vm.repassword)" placeholder="" maxlength="20" constraint="no empty:re-password required!" type="password" />
+                                                <label value="*" style="color:red" />
+                                            </hbox>
+                                        </h:div> 
+                                        <h:div class="row-fluid">
+                                            <bw.captcha id="cptCha" length="5" width="130px" captchars="${captchars}" tooltiptext="Click to new generate character." 
+                                                        style="cursor:pointer;"  onClick="self.randomValue();" >
+                                                <attribute name="onCreate"><![CDATA[
+                                                        cptCha.setBgColor(0x0066FF);
+                                                        cptCha.setFontColor(0xFF9900);
+                                                        cptCha.setFontBgColor(0x55AA55);
+                                                        cptCha.setLineColor(0xFF9900);
+                                                    ]]></attribute>
+                                            </bw.captcha>
+                                            <separator/>
+                                            <hbox align="middle">
+                                                <textbox value="@bind(vm.txtCaptcha)" onChange="verifyCaptcha(self,cptCha);" onBlur="verifyCaptcha(self,cptCha);" style="background:#cccccc;text-align:center;" constraint="no empty:Captcha Required." maxlength="5" />
+                                                <label value="*" style="color:red" />
+                                            </hbox>
+                                        </h:div> 
+                                        <h:div class="row-fluid">    
+                                            <button label="Submit" onClick="@command('onSubmit')" image="/images/icons/22x22/register22.png"  style="cursor:pointer" /> 
+                                            <h:button onclick="onIndexPage();" type="button" class="btn btn-link first">Back to login page</h:button>  
+                                        </h:div>
+                                        <h:div class="row-fluid">   
+                                            <label value="@load(vm.errorMsg)" style="@load(vm.errorStyle)" />  
+                                        </h:div>
+                                    </h:div> 
+                                </h:div> 
+                            </h:div>
+                        </h:div>
+                    </h:div>
+                </h:header>
+            </h:div>
+        </h:div> 
+    </window>
+    <script type="text/javascript">
+        zk.afterMount(function() {
+        jq("$name").Watermark("กรอก ชื่อผู้ใช้งาน","#AAAAAA");  
+        jq("$email").Watermark("กรอก อีเมล","#AAAAAA");  
+        jq("$username").Watermark("กรอก รหัสผู้ใช้","#AAAAAA");   
+        jq("$mobile").Watermark("เบอร์มือถือ","#AAAAAA");   
+        });
+    </script>
+</zk>

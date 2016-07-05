@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" > 
+    <window width="800px" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.AddSponsorDefineVM')"  >   
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" /> 
+                <grid >
+                    <columns>
+                        <column width="100px" />
+                        <column width="200px" />
+                        <column width="120px" />
+                        <column width="100%" />  
+                    </columns>
+                    <rows>    
+                        <row style="border:none">
+                            <label value="ชื่อโบนัส : " />
+                            <textbox width="150px" mold="rounded" value="@load(vm.item.name) @save(vm.item.name, before={'onSave'})"  />   
+                            <label value="ลำดับชั้น(Level) : " /> 
+                            <hbox>
+                                <intbox format="#,##0.##" width="80px" mold="rounded" value="@load(vm.item.levelIndex) @save(vm.item.levelIndex, before={'onSave'})"  />     
+                                <space/>
+                                <label value=" เช่น { 1=ลูก ,2=หลาน ,3=เหลน ,.... }" />
+                            </hbox>
+                        </row>   
+                        <row valign="top" spans="1,3" style="border:none">
+                            <label value="" />
+                            <groupbox mold="3d" >
+                                <caption label=" กำหนด (%จ่าย) ตามตำแหน่งโดยตารางด้านล่าง "  /> 
+                                <listbox model="@bind(vm.selectItems)" sizedByContent="true" sclass="vertical-scroll" > 
+                                    <listhead sizable="true" menupopup="auto"  >
+                                        <listheader align="left" label="No." width="45px" /> 
+                                        <listheader sort="auto(id.position.name)"  width="100%" align="left" label="ตำแหน่ง" />       
+                                        <listheader sort="auto(id.position.topupPv)" align="center" width="120px" label="TOP-UP" />   
+                                        <listheader sort="auto(pcent)" align="center" width="120px" label="%จ่าย(หลัก)" />  
+                                        <listheader sort="auto(pcentPro)" align="center" width="120px" label="%จ่าย(Pro)" />    
+                                    </listhead>
+                                    <template name="model"  var="item">
+                                        <listitem >
+                                            <listcell style="@load(item.style)" label="@load(itemStatus.index+1)"  />    
+                                            <listcell  style="@load(item.style)" label="@load(item.id.position.name)" />     
+                                            <listcell  style="@load(item.style)" label="@load(item.id.position.topupPv) @converter('formatedNumber', format='#,##0')" />    
+                                            <listcell  style="@load(item.style)" >   
+                                                <doublebox value="@load(item.pcent) @save(item.pcent, before={'onSave'})" mold="rounded"  style="text-align:right" format="#,##0.##'%'" width="90%" />
+                                            </listcell>
+                                            <listcell  style="@load(item.style)" >   
+                                                <doublebox value="@load(item.pcentPro) @save(item.pcentPro, before={'onSave'})" mold="rounded"  style="text-align:right" format="#,##0.##'%'" width="90%" />
+                                            </listcell> 
+                                        </listitem> 
+                                    </template>
+                                </listbox>
+                            </groupbox>
+                        </row> 
+                        <row spans="1,3" style="border:none">
+                            <label value="" /> 
+                            <label value="" /> 
+                        </row>
+                    </rows>
+                </grid>
+                        
+            </panelchildren>
+        </panel>  
+            
+    </window>
+</zk>

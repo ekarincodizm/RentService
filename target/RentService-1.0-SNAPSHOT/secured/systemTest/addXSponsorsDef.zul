@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" > 
+    <window width="800px" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.AddXSponsorDefineVM')"  >   
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" /> 
+                <grid >
+                    <columns>
+                        <column width="120px" />
+                        <column width="180px" />
+                        <column width="120px" />
+                        <column width="100%" />  
+                    </columns>
+                    <rows>    
+                        <row style="border:none">
+                            <label value="โบนัส(ตำแหน่ง) : " /> 
+                            <combobox model="@load(vm.positions)" readonly="true" mold="rounded" width="150px" 
+                                      selectedItem="@load(vm.item.id.position ) @save(vm.item.id.position, before={'onSave'})" 
+                                      value="@load(vm.item.id.position.name )" >
+                                <template name="model" var="pos">
+                                    <comboitem label="@load(pos.name)" value="@load(pos)" />
+                                </template>
+                            </combobox>
+                            <label value="โบนัส(ทั้งหมด) : " /> 
+                            <hbox>
+                                <doublebox format="#,##0.##" width="100px" mold="rounded" value="@load(vm.item.bonus) @save(vm.item.bonus, before={'onSave'})"  />     
+                                <space/>
+                                <label value=" หมายถึง { จ่ายรวมส่วนต่างแล้วไม่เกิน }" />
+                            </hbox>
+                        </row>   
+                        <row valign="top" spans="1,3" style="border:none">
+                            <label value="" />
+                            <groupbox mold="3d" >
+                                <caption label=" กำหนดโบนัส และ(ส่วนต่าง) ตามตำแหน่งโดยตารางด้านล่าง "  /> 
+                                <listbox model="@bind(vm.item.items)" sizedByContent="true" sclass="vertical-scroll" > 
+                                    <listhead sizable="true" menupopup="auto"  >
+                                        <listheader align="left" label="No." width="45px" /> 
+                                        <listheader sort="auto(id.xposition.name)"  width="100%" align="left" label="ตำแหน่ง(ผู้แนะนำ)" />       
+                                        <listheader sort="auto(id.xposition.topupPv)" align="center" width="120px" label="TOP-UP" />   
+                                        <listheader sort="auto(pcent)" align="center" width="120px" label="จ่าย(หลัก)" />  
+                                        <listheader sort="auto(pcentDiff)" align="center" width="120px" label="จ่าย(ส่วนต่าง)" />    
+                                    </listhead>
+                                    <template name="model"  var="item">
+                                        <listitem >
+                                            <listcell style="@load(item.style)" label="@load(itemStatus.index+1)"  />    
+                                            <listcell  style="@load(item.style)" label="@load(item.id.xposition.name)" />     
+                                            <listcell  style="@load(item.style)" label="@load(item.id.xposition.topupPv) @converter('formatedNumber', format='#,##0')" />    
+                                            <listcell  style="@load(item.style)" >   
+                                                <doublebox value="@load(item.pcent) @save(item.pcent, before={'onSave'})" mold="rounded"  style="text-align:right" format="#,##0.00" width="90%" />
+                                            </listcell>
+                                            <listcell  style="@load(item.style)" >   
+                                                <doublebox value="@load(item.pcentDiff) @save(item.pcentDiff, before={'onSave'})" mold="rounded"  style="text-align:right" format="#,##0.00" width="90%" />
+                                            </listcell> 
+                                        </listitem> 
+                                    </template>
+                                </listbox>
+                            </groupbox>
+                        </row> 
+                        <row spans="1,3" style="border:none">
+                            <label value="" /> 
+                            <label value="" /> 
+                        </row>
+                    </rows>
+                </grid>
+                        
+            </panelchildren>
+        </panel>  
+            
+    </window>
+</zk>

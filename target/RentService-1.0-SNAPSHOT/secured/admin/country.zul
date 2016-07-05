@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul"  xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <window apply="org.zkoss.bind.BindComposer" width="100%" viewModel="@id('vm') @init('com.sabuymlm.vm.admin.CountryVM')" >    
+        <panel style="overflow:auto" width="100%" >
+            <panelchildren>
+                <include src="/secured/commons/header.zul" />  
+                <listbox multiple="true" checkmark="true" model="@bind(vm.items.content)" selectedItem="@bind(vm.selectItem)"  selectedItems="@bind(vm.selectItems)" > 
+                    <listhead sizable="true" menupopup="auto"  >
+                        <listheader align="left" label="No." width="65px" />
+                        <listheader align="center" label="แก้ไข" width="45px" />
+                        <listheader label="icon" />   
+                        <listheader sort="auto(code)" onSort="@command('onOrderBy')" label="รหัสประเทศ" />   
+                        <listheader sort="auto(name)" onSort="@command('onOrderBy')" label="ชื่อประเทศ" />       
+                        <listheader sort="auto(engname)" onSort="@command('onOrderBy')" label="ชื่อภาษาอังกฤษ" />       
+                        <listheader sort="auto(locale)" onSort="@command('onOrderBy')" label="Locale" />    
+                        <listheader sort="auto(lat)" width="100px" onSort="@command('onOrderBy')" label="Lat" /> 
+                        <listheader sort="auto(lng)" width="100px" onSort="@command('onOrderBy')" label="Lng" /> 
+                    </listhead>
+                    <template name="model"  var="item">
+                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
+                            <listcell label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                            <listcell >
+                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
+                            </listcell>
+                            <listcell image="@load(item.imageIcon)" />
+                            <listcell label="@bind(item.code)" />   
+                            <listcell label="@bind(item.name)" />   
+                            <listcell label="@bind(item.engname)" />   
+                            <listcell label="@bind(item.locale)" />    
+                            <listcell label="@bind(item.lat) @converter('formatedNumber', format='###0.#####')" />    
+                            <listcell label="@bind(item.lng) @converter('formatedNumber', format='###0.#####')" /> 
+                        </listitem> 
+                    </template>  
+                </listbox> 
+            </panelchildren>
+        </panel>
+        <include src="/secured/commons/popup.zul" />   
+    </window> 
+    
+</zk>

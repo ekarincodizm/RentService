@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page title="โปรแกรมจัดการรับ/จ่ายรายเดือน"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <style> 
+        body{
+        background:url(./images/bg_top.jpg) no-repeat center top;
+        }
+    </style> 
+    <h:script language="JavaScript">
+        function onForgetPage() {
+            window.location.assign("forgetPassword.zul"); 
+        } 
+        function onNewMemberPage() {
+            window.location.assign("newMember.zul"); 
+        }  
+        function onOpenPdf() { 
+            window.open("viewPdf.zul"); 
+        }  
+    </h:script>
+    <h:link href="./css/bootstrap.css" rel="stylesheet" />
+    <h:link href="./css/style.css" rel="stylesheet" />  
+    <window width="100%" style="overflow:auto;" 
+            apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.IndexVM')"  > 
+        <h:div class="main">
+            <h:div id="wrapper">
+                <h:header>
+                    <h:div class="clearfix">
+                        <h:div class="logo pull-left">
+                            <h:a href="#">
+                                <h:img src="images/logo.png"/>
+                            </h:a>
+                        </h:div>
+                        <h:div class="member pull-right">
+                            <h:div class="btn_member text-center">
+                                <h:button onclick="onForgetPage();" type="button" class="btn btn-link first">ลืมรหัสผ่าน</h:button> 
+                                <h:button onclick="onNewMemberPage();" type="button" class="btn btn-link">ฟรีสมัครสมาชิก</h:button> 
+                                <h:button onclick="onOpenPdf();" type="button" class="btn btn-link">คู่มือการใช้งาน</h:button> 
+                            </h:div>
+                            <h:div class="box_member">
+                                <h:h5>Rent Income Expenses Service/MLM Test Plan V1.0</h:h5>
+                                <h:div class="control-group clearfix">
+                                    <h:label for="" class="text-update control-label pull-left text-error">Update : 26/09/2557</h:label>
+                                </h:div>
+                                <h:div class="control-group row-fluid">
+                                    <h:div class="span9">
+                                
+                                        <h:div class="row-fluid">
+                                            <label value="Username" />
+                                            <separator/>
+                                            <textbox id="username" value="@bind(vm.username)" placeholder="" constraint="no empty:username required!" onOK="@command('onLogin')" />
+                                        </h:div>
+                                    
+                                        <h:div class="row-fluid">
+                                            <label value="Password" />
+                                            <separator/>
+                                            <textbox id="password" value="@bind(vm.password)" placeholder="" constraint="no empty:password required!" onOK="@command('onLogin')" type="password"  />
+                                        </h:div>
+                                        
+                                        <h:div class="row-fluid">  
+                                            <button onClick="@command('onLogin')" label="Log in" image="/images/icons/22x22/lock.png" style="cursor:pointer" /> 
+                                        </h:div>
+                                        
+                                    </h:div> 
+                                </h:div> 
+                            </h:div>
+                        </h:div>
+                    </h:div>
+                </h:header>
+            </h:div>
+        </h:div> 
+    </window>
+</zk>

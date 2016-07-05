@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" > 
+    <window width="800px" border="none" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.admin.AddDistrictVM')" >   
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />
+                <grid>
+                    <columns>
+                        <column label="" width="15%" align="right" />
+                        <column label="" width="85%" /> 
+                    </columns>
+                    <rows>    
+                        <row  style="border:none">
+                            <label value="ชื่ออำเภอ : " />
+                            <textbox width="450px" mold="rounded" value="@bind(vm.item.name)"  />
+                        </row>   
+                        <row  style="border:none">
+                            <label value="ชื่ออำเภอ(Eng) : " />
+                            <textbox width="450px" mold="rounded" value="@bind(vm.item.engname)"  />
+                        </row>   
+                        <row style="border:none">
+                            <label value="ประเทศ : " /> 
+                            <combobox model="@load(vm.countrys)" readonly="true" mold="rounded" onSelect="@command('onSearchCountry')" width="250px" selectedItem="@bind(vm.item.country)" 
+                                value="@load(vm.item.country.name)" >
+                                <template name="model" var="country">
+                                    <comboitem image="@load(country.imageIcon)" label="@load(country.name)" value="@load(country)" />
+                                </template>
+                            </combobox>
+                        </row>
+                        <row  style="border:none">
+                            <label value="จังหวัด : " /> 
+                            <combobox model="@load(vm.provinces)" readonly="true" mold="rounded" width="250px" selectedItem="@bind(vm.item.province)"
+                                value="@load(vm.item.province.name)" >
+                                <template name="model" var="province">
+                                    <comboitem label="@load(province.name)" value="@load(province)" />
+                                </template>
+                            </combobox>
+                        </row>    
+                        <row  style="border:none">
+                            <label value="รหัสไปรษณีย์ : " />
+                            <textbox width="150px" maxlength="5"  mold="rounded" value="@bind(vm.item.post)"  />
+                        </row>
+                        <row  style="border:none">
+                            <label value="lat : " />
+                            <doublebox width="150px" mold="rounded" format="###0.#####" value="@bind(vm.item.lat)" />
+                        </row>
+                        <row  style="border:none">
+                            <label value="lng : " />
+                            <doublebox width="150px" mold="rounded" format="###0.#####" value="@bind(vm.item.lng)" />
+                        </row>
+                        <row  style="border:none">
+                            <label value="" /> 
+                            <label value="" />  
+                        </row>
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>    
+    </window>
+</zk>

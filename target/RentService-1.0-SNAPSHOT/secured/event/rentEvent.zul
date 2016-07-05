@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul"  xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <window apply="org.zkoss.bind.BindComposer" width="100%" viewModel="@id('vm') @init('com.sabuymlm.vm.event.RentEventVM')" >    
+        <panel style="overflow:auto" width="100%" >
+            <panelchildren>
+                <include src="/secured/commons/header.zul" />  
+                <separator height="2px" style="background-color:#CCCCCC;" />  
+                <div height="25px" style="background-color:#DDDDDD;">
+                    <hbox align="middle">
+                        <space/>
+                        <label value="ช่วงวันที่ใบเสร็จ : " /> 
+                        <datebox value="@bind(vm.startdate)" onOK="@command('search')"  format="dd/MM/yyyy" mold="rounded" width="120px" /> 
+                        <space/>
+                        <label value="ถึง : " /> 
+                        <datebox value="@bind(vm.enddate)" onOK="@command('search')"  format="dd/MM/yyyy" mold="rounded" width="120px" />  
+                        <space/>
+                        <label value="สถานะใบเสร็จ : " /> 
+                        <combobox readonly="true" mold="rounded" width="150px" selectedItem="@bind(vm.status)" onSelect="@command('search')" > 
+                            <comboitem  label="&lt;-- ทุกสถานะ --&gt;" value="ALL" /> 
+                            <comboitem  label="&lt;-- ไม่เอา PAUSE --&gt;" value="ALL_PAUSE" /> 
+                            <comboitem  label="OPEN" value="OPEN" /> 
+                            <comboitem  label="PAUSE" value="PAUSE" /> 
+                            <comboitem  label="CLOSE" value="CLOSE" /> 
+                        </combobox> 
+                        <space/>
+                        <label value="สถานะการต่ออายุ : " /> 
+                        <combobox readonly="true" mold="rounded" width="200px" selectedItem="@bind(vm.reStatus)" onSelect="@command('search')" > 
+                            <comboitem  label="&lt;-- ทุกสถานะ --&gt;" value="ALL" /> 
+                            <comboitem  label="ใบเสร็จ รอต่ออายุ" value="false" /> 
+                            <comboitem  label="ใบเสร็จ ต่ออายุแล้ว" value="true" />  
+                        </combobox> 
+                    </hbox>
+                </div> 
+                <listbox multiple="true" checkmark="true" model="@bind(vm.items.content)" selectedItem="@bind(vm.selectItem)"  selectedItems="@bind(vm.selectItems)" 
+                          sizedByContent="true" sclass="vertical-scroll" > 
+                    <listhead sizable="true" menupopup="auto"  >
+                        <listheader align="left" label="No." width="65px" />
+                        <listheader align="center" label="แก้ไข" width="65px" /> 
+                        <listheader align="left" label="แจ้งเตือน" image="/images/icons/22x22/Attach22.png" width="100px" /> 
+                        <listheader sort="auto(rentDate)" onSort="@command('onOrderBy')" align="center" width="80px" label="วันที่ใบเสร็จ" />       
+                        <listheader sort="auto(code)" onSort="@command('onOrderBy')" width="100px" label="เลขที่ใบเสร็จ" />       
+                        <listheader sort="auto(customer.name)" onSort="@command('onOrderBy')" width="200px" label="ชื่อลูกค้า" />       
+                        <listheader sort="auto(totalAmount)" onSort="@command('onOrderBy')" width="70px" align="right" label="จำนวนเงิน" />     
+                        <listheader sort="auto(discAmount)" onSort="@command('onOrderBy')" width="60px"  align="right" label="ส่วนลด" /> 
+                        <listheader sort="auto(netAmount)" onSort="@command('onOrderBy')" width="70px" align="right" label="สุทธิ" /> 
+                        <listheader sort="auto(rentStatus)" onSort="@command('onOrderBy')" width="130px" label="สถานะใบเสร็จ" />  
+                        <listheader sort="auto(rentMonth)" onSort="@command('onOrderBy')" width="75px" align="center" label="เช่า(เดือน)" />  
+                        <listheader sort="auto(expireDate)" onSort="@command('onOrderBy')" width="100px" align="center" label="หมดอายุ(วันที่)" />    
+                        <listheader sort="auto(expireDate)" onSort="@command('onOrderBy')" width="70px" align="center" label="เหลือ(วัน)" />    
+                        <listheader sort="auto(remark)" onSort="@command('onOrderBy')" label="หมายเหตุ" />
+                    </listhead>
+                    <template name="model"  var="item">
+                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
+                            <listcell style="@load(item.style)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                            <listcell style="@load(item.style)" >
+                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" tooltiptext="คลิกเพื่อแก้ไช" style="cursor:pointer" />
+                                <image onClick="@command('onClickPreview',object=item)" src="/images/icons/22x22/pdf.png" tooltiptext="คลิกเพื่อแสดงใบเสร็จ" style="cursor:pointer" />
+                            </listcell>  
+                            <listcell style="@load(item.style)" >
+                                <div >
+                                    <image onClick="@command('onDownload',fileName=item.downloadAttachFile)" tooltiptext="คลิกเพื่อดาวน์โหลดแนบไฟล์" src="@load(not empty item.attachFile?'/images/icons/22x22/Attach22.png':'')" style="cursor:pointer" />
+                                    <image visible="@load(item.sendEmail)" tooltiptext="แจ้งเตือนทางอีเมล์แล้ว" src="/images/icons/20x20/email.png" />
+                                    <image visible="@load(item.sendSms)" tooltiptext="แจ้งเตือนทางโทรศัพท์หรือSMSแล้ว" src="/images/icons/20x20/mobile.png" />
+                                    <image visible="@load(item.sendLine)" tooltiptext="แจ้งเตือนทางไลน์แล้ว" src="/images/icons/20x20/line.png" />
+                                </div>
+                            </listcell>  
+                            <listcell  style="@load(item.style)" label="@bind(item.rentDate) @converter('formatedDate', format='dd/MM/yyyy')" />    
+                            <listcell  style="@load(item.style)" label="@bind(item.code)" />   
+                            <listcell  style="@load(item.style)" label="@bind(item.customer.name)" />     
+                            <listcell  style="@load(item.style)" label="@bind(item.totalAmount) @converter('formatedNumber', format='#,##0.##')" />     
+                            <listcell  style="@load(item.style)" label="@bind(item.discAmount) @converter('formatedNumber', format='#,##0.##')" />     
+                            <listcell  style="@load(item.style)" label="@bind(item.netAmount) @converter('formatedNumber', format='#,##0.##')" />     
+                            <listcell  style="@load(item.style)" label="@bind(item.rentStatusName)" />     
+                            <listcell  style="@load(item.style)" label="@bind(item.rentMonth) @converter('formatedNumber', format='#,##0')" />     
+                            <listcell  style="@load(item.style)" label="@bind(item.expireDate) @converter('formatedDate', format='dd MMM yyyy')" />     
+                            <listcell  style="@load(item.style)" label="@load(item.remainDate) @converter('formatedNumber', format='#,##0')" />     
+                            <listcell  style="@load(item.style)" label="@bind(item.remarkStatus)" />     
+                        </listitem> 
+                    </template> 
+                </listbox> 
+            </panelchildren>
+        </panel>
+        <include src="/secured/commons/popup.zul" />   
+    </window> 
+    
+</zk>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" > 
+    <window width="800px" border="none" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.admin.AddIncExpTypeVM')" >     
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />
+                <grid>
+                    <columns>
+                        <column label="" width="15%" align="right" />
+                        <column label="" width="85%" /> 
+                    </columns>
+                    <rows>     
+                        <row  style="border:none"> 
+                            <label value="ประเภท(รับ/จ่าย) : " />
+                            <combobox readonly="true" mold="rounded" width="150px" selectedItem="@bind(vm.item.expensesIncomeType)" >  
+                                <comboitem  label="Expenses" value="N" /> 
+                                <comboitem  label="Income" value="Y" />   
+                            </combobox> 
+                        </row>   
+                        <row  style="border:none">
+                            <label value="Name : " />
+                            <textbox width="450px" mold="rounded" value="@bind(vm.item.name)"  />
+                        </row>   
+                        <row  style="border:none">
+                            <label value="Eng Name : " />
+                            <textbox width="450px" mold="rounded" value="@bind(vm.item.engname)"  />
+                        </row>   
+                        <row valign="top" style="border:none">
+                            <label value="Description : " />
+                            <textbox width="450px" mold="rounded" rows="5" value="@bind(vm.item.description)"  />
+                        </row>    
+                        <row  style="border:none">
+                            <label value="" /> 
+                            <label value="" />  
+                        </row>
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>    
+    </window>
+</zk>

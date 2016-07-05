@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul"  xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <window apply="org.zkoss.bind.BindComposer" width="100%" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.PositionsVM')" >    
+        <panel style="overflow:auto" width="100%" >
+            <panelchildren>
+                <include src="/secured/commons/header.zul" />  
+                <separator height="2px" style="background-color:#CCCCCC;" />  
+                 
+                <listbox multiple="true" checkmark="true" model="@load(vm.items.content)" selectedItem="@bind(vm.selectItem)"  selectedItems="@bind(vm.selectItems)" 
+                    sizedByContent="true" sclass="vertical-scroll" > 
+                    <listhead sizable="true" menupopup="auto"  >
+                        <listheader align="left" label="No." width="65px" />
+                        <listheader align="center" label="แก้ไข" width="65px" />  
+                        <listheader sort="auto(name)" onSort="@command('onOrderBy')" align="center" width="100px" label="ตำแหน่ง" />       
+                        <listheader sort="auto(topupPv)" onSort="@command('onOrderBy')" align="center" width="100px" label="TOP-UP" />              
+                        <listheader sort="auto(sponsorOrAndState)" onSort="@command('onOrderBy')" align="center" width="150px" label="Or/And(แนะนำ)" />  
+                        <listheader sort="auto(sponsorCount)" onSort="@command('onOrderBy')" align="center" width="120px" label="จำนวน(แนะนำ)" />    
+                        <listheader sort="auto(memberPosition.name)" onSort="@command('onOrderBy')" align="center" width="150px" label="ตำแหน่ง(แนะนำ)" />    
+                        <listheader sort="auto(isFixSponsorLevel)" onSort="@command('onOrderBy')" align="center" label="Fix(Level)" />
+                        <listheader sort="auto(sponsorLevel)" onSort="@command('onOrderBy')" align="center" label="แนะนำ(Level)" />
+                    </listhead>
+                    <template name="model"  var="item">
+                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
+                            <listcell style="@load(item.style)" label="@load(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                            <listcell style="@load(item.style)" >
+                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" tooltiptext="คลิกเพื่อแก้ไช" style="cursor:pointer" /> 
+                            </listcell>   
+                            <listcell  style="@load(item.style)" label="@load(item.name)" />  
+                            <listcell  style="@load(item.style)" label="@load(item.topupPv) @converter('formatedNumber', format='#,##0.##')" />    
+                            <listcell  style="@load(item.style)" label="@load(item.sponsorOrAndState)" />    
+                            <listcell  style="@load(item.style)" label="@load(item.sponsorCount) @converter('formatedNumber', format='#,##0')" />     
+                            <listcell  style="@load(item.style)" label="@load(item.memberPosition.name)" />      
+                            <listcell  style="@load(item.style)" label="@load(item.isFixSponsorLevel)" />     
+                            <listcell  style="@load(item.style)" label="@load(item.sponsorLevel) @converter('formatedNumber', format='#,##0')" />   
+                        </listitem> 
+                    </template>  
+                </listbox>
+            </panelchildren>
+        </panel>
+        <include src="/secured/commons/popup.zul" />   
+    </window> 
+    
+</zk>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul"  xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <window apply="org.zkoss.bind.BindComposer" width="100%" viewModel="@id('vm') @init('com.sabuymlm.vm.admin.IncExpTypesVM')" >    
+        <panel style="overflow:auto" width="100%" >
+            <panelchildren>
+                <include src="/secured/commons/header.zul" />  
+                <listbox multiple="true" checkmark="true" model="@bind(vm.items.content)" selectedItem="@bind(vm.selectItem)"  selectedItems="@bind(vm.selectItems)" > 
+                    <listhead sizable="true" menupopup="auto"  >
+                        <listheader align="left" label="No." width="65px" />
+                        <listheader align="center" label="แก้ไข" width="45px" />  
+                        <listheader sort="auto(name)" onSort="@command('onOrderBy')" label="Type Name" />       
+                        <listheader sort="auto(engname)" onSort="@command('onOrderBy')" label="Type Name(Eng)" />       
+                        <listheader sort="auto(description)" onSort="@command('onOrderBy')" label="Description" />     
+                        <listheader sort="auto(expensesIncomeType)" onSort="@command('onOrderBy')" label="Type" width="100px" />     
+                    </listhead>
+                    <template name="model"  var="item">
+                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
+                            <listcell style="@load(item.style)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                            <listcell style="@load(item.style)" >
+                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
+                            </listcell>  
+                            <listcell style="@load(item.style)" label="@bind(item.name)" /> 
+                            <listcell style="@load(item.style)" label="@bind(item.engname)" />   
+                            <listcell style="@load(item.style)" label="@bind(item.description)" />     
+                            <listcell style="@load(item.style)" label="@bind(item.typeName)" />     
+                        </listitem> 
+                    </template>  
+                </listbox> 
+            </panelchildren>
+        </panel>
+        <include src="/secured/commons/popup.zul" />   
+    </window> 
+    
+</zk>

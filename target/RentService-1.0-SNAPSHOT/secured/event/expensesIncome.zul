@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul"  xmlns:h="http://www.zkoss.org/2005/zk/native" > 
+    <window apply="org.zkoss.bind.BindComposer" width="100%" viewModel="@id('vm') @init('com.sabuymlm.vm.event.ExpensesIncomeVM')" >    
+        <panel style="overflow:auto" width="100%" >
+            <panelchildren>
+                <include src="/secured/commons/header.zul" />  
+                <separator height="2px" style="background-color:#CCCCCC;" />  
+                <div height="25px" style="background-color:#DDDDDD;">
+                    <hbox align="middle">
+                        <space/>
+                        <label value="ช่วงวันที่อ้างอิง : " /> 
+                        <datebox value="@bind(vm.startdate)" onOK="@command('search')"  format="dd/MM/yyyy" mold="rounded" width="120px" /> 
+                        <space/>
+                        <label value="ถึง : " /> 
+                        <datebox value="@bind(vm.enddate)" onOK="@command('search')"  format="dd/MM/yyyy" mold="rounded" width="120px" />  
+                        <space/>
+                        <label value="ประเภท(รับ/จ่าย) : " /> 
+                        <combobox readonly="true" mold="rounded" width="150px" selectedItem="@bind(vm.status)" onSelect="@command('onSelectedType')" > 
+                            <comboitem  label="&lt;-- ทุกประเภท --&gt;" value="ALL" /> 
+                            <comboitem  label="Expenses" value="N" /> 
+                            <comboitem  label="Income" value="Y" />  
+                        </combobox>  
+                        <space/>
+                        <label value="หัวข้อเรื่อง : " /> 
+                        <combobox model="@load(vm.types)" readonly="true" mold="rounded" width="150px" selectedItem="@bind(vm.expensesType)" onSelect="@command('search')" > 
+                            <template name="model" var="type">
+                                <comboitem label="@load(type.name)" value="@load(type)" />
+                            </template>   
+                        </combobox>
+                    </hbox>
+                </div>
+                <listbox multiple="true" checkmark="true" model="@bind(vm.items.content)" selectedItem="@bind(vm.selectItem)"  selectedItems="@bind(vm.selectItems)" 
+                    sizedByContent="true" sclass="vertical-scroll" > 
+                    <listhead sizable="true" menupopup="auto"  >
+                        <listheader align="left" label="No." width="65px" />
+                        <listheader align="center" label="แก้ไข" width="65px" /> 
+                        <listheader align="left" image="/images/icons/22x22/Attach22.png" width="40px" /> 
+                        <listheader sort="auto(expensesDate)" onSort="@command('onOrderBy')" align="center" width="100px" label="วันที่อ้างอิง" />       
+                        <listheader sort="auto(code)" onSort="@command('onOrderBy')" width="100px" label="เลขที่อ้างอิง" />              
+                        <listheader sort="auto(totalAmount)" onSort="@command('onOrderBy')" width="150px" align="right" label="จำนวนเงิน" />  
+                        <listheader sort="auto(expensesIncomeType)" onSort="@command('onOrderBy')" width="120px" label="ประเภท(รับ/จ่าย)" />    
+                        <listheader sort="auto(expensesType.name)" onSort="@command('onOrderBy')" width="150px" label="หัวข้อเรื่อง" />    
+                        <listheader sort="auto(remark)" onSort="@command('onOrderBy')" label="หมายเหตุ" />
+                    </listhead>
+                    <template name="model"  var="item">
+                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
+                            <listcell style="@load(item.style)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                            <listcell style="@load(item.style)" >
+                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" tooltiptext="คลิกเพื่อแก้ไช" style="cursor:pointer" /> 
+                            </listcell>  
+                            <listcell style="@load(item.style)" > 
+                                <image onClick="@command('onDownload',fileName=item.downloadAttachFile)" tooltiptext="คลิกเพื่อดาวน์โหลดแนบไฟล์" src="@load(not empty item.attachFile?'/images/icons/22x22/Attach22.png':'')" style="cursor:pointer" />
+                            </listcell>  
+                            <listcell  style="@load(item.style)" label="@bind(item.expensesDate) @converter('formatedDate', format='dd/MM/yyyy')" />    
+                            <listcell  style="@load(item.style)" label="@bind(item.code)" />    
+                            <listcell  style="@load(item.style)" label="@bind(item.totalAmount) @converter('formatedNumber', format='#,##0.##')" />      
+                            <listcell  style="@load(item.style)" label="@bind(item.typeName)" />      
+                            <listcell  style="@load(item.style)" label="@bind(item.expensesType.name)" />      
+                            <listcell  style="@load(item.style)" label="@bind(item.remark)" />     
+                        </listitem> 
+                    </template> 
+                    <listfoot>
+                        <listfooter span="4"/>
+                        <listfooter align="right" label="Income :"/>
+                        <listfooter align="left" >
+                            <doublebox value="@load(vm.sumBean.sum1)" format="#,##0.##" style="text-align:right;color:green;" readonly="true" width="120px;" />
+                        </listfooter>
+                        <listfooter align="right" style="color:red;" label="Expenses :"/>
+                        <listfooter align="left" >
+                            <doublebox value="@load(vm.sumBean.sum2)" format="#,##0.##" style="text-align:right;color:red;" readonly="true" width="120px;" />
+                        </listfooter>
+                    </listfoot>
+                </listbox>
+            </panelchildren>
+        </panel>
+        <include src="/secured/commons/popup.zul" />   
+    </window> 
+    
+</zk>

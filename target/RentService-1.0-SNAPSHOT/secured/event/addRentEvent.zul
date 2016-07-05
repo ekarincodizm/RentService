@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" > 
+    <window width="1000px" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.event.AddRentEventVM')" >   
+        <style>
+            .title {
+            font-weight: bold;
+            font-size: 12px;
+            }
+            .demoTbx .z-tab {
+            margin-right: 2px;
+            }
+        </style>
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />
+                <tabbox>
+                    <tabs>
+                        <tab label="ข้อมูลใบเสร็จ"/>
+                        <tab label="หมายเหตุ"/>
+                    </tabs>
+                    <tabpanels>
+                        <tabpanel>
+                            
+                            <grid >
+                                <columns>
+                                    <column width="120px" />
+                                    <column width="210px" />
+                                    <column width="120px" />
+                                    <column width="400px" /> 
+                                    <column width="100%" />
+                                </columns>
+                                <rows>    
+                                    <row style="border:none">
+                                        <label value="สถานะใบเสร็จ : " />
+                                        <combobox readonly="true" mold="rounded" width="150px" 
+                                                    selectedItem="@load(vm.item.rentStatus) @save(vm.item.rentStatus, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" >  
+                                            <comboitem  label="OPEN" value="OPEN" /> 
+                                            <comboitem  label="PAUSE" value="PAUSE" /> 
+                                            <comboitem  label="CLOSE" value="CLOSE" />   
+                                        </combobox>  
+                                        <label value="แนบไฟล์(อ้างอิง) : " />
+                                        <hbox align="middle">
+                                            <textbox width="250px" mold="rounded" height="24px" value="@load(vm.fileName)" readonly="true" />
+                                            <button label="Brows.." upload="true" onUpload="@command('onUpload')" autodisable="self" /> 
+                                            <button label="Clear" onClick="@command('onClear')" mold="trendy" autodisable="self" /> 
+                                        </hbox> 
+                                        <cell rowspan="4" align="left" valign="top">
+                                            <image visible="@load(vm.visibleFileUpload)" src="/images/Attach.png" tooltiptext="@load(vm.fileName)" 
+                                                   onClick="@command('onDownload',fileName=vm.item.downloadAttachFile)"
+                                                   height="90px" width="100px" style="border:1px;cursor:pointer;" />
+                                        </cell>
+                                    </row>
+                                    <row style="border:none">
+                                        <label value="เลขที่ใบเสร็จ : " />
+                                        <textbox width="150px" mold="rounded" readonly="true"  value="@load(vm.item.code) @save(vm.item.code, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})"  />   
+                                        <label value="วันที่ใบเสร็จ : " /> 
+                                        <datebox value="@load(vm.item.rentDate) @save(vm.item.rentDate, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" format="dd MMMM yyyy" readonly="true" onBlur="@command('calculateExpDate')" onOK="@command('calculateExpDate')" mold="rounded" width="150px" />    
+                                    </row> 
+                                    <row style="border:none"> 
+                                        <label value="จ่ายแล้ว(วันที่) : " style="color:blue;font-weight:bold;" /> 
+                                        <datebox value="@load(vm.item.rentCloseDate) @save(vm.item.rentCloseDate, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" format="dd/MM/yyyy" mold="rounded" width="120px" />  
+                                        <label value="ลูกค้า(Customer) : " /> 
+                                        <bandbox id="mybandbox" mold="rounded" readonly="true" 
+                                                 value="@load(vm.item.customer.name) @save(vm.item.customer.name, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})"  apply="org.zkoss.bind.BindComposer" 
+                                                 viewModel="@id('vmCustomer') @init('com.sabuymlm.vm.search.CustomerVM')" width="350px"  >
+                                            <bandpopup>
+                                                <include src="/secured/searchs/customers.zul" />
+                                            </bandpopup>
+                                        </bandbox>   
+                                    </row>  
+                                    <row style="border:none">
+                                        <label value="เช่าทั้งหมด : " />
+                                        <hbox align="bottom" >
+                                            <intbox width="70px" mold="rounded" style="text-align:center" onBlur="@command('calculateExpDate')" onOK="@command('calculateExpDate')" 
+                                                        value="@load(vm.item.rentMonth)  @save(vm.item.rentMonth, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})"  />   
+                                            <label value="เดือน" />
+                                        </hbox>
+                                        <label value="หมดอายุวันที่ : " />
+                                        <hbox align="bottom">
+                                            <datebox style="color:red;" value="@load(vm.item.expireDate)  @save(vm.item.expireDate, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" buttonVisible="false" format="dd MMMM yyyy" mold="rounded" width="150px" readonly="true" />    
+                                            <space/>
+                                            <label value="เหลือจำนวน : " />
+                                            <label value="@load(vm.item.remainDate) @converter('formatedNumber', format='#,##0')" />
+                                            <label value="วัน" />
+                                        </hbox>
+                                    </row>
+                                    <row spans="1,1,1,2" style="border:none">
+                                        <label value="แจ้งเตือนแล้วทาง : " />
+                                        <hbox align="bottom" >
+                                            <checkbox checked="@load(vm.item.sendSms) @save(vm.item.sendSms, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" label="Phone/SMS." /> 
+                                            <checkbox checked="@load(vm.item.sendEmail) @save(vm.item.sendEmail, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})"  label="Email." />
+                                            <checkbox checked="@load(vm.item.sendLine) @save(vm.item.sendLine, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" label="Line." /> 
+                                        </hbox> 
+                                        <label value="สถานะการพิมพ์ : " /> 
+                                        <hbox align="bottom" >
+                                            <checkbox checked="@load(vm.item.printInvoice) @save(vm.item.printInvoice, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" label="พิมพ์ใบเสร็จแล้ว" />  
+                                            <space/><space/>
+                                            <checkbox checked="@load(vm.item.reRentStatus) @save(vm.item.reRentStatus, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" style="color:blue;"  label="มีการต่ออายุเช่า(ต่อจากใบเสร็จนี้แล้ว)" />  
+                                        </hbox>
+                                    </row>
+                                    <row visible="@load(not empty vm.item.customer)" spans="5" style="border:none">
+                                        <div height="100%">
+                                            <toolbar style="background-color:transparent;" > 
+                                                <toolbarbutton autodisable="self" onClick="@command('onAddDetail')" label="+ เพิ่มรายการ" style="color:green" image="/images/icons/24x24/file_add24.png" tooltiptext="เพิ่มรายการใหม่" />
+                                                <toolbarbutton autodisable="self" disabled="@load(empty vm.selectedItems)" style="color:black" onClick="@command('onRemoveDetail')" label="- ลบรายการ" image="/images/icons/24x24/edit-delete-icon24.png" tooltiptext="ลบรายการที่เลือกไว้" />   
+                                            </toolbar>  
+                                            <panel  style="border:0px;" > 
+                                                <panelchildren> 
+                                                    <listbox multiple="true" checkmark="true" model="@bind(vm.item.itemDetails)" selectedItems="@bind(vm.selectedItems)" > 
+                                                        <listhead> 
+                                                            <listheader align="center" label="No." width="50px"/>
+                                                            <listheader align="center" label=" รหัส " width="100px"/>
+                                                            <listheader label=" รายละเอียด " />  
+                                                            <listheader align="center" label=" จำนวน " width="120px"/>
+                                                            <listheader align="right" label="ราคา/หน่วย" width="120px"/> 
+                                                            <listheader align="right" label=" รวมมูลค่า " width="120px"/>  
+                                                        </listhead> 
+                                                        <template name="model" var="item">
+                                                            <listitem > 
+                                                                <listcell label="@bind(itemStatus.index+1)"  />  
+                                                                <listcell >
+                                                                    <textbox value="@load(item.serviceCode) @save(item.serviceCode, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" mold="rounded" width="90%" />
+                                                                </listcell>   
+                                                                <listcell >
+                                                                    <textbox value="@load(item.description) @save(item.description, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" mold="rounded" width="98%" />
+                                                                </listcell>    
+                                                                <listcell >
+                                                                    <intbox value="@load(item.qty) @save(item.qty, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" onBlur="@command('onCalculate')" onOK="@command('onCalculate')" mold="rounded"  style="text-align:right" format="#,##0" width="90%" />
+                                                                </listcell>    
+                                                                <listcell >
+                                                                    <doublebox value="@load(item.currentPrice) @save(item.currentPrice, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" onBlur="@command('onCalculate')" onOK="@command('onCalculate')" style="text-align:right" mold="rounded" format="#,##0.00" width="90%" />
+                                                                </listcell>    
+                                                                <listcell >
+                                                                    <doublebox value="@load(item.totalAmount) @save(item.totalAmount, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" readonly = "true" style="text-align:right" mold="rounded" format="#,##0.00" width="90%" />
+                                                                </listcell>    
+                                                            </listitem> 
+                                                        </template> 
+                                                        <listfoot>
+                                                            <listfooter span="3" align="right" label="ส่วนลดเพิ่มเติม" /> 
+                                                            <listfooter align="right"> 
+                                                                <doublebox width="95%" onBlur="@command('onCalculate')" onOK="@command('onCalculate')" style="text-align:right" format="#,##0.00" mold="rounded" 
+                                                                           value="@load(vm.item.discAmount)  @save(vm.item.discAmount, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" />  
+                                                            </listfooter>
+                                                            <listfooter align="right" label="เป็นเงินสุทธิ" /> 
+                                                            <listfooter align="right"> 
+                                                                <doublebox width="95%" style="text-align:right" mold="rounded" 
+                                                                           value="@load(vm.item.netAmount)  @save(vm.item.netAmount, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})" format="#,##0.00" readonly="true" />   
+                                                            </listfooter>
+                                                        </listfoot>
+                                                    </listbox> 
+                                                </panelchildren>
+                                            </panel>
+                                        </div>
+                                    </row> 
+                                    <row spans="1,3" style="border:none">
+                                        <label value="" /> 
+                                        <label value="" /> 
+                                    </row>
+                                </rows>
+                            </grid>
+                        </tabpanel>
+                        <tabpanel>
+                            <textbox width="800px" rows="20" mold="rounded" 
+                                     value="@load(vm.item.remark) @save(vm.item.remark, before={'onSave','onUpload','onClear','onDownload','calculateExpDate','onAddDetail','onRemoveDetail','onCalculate'})"  />  
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
+            </panelchildren>
+        </panel>  
+           
+        <script type="text/javascript">
+            zk.afterMount(function() {
+            jq("$keyword").Watermark("พิมพ์คำที่ต้องการค้น แล้วกดปุ่ม &lt;Enter&gt;","#AAAAAA");  
+            });
+        </script>
+    </window>
+</zk>

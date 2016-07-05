@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" > 
+    <window width="1000px" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.customer.AddTreatyRuleVM')" >   
+        <style>
+            .title {
+            font-weight: bold;
+            font-size: 12px;
+            }
+            .demoTbx .z-tab {
+            margin-right: 2px;
+            }
+        </style>
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />
+                <tabbox>
+                    <tabs>
+                        <tab label="ข้อมูลสัญญา"/>
+                        <tab label="ร่างเอกสารสัญญา"/>
+                    </tabs>
+                    <tabpanels>
+                        <tabpanel>
+                            
+                            <grid >
+                                <columns>
+                                    <column width="150px" />
+                                    <column width="400px" />
+                                    <column width="100px" />
+                                    <column width="100%" />
+                                </columns>
+                                <rows>    
+                                    <row spans="1,3" style="border:none">
+                                        <label value="สถานะเอกสาร : " />
+                                        <combobox readonly="true" mold="rounded" width="150px" selectedItem="@bind(vm.item.treatyRuleStatus)" >  
+                                            <comboitem  label="OPEN" value="OPEN" /> 
+                                            <comboitem  label="PAUSE" value="PAUSE" /> 
+                                            <comboitem  label="CLOSE" value="CLOSE" />   
+                                        </combobox> 
+                                    </row>
+                                    <row spans="1,3" style="border:none">
+                                        <label value="CLOSE วันที่ : " />
+                                        <div align="left">
+                                            <datebox value="@bind(vm.item.treatyCloseDate)" format="dd/MM/yyyy" mold="rounded" width="120px" />   
+                                            <space/>
+                                            <label value=" วันที่เสร็จสิ้นสัญญา " />
+                                        </div>
+                                    </row>
+                                    <row valign="top" style="border:none">
+                                        <label value="แนบไฟล์สัญญา(ตัวจริง) : " />
+                                        <hbox align="middle">
+                                            <textbox width="250px" mold="rounded" height="24px" value="@load(vm.fileName)" readonly="true" />
+                                            <button label="Brows.." upload="true" onUpload="@command('onUpload')" autodisable="self" /> 
+                                            <button label="Clear" onClick="@command('onClear')" mold="trendy" autodisable="self" /> 
+                                        </hbox> 
+                                        <cell rowspan="4" align="left" valign="top">
+                                            <image visible="@load(vm.visibleFileUpload)" src="/images/Attach.png" tooltiptext="@load(vm.fileName)" 
+                                                   onClick="@command('onDownload',fileName=vm.item.downloadAttachFile)"
+                                                   height="90px" width="100px" style="border:1px;cursor:pointer;" />
+                                        </cell>
+                                    </row>
+                                    <row style="border:none">
+                                        <label value="ชื่อเอกสารสัญญา : " />
+                                        <textbox width="300px" mold="rounded" value="@bind(vm.item.name)"  />  
+                                    </row>   
+                                    <row style="border:none"> 
+                                        <label value="ชื่อเอกสารสัญญา(Eng) : " />
+                                        <textbox width="300px" mold="rounded" value="@bind(vm.item.engname)"  />
+                                    </row>   
+                                    <row spans="1,3" style="border:none">
+                                        <label value="จัดทำขึ้นที่ : " />
+                                        <textbox width="602px" mold="rounded" value="@bind(vm.item.treatyAddrs)"  />  
+                                    </row>    
+                                    <row spans="1,3" style="border:none">
+                                        <label value="ผู้ติดต่อระหว่างสัญญา : " />
+                                        <hbox align="middle"> 
+                                            <textbox width="165px" mold="rounded" value="@bind(vm.item.contact)"  />
+                                            <space/>
+                                            <label value="เบอร์โทร : " />
+                                            <textbox width="150px" mold="rounded" value="@bind(vm.item.contactMobile)"  />
+                                            <space/>
+                                            <label value="Email : " />
+                                            <textbox width="150px" mold="rounded" value="@bind(vm.item.contactEmail)"  />
+                                        </hbox>
+                                    </row>
+                                    <row spans="1,3" style="border:none">
+                                        <label value="บริษัทลูกค้า(Customer) : " /> 
+                                        <bandbox id="mybandbox" mold="rounded" readonly="true" value="@bind(vm.item.customer.name)"  apply="org.zkoss.bind.BindComposer" 
+                                                 viewModel="@id('vmCustomer') @init('com.sabuymlm.vm.search.CustomerVM')" width="602px"  >
+                                            <bandpopup>
+                                                <include src="/secured/searchs/customers.zul" />
+                                            </bandpopup>
+                                        </bandbox> 
+                                    </row>  
+                                    <row spans="1,3" valign="top" style="border:none">
+                                        <label value="หมายเหตุ : " />
+                                        <textbox width="600px" rows="10" mold="rounded" value="@bind(vm.item.remark)"  />  
+                                    </row>
+                                    <row spans="1,3" style="border:none">
+                                        <label value="" /> 
+                                        <label value="" /> 
+                                    </row>
+                                </rows>
+                            </grid>
+                        </tabpanel>
+                        <tabpanel>
+                            
+                            <n:form>
+                                <ckeditor width="100%" customConfigurationsPath="/script/config.js" 
+                                          onChange="@command('onChangeTemplate',document=self.value)" value="@bind(vm.item.document)" 
+                                          onSave="@command('saveTemplate',document=self.value)" >
+                                    
+                                </ckeditor>   
+                            </n:form>
+                            
+                        </tabpanel>
+                    </tabpanels>
+                </tabbox>
+            </panelchildren>
+        </panel>  
+           
+        <script type="text/javascript">
+            zk.afterMount(function() {
+            jq("$keyword").Watermark("พิมพ์คำที่ต้องการค้น แล้วกดปุ่ม &lt;Enter&gt;","#AAAAAA");  
+            });
+        </script>
+    </window>
+</zk>

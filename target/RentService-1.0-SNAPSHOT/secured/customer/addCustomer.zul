@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" > 
+    <window width="800px" border="none" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.customer.AddCustomerVM')" >   
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />
+                <grid >
+                    <columns>
+                        <column width="150px" />
+                        <column width="400px" />
+                        <column width="100px" />
+                        <column width="100%" /> 
+                    </columns>
+                    <rows>    
+                        <row valign="top" style="border:none">
+                            <label value="Upload Logo : " />
+                            <hbox align="middle">
+                                <textbox width="250px" mold="rounded" height="24px" value="@load(vm.fileName)" readonly="true" />
+                                <button label="Brows.." upload="true" onUpload="@command('onUpload')" autodisable="self" /> 
+                            </hbox>    
+                            <cell rowspan="4" align="left" valign="top">
+                                <image content="@load(vm.image)" height="90px" width="100px" style="border:1px;" />
+                            </cell> 
+                        </row>
+                        <row style="border:none">
+                            <label value="ชื่อบริษัท : " />
+                            <textbox width="300px" mold="rounded" value="@bind(vm.item.name)"  />  
+                        </row>   
+                        <row style="border:none"> 
+                            <label value="ชื่อบริษัท(Eng) : " />
+                            <textbox width="300px" mold="rounded" value="@bind(vm.item.engname)"  />
+                        </row>   
+                        <row spans="1,3" style="border:none">
+                            <label value="ที่อยู่(บริษัท) : " />
+                            <textbox width="600px" mold="rounded" value="@bind(vm.item.addrs)"  />  
+                        </row>   
+                        <row spans="1,3" style="border:none">
+                            <label value="ประเทศ : " /> 
+                            <hbox align="middle">
+                                <combobox model="@load(vm.countrys)" readonly="true" mold="rounded" onSelect="@command('onSearchCountry')" width="150px" selectedItem="@bind(vm.item.country)" 
+                                          value="@load(vm.item.country.name)" >
+                                    <template name="model" var="country">
+                                        <comboitem image="@load(country.imageIcon)" label="@load(country.name)" value="@load(country)" />
+                                    </template>
+                                </combobox>
+                                <space/>
+                                <label value="จังหวัด : " /> 
+                                <combobox model="@load(vm.provinces)" readonly="true" mold="rounded" onSelect="@command('onSearchProvince')"  width="150px" selectedItem="@bind(vm.item.province)"
+                                          value="@load(vm.item.province.name)" >
+                                    <template name="model" var="province">
+                                        <comboitem label="@load(province.name)" value="@load(province)" />
+                                    </template>
+                                </combobox>  
+                            </hbox>
+                        </row>
+                        <row spans="1,3" style="border:none">
+                            <label value="เขต/อำภอ : " /> 
+                            <hbox align="middle">  
+                                <combobox model="@load(vm.districts)" readonly="true" mold="rounded" width="150px" 
+                                          onSelect="@command('onSelectedDistrict')"
+                                          selectedItem="@bind(vm.item.district)"
+                                          value="@load(vm.item.district.name)" >
+                                    <template name="model" var="district">
+                                        <comboitem label="@load(district.name)" value="@load(district)" />
+                                    </template>
+                                </combobox>
+                                <space/>
+                                <label value="แขวง/ตำบล : " />
+                                <textbox width="149px" mold="rounded" value="@bind(vm.item.subDistrict)"  />
+                                <space/>
+                                <label value="รหัสไปรษณีย์ : " />
+                                <textbox width="100px" maxlength="5"   mold="rounded" value="@bind(vm.item.post)"  />
+                            </hbox>
+                        </row>
+                        <row spans="1,3" style="border:none">
+                            <label value="เบอร์โทร : " />
+                            <hbox align="middle"> 
+                                <textbox width="150px" mold="rounded" value="@bind(vm.item.tel)"  />
+                                <space/>
+                                <label value="มือถือ : " />
+                                <textbox width="150px" mold="rounded" value="@bind(vm.item.mobile)"  />
+                                <space/>
+                                <label value="Email : " />
+                                <textbox width="150px" mold="rounded" value="@bind(vm.item.email)"  />
+                            </hbox>
+                        </row>
+                        <row spans="1,3" style="border:none">
+                            <label value="ผู้ติดต่อ : " />
+                            <hbox align="middle">
+                                <textbox width="300px" mold="rounded" value="@bind(vm.item.contact)"  />
+                                <space/>
+                                <label value="lat : " />
+                                <doublebox width="90px" mold="rounded" format="###0.#####" value="@bind(vm.item.lat)" />
+                                <label value="lng : " />
+                                <doublebox width="90px" mold="rounded" format="###0.#####" value="@bind(vm.item.lng)" />
+                            </hbox>
+                        </row> 
+                        <row spans="1,3" style="border:none">
+                            <label value="ประเภทภาษี : " />
+                            <combobox readonly="true" mold="rounded" width="150px" selectedItem="@bind(vm.item.vatType)" >
+                                <comboitem label="ไม่รวมภาษี(NONE)" value="NONE" /> 
+                                <comboitem label="ภาษีมูลค่าเพิ่ม(VAT)" value="VAT" /> 
+                                <comboitem label="หักณ.ที่จ่าย(TAX)" value="TAX" />  
+                            </combobox> 
+                        </row>
+                        <row spans="1,3" style="border:none">
+                            <label value="ค่าเช่ารายเดือน : " /> 
+                            <hbox align="bottom">
+                                <doublebox value="@bind(vm.item.rentPerMonth)" mold="rounded" style="text-align:right" format="#,##0.##" />  
+                                <space/>
+                                <label value="สถานะการเช่า : " />
+                                <combobox readonly="true" mold="rounded" width="150px" selectedItem="@bind(vm.item.rentStatus)" >  
+                                    <comboitem  label="เช่าอยู่" value="Y" /> 
+                                    <comboitem  label="ยกเลิกเช่า" value="N" />  
+                                </combobox>
+                            </hbox>
+                        </row>
+                        <row  spans="1,3" style="border:none">
+                            <label value="แจ้งเตือนการเช่า(ก่อน) : " /> 
+                            <hbox align="bottom">
+                                <doublebox value="@bind(vm.item.rentAlertDay)" mold="rounded" style="text-align:right" format="#,##0" />   
+                                <label value="วัน" /> 
+                            </hbox>
+                        </row>
+                        <row spans="1,3" style="border:none">
+                            <label value="รหัสเช่า(CODE) : " /> 
+                            <textbox width="100px" mold="rounded" maxlength="10" value="@bind(vm.item.refCode)"  /> 
+                        </row>
+                        <row valign="top" spans="1,3" style="border:none">
+                            <label value="Description : " /> 
+                            <textbox width="500px" mold="rounded" rows="5" value="@bind(vm.item.description)"  /> 
+                        </row> 
+                        <row spans="1,3" style="border:none">
+                            <label value="" /> 
+                            <label value="" /> 
+                        </row>
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>    
+    </window>
+</zk>

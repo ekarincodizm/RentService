@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<vbox>
+    <div style="background-color:#002244;" >
+        <hbox align="middle" > 
+            <toolbar style="background-color:transparent;" >
+                <toolbarbutton autodisable="self" onClick="@command('search')" label=" Refresh" image="/images/icons/24x24/refresh24.png" tooltiptext="ค้นหาข้อมูล" /> 
+            </toolbar>
+            <image src="/images/icons/32x32/search32.png"/>
+            <textbox id="keyword" value="@bind(vmCustomer.keyword)" onOK="@command('search')" style="background-color:#EEEEEE;" height="29px;" width="160px" /> 
+            <paging height="20px" width="320px" onPaging="@command('search')"  pageSize="@bind(vmCustomer.pageSize)" 
+                    activePage="@bind(vmCustomer.activePage)"
+                    totalSize="@load(vmCustomer.items.totalElements)" detailed="true" /> 
+        </hbox> 
+        <listbox width="620px" model="@bind(vmCustomer.items.content)" selectedItem="@bind(vm.item.customer)" > 
+            <listhead >
+                <listheader label="ชื่อบริษัท" />  
+                <listheader label="ชื่อบริษัท(Eng.)" /> 
+            </listhead>
+            <template name="model" var="item">
+                <listitem onClick="mybandbox.close();" >
+                    <listcell label="@bind(item.name)"  />   
+                    <listcell label="@bind(item.engname)" />  
+                </listitem> 
+            </template>  
+        </listbox> 
+    </div> 
+    <script type="text/javascript">
+        zk.afterMount(function() {
+        jq("$keyword").Watermark("พิมพ์คำต้องการค้น &lt;Enter&gt;","#AAAAAA");  
+        });
+    </script>
+</vbox> 

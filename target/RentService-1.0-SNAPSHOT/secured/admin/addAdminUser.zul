@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" > 
+    <window width="800px" border="none" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.admin.AddUserVM')" >     
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />
+                <grid>
+                    <columns>
+                        <column label="" width="15%" align="right" />
+                        <column label="" width="85%" /> 
+                    </columns>
+                    <rows>  
+                        <row  style="border:none">
+                            <label value="รหัสผู้ใช้ : " />
+                            <textbox width="250px" mold="rounded" value="@bind(vm.item.username)"  />
+                        </row>  
+                        <row  style="border:none">
+                            <label value="รหัสผ่าน : " />
+                            <textbox width="250px" mold="rounded" value="@bind(vm.item.password)"  />
+                        </row> 
+                        <row  style="border:none">
+                            <label value="ชื่อผู้ใช้งาน : " />
+                            <textbox width="450px" mold="rounded" value="@bind(vm.item.name)"  />
+                        </row>   
+                        <row  style="border:none">
+                            <label value="เบอร์โทร : " />
+                            <textbox width="450px" mold="rounded" value="@bind(vm.item.mobile)"  />
+                        </row>
+                        <row  style="border:none">
+                            <label value="Email : " />
+                            <textbox width="450px" mold="rounded" value="@bind(vm.item.email)" constraint="no empty, /.+@.+\.[a-z]+/:email ไม่ถูกต้อง!"  />
+                        </row>   
+                        <row  style="border:none">
+                            <label value="ระดับผู้ใช้งาน : " /> 
+                            <combobox readonly="true" mold="rounded" selectedItem="@bind(vm.item.adminLevel)" >
+                                <comboitem visible="@load(vm.admin)" label="ADMIN" value="ADMIN" />
+                                <comboitem visible="@load(vm.userAdmin)" label="USER-ADMIN" value="USER-ADMIN" />
+                                <comboitem label="USER" value="USER" /> 
+                            </combobox>
+                        </row>   
+                        <row visible="@load(vm.admin)" style="border:none">
+                            <label value="Company ID : " />
+                            <intbox width="100px" mold="rounded" value="@bind(vm.item.companyId)"  />
+                        </row>
+                        <row  style="border:none">
+                            <label value="" /> 
+                            <label value="" />  
+                        </row>
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>    
+    </window>
+</zk>

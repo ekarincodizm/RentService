@@ -1,0 +1,75 @@
+<zk>  
+    <zscript>      
+        String headerColor = "#663300";   
+    </zscript>  
+    <style>
+        <![CDATA[    
+            body{
+                padding: 0 0;
+            }
+            .div_background_header{
+                background-color:#EFEFEF;
+                border: 1px solid #A6C2FF; 
+            }
+            .label_header {
+                color:#2B60DE;
+                font-weight:bold;
+            }
+            .grid_border_header{
+                border: 1px solid #A6C2FF;
+                border-top:none;
+            } 
+            
+            tr.z-grid-odd td.z-row-inner,tr.z-grid-odd .z-cell,tr.z-grid-odd{
+                background: transparent;
+            }
+            tr.z-row td.z-row-inner,tr.z-row .z-cell{
+                background: transparent;
+                border-top:none;
+                border-left:none;
+                border-right:none;
+                border-bottom:none;
+                text-align:left;
+            }
+            .z-groupbox-cnt{
+                background:#ffffff;
+            }
+            .link:hover{
+                cursor:pointer;
+                color:#333333; 
+                background-color:#A6C2FF;
+            }
+            .z-west-header{
+                color:${headerColor} ;
+                font-weight:bold;
+                font-size:14px;
+            }
+            .z-tab-ver .z-tab-ver-text{
+                font-weight:bold;
+                font-size:14px;
+            } 
+            .z-textbox {
+                border: 1px solid #827B60; 
+            } 
+            .z-intbox {
+                border: 1px solid #827B60; 
+            } 
+            .z-doublebox {
+                border: 1px solid #827B60; 
+            } 
+            .z-datebox {
+                border: 1px solid #827B60; 
+            } 
+            .z-bandbox {
+                border: 1px solid #827B60; padding: 0; margin: 0; white-space: nowrap; 
+            }
+            
+            .z-groupbox-3d-hl .z-groupbox-3d-header {
+                color: #373737; 
+                padding: 0 0 4px 0; 
+                border: 0 none; 
+                background: transparent; 
+            }
+         ]]>
+    </style>
+</zk>
