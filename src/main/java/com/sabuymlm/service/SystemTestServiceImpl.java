@@ -5,6 +5,7 @@
 package com.sabuymlm.service; 
 
 import com.sabuymlm.authen.SecurityUtil; 
+import com.sabuymlm.model.systemTest.BinaryWsDefine;
 import com.sabuymlm.model.systemTest.MatchingDefKey;
 import com.sabuymlm.model.systemTest.MatchingDefine;
 import com.sabuymlm.model.systemTest.MatchingDefineHeader;
@@ -14,16 +15,17 @@ import com.sabuymlm.model.systemTest.SponsorDefine;
 import com.sabuymlm.model.systemTest.SponsorDefineHeader;
 import com.sabuymlm.model.systemTest.UnilevelDefKey;
 import com.sabuymlm.model.systemTest.UnilevelDefine;
-import com.sabuymlm.model.systemTest.UnilevelDefineHeader;
-import com.sabuymlm.model.systemTest.XSponsorDefine;
+import com.sabuymlm.model.systemTest.UnilevelDefineHeader; 
 import com.sabuymlm.model.systemTest.XSponsorDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
+import com.sabuymlm.repository.systemTest.BinaryWsDefRepository;
 import com.sabuymlm.repository.systemTest.MatchingDefRepository;
 import com.sabuymlm.repository.systemTest.PositionRepository; 
 import com.sabuymlm.repository.systemTest.SponsorDefRepository;
 import com.sabuymlm.repository.systemTest.UnilevelDefRepository;
 import com.sabuymlm.repository.systemTest.XSponsorDefRepository;
 import com.sabuymlm.repository.systemTest.XSponsorHeaderRepository;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.data.domain.Page;
@@ -53,6 +55,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     protected XSponsorDefRepository reposXSponsorDefEvent;   
     @Autowired 
     protected XSponsorHeaderRepository reposXSponsorHeaderEvent;   
+    @Autowired 
+    protected BinaryWsDefRepository reposBinaryWsEvent;   
        
 
     @Override
@@ -201,6 +205,16 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     @Override
     public List<UnilevelDefine> findAllUnilevelDefineByLevel(Integer level) {
         return reposUnilevelDefEvent.findAllByLevel(level , SecurityUtil.getUserDetails().getCompany() ,  new Sort(Sort.Direction.ASC, "id.position.id")  );
+    }
+
+    @Override
+    public Collection<? extends BinaryWsDefine> findAllBinaryWsByCompany() {
+        return reposBinaryWsEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany() ,  new Sort(Sort.Direction.ASC, "id.position.id")  );
+    }
+
+    @Override
+    public List<BinaryWsDefine> saveBinaryWsDefine(List<BinaryWsDefine> selectItems) {
+        return reposBinaryWsEvent.save(selectItems);  
     }
     
 }

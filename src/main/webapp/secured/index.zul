@@ -113,7 +113,7 @@
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="โบนัสแนะนำ ส่วนต่าง(จ่ายหมด)" />
                                 
                                 <toolbarbutton label="W/S(%)" image="/images/icons/32x32/team.png" 
-                                               onClick="@command('onClickMenu',target=mycenter,pageName='/viewPdf.zul'
+                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryWs.zul'
                                                 ,icon='/images/icons/32x32/team.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีม(%จ่าย)" />
                                 

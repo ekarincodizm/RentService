@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package com.sabuymlm.vm.systemTest;
-     
+      
 import com.sabuymlm.model.systemTest.Position;    
 import com.sabuymlm.utils.Validations;
 import com.sabuymlm.vm.CommonAddVM;  
@@ -48,7 +48,9 @@ public abstract class AddCommonRefSponsorDefineVM<V,T> extends CommonAddVM<T> im
         setItems();
         constraintViolations.clear(); 
         privateValidate();
-        constraintViolations.addAll(validator.validate(item)); 
+        if( item != null ) {
+            constraintViolations.addAll(validator.validate(item)); 
+        }
         for(V dt:selectItems){
             constraintViolations.addAll(validator.validate(dt));
         }
@@ -75,5 +77,5 @@ public abstract class AddCommonRefSponsorDefineVM<V,T> extends CommonAddVM<T> im
     
     public List<Position> getPositions() {
         return positions;
-    }
+    } 
 }

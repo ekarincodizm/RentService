@@ -4,6 +4,7 @@
  */
 package com.sabuymlm.service;
           
+import com.sabuymlm.model.systemTest.BinaryWsDefine;
 import com.sabuymlm.model.systemTest.Position;  
 import com.sabuymlm.model.systemTest.SponsorDefine;
 import com.sabuymlm.model.systemTest.SponsorDefKey;
@@ -16,6 +17,7 @@ import com.sabuymlm.model.systemTest.UnilevelDefine;
 import com.sabuymlm.model.systemTest.UnilevelDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -58,5 +60,9 @@ public interface SystemTestService {
     public Integer findByUnilevelDefineMaxId() ; 
     public List<UnilevelDefine> saveUnilevelDefine(List<UnilevelDefine> unlevelDefines) ;
     public List<UnilevelDefine> findAllUnilevelDefineByLevel(Integer level) ;
+
+    public Collection<? extends BinaryWsDefine> findAllBinaryWsByCompany(); 
+    public List<BinaryWsDefine> saveBinaryWsDefine(List<BinaryWsDefine> selectItems);
+    
     
 }

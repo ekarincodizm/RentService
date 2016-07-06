@@ -35,6 +35,7 @@ public abstract class CommonAddVM<T> implements Serializable {
     private String icon = "";
     private String headerLabel = "";
     protected T item;
+    protected boolean pageHasDetail = true;
      
     public void initial(T item,String icon , String headerLabel) {
         this.item = item;  
@@ -108,8 +109,10 @@ public abstract class CommonAddVM<T> implements Serializable {
                 public void onEvent(Event event) throws Exception {
                     if (((Integer) event.getData()) == Messagebox.YES) { 
                         saveItem();
-                        Events.sendEvent(CommonVM.RELOAD_EVENTS_NAME, view, null);
-                        onClose(view);
+                        if(pageHasDetail){
+                            Events.sendEvent(CommonVM.RELOAD_EVENTS_NAME, view, null);
+                            onClose(view);
+                        }
                     }
                 }
             });
