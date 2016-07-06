@@ -11,6 +11,9 @@ import com.sabuymlm.model.systemTest.SponsorDefineHeader;
 import com.sabuymlm.model.systemTest.MatchingDefine;
 import com.sabuymlm.model.systemTest.MatchingDefineHeader;
 import com.sabuymlm.model.systemTest.MatchingDefKey;
+import com.sabuymlm.model.systemTest.UnilevelDefKey;
+import com.sabuymlm.model.systemTest.UnilevelDefine;
+import com.sabuymlm.model.systemTest.UnilevelDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
 import java.util.List;
@@ -48,5 +51,12 @@ public interface SystemTestService {
     public Integer findByMatchingDefineMaxId() ; 
     public List<MatchingDefine> saveMatchingDefine(List<MatchingDefine> matchingDefines) ;
     public List<MatchingDefine> findAllMatchingDefineByLevel(Integer level) ;
+    
+    public Page<UnilevelDefineHeader> findAllUnilevelHeaders(int startPage , int maxSize , Sort.Order order, String keyword ); 
+    public void deleteAllUnilevels(List<UnilevelDefineHeader> unlevels); 
+    public UnilevelDefine findByUnilevelDefineId(UnilevelDefKey id) ; 
+    public Integer findByUnilevelDefineMaxId() ; 
+    public List<UnilevelDefine> saveUnilevelDefine(List<UnilevelDefine> unlevelDefines) ;
+    public List<UnilevelDefine> findAllUnilevelDefineByLevel(Integer level) ;
     
 }

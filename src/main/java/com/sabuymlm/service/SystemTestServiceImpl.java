@@ -12,12 +12,16 @@ import com.sabuymlm.model.systemTest.Position;
 import com.sabuymlm.model.systemTest.SponsorDefKey;
 import com.sabuymlm.model.systemTest.SponsorDefine;
 import com.sabuymlm.model.systemTest.SponsorDefineHeader;
+import com.sabuymlm.model.systemTest.UnilevelDefKey;
+import com.sabuymlm.model.systemTest.UnilevelDefine;
+import com.sabuymlm.model.systemTest.UnilevelDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorDefine;
 import com.sabuymlm.model.systemTest.XSponsorDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
 import com.sabuymlm.repository.systemTest.MatchingDefRepository;
 import com.sabuymlm.repository.systemTest.PositionRepository; 
 import com.sabuymlm.repository.systemTest.SponsorDefRepository;
+import com.sabuymlm.repository.systemTest.UnilevelDefRepository;
 import com.sabuymlm.repository.systemTest.XSponsorDefRepository;
 import com.sabuymlm.repository.systemTest.XSponsorHeaderRepository;
 import java.util.List;
@@ -43,6 +47,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     protected SponsorDefRepository reposSponsorDefEvent;   
     @Autowired
     protected MatchingDefRepository reposMatchingDefEvent;   
+    @Autowired
+    protected UnilevelDefRepository reposUnilevelDefEvent;   
     @Autowired 
     protected XSponsorDefRepository reposXSponsorDefEvent;   
     @Autowired 
@@ -162,6 +168,39 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     @Override
     public List<MatchingDefine> findAllMatchingDefineByLevel(Integer level) {
         return reposMatchingDefEvent.findAllByLevel(level , SecurityUtil.getUserDetails().getCompany() ,  new Sort(Sort.Direction.ASC, "id.position.id")  );
+    }
+    
+    @Override
+    public Page<UnilevelDefineHeader> findAllUnilevelHeaders(int startPage, int maxSize, Sort.Order order, String keyword) {
+        setPageRequest(startPage,maxSize,order); 
+        return reposUnilevelDefEvent.findByLike( SecurityUtil.getUserDetails().getCompany() , pageRequest);
+    }
+
+    @Override
+    public void deleteAllUnilevels(List<UnilevelDefineHeader> unilevels) {
+        for(UnilevelDefineHeader header : unilevels){
+            reposUnilevelDefEvent.delete(header.getItems()); 
+        } 
+    }
+
+    @Override
+    public UnilevelDefine findByUnilevelDefineId(UnilevelDefKey id) {
+        return reposUnilevelDefEvent.findOne(id); 
+    }
+
+    @Override
+    public Integer findByUnilevelDefineMaxId() {
+        return reposUnilevelDefEvent.findByMaxId(SecurityUtil.getUserDetails().getCompany() );
+    }
+
+    @Override
+    public List<UnilevelDefine> saveUnilevelDefine(List<UnilevelDefine> unilevelDefines) { 
+        return reposUnilevelDefEvent.save(unilevelDefines); 
+    }
+
+    @Override
+    public List<UnilevelDefine> findAllUnilevelDefineByLevel(Integer level) {
+        return reposUnilevelDefEvent.findAllByLevel(level , SecurityUtil.getUserDetails().getCompany() ,  new Sort(Sort.Direction.ASC, "id.position.id")  );
     }
     
 }

@@ -3,19 +3,14 @@ package com.sabuymlm.model.systemTest;
 import com.sabuymlm.model.admin.*;  
 import java.io.Serializable;   
 import javax.persistence.*;  
-import javax.validation.constraints.NotNull; 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;  
 
-@Table(name = "matching_define", schema = "TestSystem" )
+@Table(name = "unilevel_define", schema = "TestSystem" )
 @Entity 
-public class MatchingDefine extends CommonEntity implements Serializable {
+public class UnilevelDefine extends CommonEntity implements Serializable {
  
     @EmbeddedId
-    private MatchingDefKey id ;  
-    
-    @NotEmpty(message = "ชื่อโบนัส(ห้ามเป็นค่าว่าง)" )
-    @Column(name = "matching_name", length = 100, nullable = false)
-    private String name;
+    private UnilevelDefKey id ;   
  
     @NotNull(message = "กรอก%จ่าย"  ) 
     @Column(name = "pcent", columnDefinition = "float", nullable = false)
@@ -26,25 +21,16 @@ public class MatchingDefine extends CommonEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
-    private Company company;     
-
+    private Company company;   
     
     
-    public MatchingDefKey getId() {
+    public UnilevelDefKey getId() {
         return id;
     }
 
-    public void setId(MatchingDefKey id) {
+    public void setId(UnilevelDefKey id) {
         this.id = id;
-    } 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    }  
 
     public Float getPcent() {
         return pcent;
@@ -93,7 +79,7 @@ public class MatchingDefine extends CommonEntity implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final MatchingDefine other = (MatchingDefine) obj;
+        final UnilevelDefine other = (UnilevelDefine) obj;
         if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
             return false;
         }

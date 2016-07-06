@@ -128,7 +128,7 @@
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสแมทชิ่ง(หลายชั้น)" />
                                 
                                 <toolbarbutton label="Uni-Level" image="/images/icons/32x32/unilevel.png" 
-                                               onClick="@command('onClickMenu',target=mycenter,pageName='/viewPdf.zul'
+                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/unilevelsDef.zul'
                                                 ,icon='/images/icons/32x32/unilevel.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสยูนิเลเวล(หลายชั้น)" />
                                 
