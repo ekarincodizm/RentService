@@ -38,19 +38,19 @@
                         <listheader sort="auto(rentStatus)" width="70px" onSort="@command('onOrderBy')" align="center" label="สถานะเช่า" />
                     </listhead>
                     <template name="model"  var="item">
-                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
-                            <listcell style="@load(item.style)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                        <listitem context="viewPopup" >
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
                             <listcell style="@load(item.style)" >
-                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
+                                <toolbarbutton autodisable="self"  onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
                             </listcell>   
-                            <listcell style="@load(item.style)" label="@bind(item.createDate) @converter('formatedDate', format='dd/MM/yyyy')" />   
-                            <listcell style="@load(item.style)" label="@bind(item.name)" />   
-                            <listcell style="@load(item.style)" label="@bind(item.engname)" />   
-                            <listcell style="@load(item.style)" label="@bind(item.addrs)" />     
-                            <listcell style="@load(item.style)" label="@bind(item.mobile)" />     
-                            <listcell style="@load(item.style)" label="@bind(item.contact)" />     
-                            <listcell style="@load(item.style)" label="@bind(item.rentPerMonth) @converter('formatedNumber', format='#,##0.##')" />     
-                            <listcell style="@load(item.style)" label="@bind(item.rentStatusName)" />
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.createDate) @converter('formatedDate', format='dd/MM/yyyy')" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.name)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.engname)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.addrs)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.mobile)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.contact)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.rentPerMonth) @converter('formatedNumber', format='#,##0.##')" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@bind(item.rentStatusName)" />
                         </listitem> 
                     </template>  
                 </listbox> 

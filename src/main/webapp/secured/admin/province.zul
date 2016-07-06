@@ -28,16 +28,16 @@
                         <listheader sort="auto(lng)" width="100px" onSort="@command('onOrderBy')" label="Lng" />    
                     </listhead>
                     <template name="model"  var="item">
-                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
-                            <listcell label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                        <listitem context="viewPopup"  >
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
                             <listcell >
-                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
+                                <toolbarbutton autodisable="self"  onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
                             </listcell>   
-                            <listcell label="@bind(item.name)" />   
-                            <listcell label="@bind(item.engname)" />   
-                            <listcell label="@bind(item.country.name)" />   
-                            <listcell label="@bind(item.lat) @converter('formatedNumber', format='###0.#####')" />    
-                            <listcell label="@bind(item.lng) @converter('formatedNumber', format='###0.#####')" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.name)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.engname)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.country.name)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.lat) @converter('formatedNumber', format='###0.#####')" />    
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.lng) @converter('formatedNumber', format='###0.#####')" />     
                         </listitem> 
                     </template>  
                 </listbox> 

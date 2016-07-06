@@ -18,18 +18,18 @@
                         <listheader visible="@load(vm.admin)" sort="auto(lastLoginDate)" width="100px" onSort="@command('onOrderBy')" label="Last login" />   
                     </listhead>
                     <template name="model"  var="item">
-                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
-                            <listcell visible="@load(vm.userAdmin)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                        <listitem context="viewPopup"  >
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" visible="@load(vm.userAdmin)" label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
                             <listcell visible="@load(vm.userAdmin)" >
-                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
+                               <toolbarbutton autodisable="self"  onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
                             </listcell>
-                            <listcell label="@bind(item.username)" /> 
-                            <listcell visible="@load(vm.admin)" label="@bind(item.passwordShow)" /> 
-                            <listcell label="@bind(item.name)" />   
-                            <listcell label="@bind(item.mobile)" />   
-                            <listcell label="@bind(item.adminLevel)" />    
-                            <listcell visible="@load(vm.admin)" label="@bind(item.companyId)" />     
-                            <listcell visible="@load(vm.admin)" label="@bind(item.lastLoginDate) @converter('formatedDate', format='dd/MM/yyyy')" /> 
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.username)" /> 
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" visible="@load(vm.admin)" label="@bind(item.passwordShow)" /> 
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.name)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.mobile)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" label="@bind(item.adminLevel)" />    
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" visible="@load(vm.admin)" label="@bind(item.companyId)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)" visible="@load(vm.admin)" label="@bind(item.lastLoginDate) @converter('formatedDate', format='dd/MM/yyyy')" /> 
                         </listitem> 
                     </template>  
                 </listbox> 

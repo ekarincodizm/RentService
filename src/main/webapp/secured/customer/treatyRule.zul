@@ -40,20 +40,20 @@
                         <listheader sort="auto(treatyRuleStatus)" width="100px" onSort="@command('onOrderBy')" label="สถานะสัญญา" />   
                     </listhead>
                     <template name="model"  var="item">
-                        <listitem context="viewPopup" onDoubleClick="@command('onDoubleEdit',selectItem=item)" >
-                            <listcell label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
+                        <listitem context="viewPopup" >
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(itemStatus.index+(vm.pageSize*vm.activePage)+1)"  /> 
                             <listcell >
-                                <image onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
+                                <toolbarbutton autodisable="self"  onClick="@command('onClickEdit',object=item)" src="/images/icons/22x22/edit-icon22.png" style="cursor:pointer" />
                             </listcell>  
-                            <listcell image="@load(not empty item.attachFile?'/images/icons/22x22/Attach22.png':'')" onClick="@command('onDownload',fileName=item.downloadAttachFile)" /> 
-                            <listcell label="@bind(item.createDate) @converter('formatedDate', format='dd/MM/yyyy')" />   
-                            <listcell label="@bind(item.name)" /> 
-                            <listcell label="@bind(item.engname)" />   
-                            <listcell label="@bind(item.treatyAddrs)" />     
-                            <listcell label="@bind(item.contact)" />     
-                            <listcell label="@bind(item.contactMobile)" />     
-                            <listcell label="@bind(item.customer.name)" />     
-                            <listcell label="@bind(item.treatyRuleStatus)" />      
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  image="@load(not empty item.attachFile?'/images/icons/22x22/Attach22.png':'')" onClick="@command('onDownload',fileName=item.downloadAttachFile)" /> 
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.createDate) @converter('formatedDate', format='dd/MM/yyyy')" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.name)" /> 
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.engname)" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.treatyAddrs)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.contact)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.contactMobile)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.customer.name)" />     
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  label="@bind(item.treatyRuleStatus)" />      
                         </listitem> 
                     </template> 
                 </listbox>
