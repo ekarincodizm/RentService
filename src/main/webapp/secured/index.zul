@@ -118,7 +118,7 @@
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีม(%จ่าย)" />
                                 
                                 <toolbarbutton label="W/S(Balance)" image="/images/icons/32x32/balance.png" 
-                                               onClick="@command('onClickMenu',target=mycenter,pageName='/viewPdf.zul'
+                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryBalance.zul'
                                                 ,icon='/images/icons/32x32/balance.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีม(จับคู่จ่าย)" />
                                 

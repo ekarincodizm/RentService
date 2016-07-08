@@ -5,6 +5,7 @@
 package com.sabuymlm.service; 
 
 import com.sabuymlm.authen.SecurityUtil; 
+import com.sabuymlm.model.systemTest.BinaryBalanceDefine;
 import com.sabuymlm.model.systemTest.BinaryWsDefine;
 import com.sabuymlm.model.systemTest.MatchingDefKey;
 import com.sabuymlm.model.systemTest.MatchingDefine;
@@ -18,6 +19,7 @@ import com.sabuymlm.model.systemTest.UnilevelDefine;
 import com.sabuymlm.model.systemTest.UnilevelDefineHeader; 
 import com.sabuymlm.model.systemTest.XSponsorDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
+import com.sabuymlm.repository.systemTest.BinaryBalanceDefRepository;
 import com.sabuymlm.repository.systemTest.BinaryWsDefRepository;
 import com.sabuymlm.repository.systemTest.MatchingDefRepository;
 import com.sabuymlm.repository.systemTest.PositionRepository; 
@@ -57,6 +59,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     protected XSponsorHeaderRepository reposXSponsorHeaderEvent;   
     @Autowired 
     protected BinaryWsDefRepository reposBinaryWsEvent;   
+    @Autowired 
+    protected BinaryBalanceDefRepository reposBinaryBalEvent;   
        
 
     @Override
@@ -215,6 +219,16 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     @Override
     public List<BinaryWsDefine> saveBinaryWsDefine(List<BinaryWsDefine> selectItems) {
         return reposBinaryWsEvent.save(selectItems);  
+    }
+
+    @Override
+    public Collection<? extends BinaryBalanceDefine> findAllBinaryBalanceByCompany() {
+        return reposBinaryBalEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany() ,  new Sort(Sort.Direction.ASC, "id.position.id")  );
+    }
+
+    @Override
+    public List<BinaryBalanceDefine> saveBinaryBalanceDefine(List<BinaryBalanceDefine> selectItems) {
+        return reposBinaryBalEvent.save(selectItems);  
     }
     
 }

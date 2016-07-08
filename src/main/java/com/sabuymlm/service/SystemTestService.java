@@ -4,6 +4,7 @@
  */
 package com.sabuymlm.service;
           
+import com.sabuymlm.model.systemTest.BinaryBalanceDefine;
 import com.sabuymlm.model.systemTest.BinaryWsDefine;
 import com.sabuymlm.model.systemTest.Position;  
 import com.sabuymlm.model.systemTest.SponsorDefine;
@@ -63,6 +64,9 @@ public interface SystemTestService {
 
     public Collection<? extends BinaryWsDefine> findAllBinaryWsByCompany(); 
     public List<BinaryWsDefine> saveBinaryWsDefine(List<BinaryWsDefine> selectItems);
+    
+    public Collection<? extends BinaryBalanceDefine> findAllBinaryBalanceByCompany(); 
+    public List<BinaryBalanceDefine> saveBinaryBalanceDefine(List<BinaryBalanceDefine> selectItems);
     
     
 }
