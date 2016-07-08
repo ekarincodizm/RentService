@@ -112,5 +112,10 @@ public class BinaryWsDefine extends CommonEntity implements Serializable {
         }
         return true;
     } 
+
+    @Override
+    public String toString() {
+        return "BinaryWsDefine{" + "wsPcent=" + wsPcent + ", stPcent=" + stPcent + ", maxPv=" + maxPv + ", maxComm=" + maxComm + ", circleUnit=" + circleUnit + '}';
+    }
  
 }
