@@ -31,7 +31,7 @@
                                     <doublebox onOK="@command('onCalculateMaxComm', item =item)" onBlur="@command('onCalculateMaxComm', item =item)" value="@load(item.wkComm) @save(item.wkComm, before={'onSave','onCalculateMaxComm'})" mold="rounded"  style="text-align:right" format="#,##0.##" width="90%" />
                                 </listcell> 
                                 <listcell  style="@load(item.style)" >   
-                                    <intbox onOK="@command('onCalculateMaxComm', item =item)" onBlur="@command('onCalculateMaxComm', item =item)" value="@load(item.maxUnit) @save(item.maxUnit, before={'onSave','onCalculateMaxComm'})" mold="rounded"  style="text-align:right" format="#,##0" width="90%" />
+                                    <intbox onOK="@command('onCalculateMaxComm', item =item)" onBlur="@command('onCalculateMaxComm', item =item)" value="@load(item.maxUnit) @save(item.maxUnit, before={'onSave','onCalculateMaxComm'})" mold="rounded"  style="text-align:right" format="#,##0' คู่'" width="90%" />
                                 </listcell> 
                                 <listcell  style="@load(item.style)" label="@init(item.maxPv) @load(item.maxPv , after='onCalculateMaxComm') @converter('formatedNumber', format='#,##0.##')"  /> 
                                 <listcell  style="@load(item.style)" label="@init(item.maxComm) @load(item.maxComm , after='onCalculateMaxComm') @converter('formatedNumber', format='#,##0.##')"  />  
