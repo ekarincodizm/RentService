@@ -18,8 +18,7 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.ExecutionArgParam;
-import org.zkoss.bind.annotation.Init; 
-import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.bind.annotation.Init;  
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
@@ -110,8 +109,7 @@ public class BinaryBalanceVM extends AddCommonRefSponsorDefineVM<BinaryBalanceDe
         }
         if(item.getMaxUnit()!= null ){
             maxUnit = item.getMaxUnit();
-        }
-        System.out.println(" AA " + item ); 
+        } 
         item.setMaxPv(maxUnit*wkBalace ); 
         item.setMaxComm( maxUnit*wkComm );  
     }  

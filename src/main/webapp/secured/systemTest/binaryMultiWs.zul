@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" > 
+    <window width="800px" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.BinaryMultiWsVM')"  >   
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />  
+                <groupbox mold="3d" >
+                    <caption label=" กำหนด (%จ่าย) ตามตำแหน่งโดยตารางด้านล่าง "  /> 
+                    <combobox readonly="true" mold="rounded" width="212px"  
+                            selectedItem="@load(vm.selectChart)"
+                            onSelect="@command('onCalculateCharts' , selected = self.selectedItem.value )"  >
+                        <comboitem label="กำหนดโครงสร้างแบบ 1 แตก 3" value="3" /> 
+                        <comboitem label="กำหนดโครงสร้างแบบ 1 แตก 4" value="4" /> 
+                        <comboitem label="กำหนดโครงสร้างแบบ 1 แตก 5" value="5" />  
+                    </combobox>
+                    <listbox model="@bind(vm.selectItems)" sizedByContent="true" sclass="vertical-scroll" > 
+                        <listhead sizable="true" menupopup="auto"  >
+                            <listheader align="center" label="No." width="40px" /> 
+                            <listheader sort="auto(id.position.name)"  width="100px" align="left" label="ตำแหน่ง" />       
+                            <listheader sort="auto(id.position.topupPv)" align="center" width="70px" label="TOP-UP" />   
+                            <listheader align="center" width="100%" label="กำหนดลำดับทีมอ่อน Multi บริหารทีม(%จ่าย)" />  
+                            <listheader sort="auto(maxComm)" align="center" width="110px" label="Max(โบนัส)" />    
+                            <listheader sort="auto(circleUnit)" align="center" width="140px" label="รอบจ่าย" />    
+                        </listhead>
+                        <template name="model" var="item">
+                            <listitem style="vertical-align: top;"  >
+                                <listcell style="@load(item.style)" label="@load(itemStatus.index+1)"  />    
+                                <listcell style="@load(item.style)" label="@load(item.id.position.name)" />     
+                                <listcell style="@load(item.style)" label="@load(item.id.position.topupPv) @converter('formatedNumber', format='#,##0')" />    
+                                <listcell style="@load(item.style)" >   
+                                    <div >
+                                        <listbox model="@bind(item.items)" sizedByContent="true" sclass="vertical-scroll" >  
+                                            <listhead sizable="true" menupopup="auto"  >
+                                                <listheader align="center" label="รอบที่" width="70px" />   
+                                                <listheader align="center" width="50%" label="%(Weak)" />  
+                                                <listheader align="center" width="50%" label="%(Strong)" />      
+                                            </listhead>
+                                            <template name="model"  var="item2">
+                                                <listitem >
+                                                    <listcell label="@load(item2.id.levelNo)"  />    
+                                                    <listcell >   
+                                                        <doublebox value="@load(item2.wsPcent) @save(item2.wsPcent, before={'onSave','onCalculateCharts'})" mold="rounded"  style="text-align:right" format="#,##0.##'%'" width="90%" />
+                                                    </listcell> 
+                                                    <listcell >   
+                                                        <doublebox value="@load(item2.stPcent) @save(item2.stPcent, before={'onSave','onCalculateCharts'})" mold="rounded"  style="text-align:right" format="#,##0.##'%'" width="90%" />
+                                                    </listcell>
+                                                </listitem> 
+                                            </template>
+                                        </listbox>
+                                    </div>
+                                </listcell> 
+                                <listcell  style="@load(item.style)" >   
+                                    <doublebox value="@load(item.maxComm) @save(item.maxComm, before={'onSave'})" mold="rounded" style="text-align:right" format="#,##0.##" width="90%"  />
+                                </listcell> 
+                                <listcell  style="@load(item.style)" >   
+                                    <combobox readonly="true" mold="rounded" width="90%" 
+                                              selectedItem="@load(item.circleUnitStr) @save(item.circleUnit, before={'onSave'})"  >
+                                        <comboitem label="ต่อวัน" value="1" /> 
+                                        <comboitem label="ต่อวัน/สัปดาห์" value="7" /> 
+                                        <comboitem label="ต่อ(15วัน)" value="15" /> 
+                                        <comboitem label="ต่อเดือน" value="30" /> 
+                                    </combobox>
+                                </listcell> 
+                            </listitem> 
+                        </template>
+                    </listbox>
+                </groupbox>
+                        
+            </panelchildren>
+        </panel>  
+            
+    </window>
+</zk>

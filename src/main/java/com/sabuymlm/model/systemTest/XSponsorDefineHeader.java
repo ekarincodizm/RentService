@@ -12,8 +12,7 @@ package com.sabuymlm.model.systemTest;
    
 import com.sabuymlm.model.admin.User;
 import java.io.Serializable;  
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.ArrayList; 
 import java.util.List;
 import javax.persistence.*;   
 import javax.validation.constraints.NotNull;  
@@ -28,7 +27,7 @@ public class XSponsorDefineHeader extends CommonEntity  implements Serializable 
     @Column(name = "bonus", columnDefinition = "float" )
     private Float bonus;   
      
-    @OneToMany(mappedBy = "id.headerId",  fetch = FetchType.LAZY , cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "id.headerId",  fetch = FetchType.LAZY , cascade = {CascadeType.ALL} ,orphanRemoval = true )
     private List<XSponsorDefine> items = new ArrayList<XSponsorDefine>();  
 
     public XSponsorHeaderKey getId() {

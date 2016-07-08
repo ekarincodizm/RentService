@@ -72,7 +72,7 @@ public class AddXSponsorDefineVM extends AddCommonRefSponsorDefineVM<XSponsorDef
 
     @Override
     protected void setItems() { 
-        if (item.getCreateDate()== null) {   
+        if (item.getCreateDate() == null) {   
             item.setCreateDate(new Date());
             item.setCreateUser(SecurityUtil.getUserDetails().getUser());
         } else { 

@@ -92,7 +92,7 @@ public class AddUnilevelDefineVM extends AddCommonRefSponsorDefineVM<UnilevelDef
         }
         for(UnilevelDefine def: selectItems){ 
             def.getId().setLevelIndex(level);  
-            if(positions.isEmpty()){
+            if(def.getCreateUser() != null){
                 def.setUpdateDate(new Date());
                 def.setUpdateUser(SecurityUtil.getUserDetails().getUser());
             }else {

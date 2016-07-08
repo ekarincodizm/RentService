@@ -55,5 +55,10 @@ public class CommonEntity implements Serializable {
     public void setUpdateUser(User updateUser) {
         this.updateUser = updateUser;
     } 
+
+    @Override
+    public String toString() {
+        return "CommonEntity{" + "createDate=" + createDate + ", createUser=" + createUser + ", updateDate=" + updateDate + ", updateUser=" + updateUser + '}';
+    }
  
 }

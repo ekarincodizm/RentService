@@ -31,7 +31,7 @@
                                         <listheader sort="auto(id.position.name)"  width="100%" align="left" label="ตำแหน่ง" />       
                                         <listheader sort="auto(id.position.topupPv)" align="center" width="120px" label="TOP-UP" />   
                                         <listheader sort="auto(pcent)" align="center" width="120px" label="%จ่าย(หลัก)" />  
-                                        <listheader sort="auto(pcentPro)" align="center" width="120px" label="%จ่าย(Pro)" />    
+                                        <listheader sort="auto(pcentPro)" align="center" width="120px" label="%เพิ่ม(Pro)" />    
                                     </listhead>
                                     <template name="model"  var="item">
                                         <listitem >

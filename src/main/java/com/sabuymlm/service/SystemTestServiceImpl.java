@@ -6,6 +6,7 @@ package com.sabuymlm.service;
 
 import com.sabuymlm.authen.SecurityUtil; 
 import com.sabuymlm.model.systemTest.BinaryBalanceDefine;
+import com.sabuymlm.model.systemTest.BinaryMultiWsDefine;
 import com.sabuymlm.model.systemTest.BinaryWsDefine;
 import com.sabuymlm.model.systemTest.MatchingDefKey;
 import com.sabuymlm.model.systemTest.MatchingDefine;
@@ -20,6 +21,7 @@ import com.sabuymlm.model.systemTest.UnilevelDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
 import com.sabuymlm.repository.systemTest.BinaryBalanceDefRepository;
+import com.sabuymlm.repository.systemTest.BinaryMultiWsDefRepository;
 import com.sabuymlm.repository.systemTest.BinaryWsDefRepository;
 import com.sabuymlm.repository.systemTest.MatchingDefRepository;
 import com.sabuymlm.repository.systemTest.PositionRepository; 
@@ -59,6 +61,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     protected XSponsorHeaderRepository reposXSponsorHeaderEvent;   
     @Autowired 
     protected BinaryWsDefRepository reposBinaryWsEvent;   
+    @Autowired 
+    protected BinaryMultiWsDefRepository reposBinaryMultiWsEvent;   
     @Autowired 
     protected BinaryBalanceDefRepository reposBinaryBalEvent;   
        
@@ -219,6 +223,16 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     @Override
     public List<BinaryWsDefine> saveBinaryWsDefine(List<BinaryWsDefine> selectItems) {
         return reposBinaryWsEvent.save(selectItems);  
+    }
+    
+    @Override
+    public Collection<? extends BinaryMultiWsDefine> findAllBinaryMultiWsByCompany() {
+        return reposBinaryMultiWsEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany() ,  new Sort(Sort.Direction.ASC, "id.position.id")  );
+    }
+
+    @Override
+    public List<BinaryMultiWsDefine> saveBinaryMultiWsDefine(List<BinaryMultiWsDefine> selectItems) {
+        return reposBinaryMultiWsEvent.save(selectItems);  
     }
 
     @Override

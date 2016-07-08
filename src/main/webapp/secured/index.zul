@@ -118,7 +118,7 @@
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีม(%จ่าย)" />
                                 
                                 <toolbarbutton label="Multi W/S(%)" image="/images/icons/32x32/team.png" 
-                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryWs.zul'
+                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryMultiWs.zul'
                                                 ,icon='/images/icons/32x32/team.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีมแบบ(Multi %จ่าย)" />
                                 

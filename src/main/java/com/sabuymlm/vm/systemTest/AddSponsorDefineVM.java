@@ -93,7 +93,7 @@ public class AddSponsorDefineVM extends AddCommonRefSponsorDefineVM<SponsorDefin
         for(SponsorDefine def: selectItems){
             def.setName(item.getName()); 
             def.getId().setLevelIndex(level);  
-            if(positions.isEmpty()){
+            if(def.getCreateUser() != null){
                 def.setUpdateDate(new Date());
                 def.setUpdateUser(SecurityUtil.getUserDetails().getUser());
             }else {
