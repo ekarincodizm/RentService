@@ -123,7 +123,7 @@ public class BinaryMultiWsVM extends AddCommonRefSponsorDefineVM<BinaryMultiWsDe
     @Transactional
     @Override
     protected void saveItem() { 
-        selectItems = systemTestService.saveBinaryMultiWsDefine(selectItems);
+        systemTestService.saveBinaryMultiWsDefine(selectItems); 
     }  
     
     @Override
