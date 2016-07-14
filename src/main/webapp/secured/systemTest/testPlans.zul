@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" > 
+    <window width="800px" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.TestPlansVM')"  >   
+        <tabbox>
+            <tabs>
+                <tab label="เลือกช่องทางการจ่าย"/>
+                <tab label="ทดสอบ(%Over-Pay)"/>
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <groupbox mold="3d" >
+                        <caption height="25px" style="padding:5px;" label=" ภายในตารางด้านล่างนี้ ให้เลือกว่าต้องการจ่ายช่องทางไดบ้าง ให้ทำเครื่องหมายถูกต้องช่อง [เลือกจ่าย] "  /> 
+                        <listbox model="@init(vm.selectItems) @load(vm.selectItems, after={'onSave'})" multiple="true" sizedByContent="true" > 
+                            <listhead sizable="true"  >
+                                <listheader align="center" label="ลำดับ" width="60px" /> 
+                                <listheader width="350px" align="left" label="ช่องทางรายได้" />       
+                                <listheader width="70px" label="เลือกจ่าย" />        
+                                <listheader width="200px" label="คำนวณโบนัสแมทชิ่ง(ต่อ)" />        
+                            </listhead>  
+                            <template name="model"  var="item">
+                                <listitem onClick="@command('onValidateTable' ,item = item)" 
+                                          selected="@init(item.chkPay eq true) @load(item.chkPay eq true , after={'onSave','onValidateTable'})" >
+                                    <listcell label="@load(item.id.no)"  />    
+                                    <listcell label="@load(item.planName)" />      
+                                    <listcell >
+                                        <image visible="@init(item.chkPay eq true) @load(item.chkPay eq true, after={'onSave','onValidateTable'}) " src="/images/icons/22x22/checkmark.png" /> 
+                                    </listcell> 
+                                    <listcell  >
+                                        <hbox align="bottom">
+                                            <checkbox label="@load( (item.id.no eq 3 ||  item.id.no eq 4)? 'โบนัสทีมอ่อน' : 'โบนัสรวม' )" disabled="@init(item.chkPay eq false) @load(item.chkPay eq false, after={'onSave','onValidateTable'})" visible="@init( item.id.no ne 6 ) @load(item.id.no ne 6 )" checked="@load(item.passMatchingWeakOrBonus) @save(item.passMatchingWeakOrBonus, before={'onSave','onValidateTable'})" /> 
+                                            <checkbox label="โบนัสทีมแข็ง" disabled="@init(item.chkPay eq false) @load(item.chkPay eq false, after={'onSave','onValidateTable'})" visible="@load( item.id.no eq 3 ||  item.id.no eq 4 )" checked="@load(item.passMatchingStrong) @save(item.passMatchingStrong, before={'onSave','onValidateTable'})" /> 
+                                        </hbox>
+                                    </listcell> 
+                                </listitem>  
+                            </template>   
+                        </listbox>
+                    </groupbox>
+                </tabpanel>
+                <tabpanel>
+                    <toolbarbutton onClick="@command('onSave')" label="Save" image="/images/icons/24x24/Save-icon.png" autodisable="self" tooltiptext="บันทึกข้อมูล" />
+                    <groupbox mold="3d" >
+                        <caption height="25px" style="padding:5px;" label=" กำหนดคุณสมบัติการทดสอบ "  /> 
+                        <listbox >  
+                            <listitem >
+                                <listcell label="เลือกโครงสรัางผัง"  />    
+                                <listcell label="" />       
+                            </listitem>  
+                             
+                        </listbox>
+                    </groupbox>
+                </tabpanel>
+            </tabpanels>
+        </tabbox> 
+            
+    </window>
+</zk>

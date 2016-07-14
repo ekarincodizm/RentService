@@ -14,6 +14,8 @@ import com.sabuymlm.model.systemTest.SponsorDefineHeader;
 import com.sabuymlm.model.systemTest.MatchingDefine;
 import com.sabuymlm.model.systemTest.MatchingDefineHeader;
 import com.sabuymlm.model.systemTest.MatchingDefKey;
+import com.sabuymlm.model.systemTest.TestPlan;
+import com.sabuymlm.model.systemTest.TestPlanKey;
 import com.sabuymlm.model.systemTest.UnilevelDefKey;
 import com.sabuymlm.model.systemTest.UnilevelDefine;
 import com.sabuymlm.model.systemTest.UnilevelDefineHeader;
@@ -71,6 +73,9 @@ public interface SystemTestService {
     
     public Collection<? extends BinaryBalanceDefine> findAllBinaryBalanceByCompany(); 
     public List<BinaryBalanceDefine> saveBinaryBalanceDefine(List<BinaryBalanceDefine> selectItems);
-    
+
+    public TestPlan findByTestPlanId(TestPlanKey id);  
+    public Collection<? extends TestPlan> findAllTestPlanByCompany(); 
+    public List<TestPlan> saveTestPlans(List<TestPlan> selectItems);
     
 }

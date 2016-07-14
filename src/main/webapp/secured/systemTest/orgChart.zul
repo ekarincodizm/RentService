@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?taglib uri="http://www.zkoss.org/dsp/web/core" prefix="c" ?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns:zk="http://www.zkoss.org/2005/zul" xmlns="http://www.zkoss.org/2005/zk/native" >  
+    <zk:window id="myOrgWin" width="100%" height="100%" > 
+        <script type="text/javascript">
+           <![CDATA[   
+            google.charts.setOnLoadCallback(drawChart);
+            
+            // Create the chart.
+            var chart ;    
+                
+            function drawChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Name');
+                data.addColumn('string', 'Manager');
+                data.addColumn('string', 'ToolTip'); 
+
+                // For each orgchart box, provide the name, manager, and tooltip to show.
+                data.addRows([
+                  [{v:'Mike', f:'Mike<div style="color:red; font-style:italic">VIP</div>'},
+                   '', 'The President'],
+                  
+                  [{v:'Jim', f:'Jim<div style="color:red; font-style:italic; vertical-align:middle;">VIP<img src="/RentService/images/icons/22x22/lock.png" alt="ปลดล๊อค" style="width:25px;height:22px;"></div>'},
+                   'Mike', 'VP'],
+                  [{v:'+', f:'<img src="/RentService/images/icons/32x32/add-xxl.png" alt="เพิ่ม" style="width:45px;height:45px;"></div>'}, 'Mike', ''], 
+                  
+                  ]]>
+            <!--
+             ['Vice', 'Mike', 'VP'],
+            -->
+                  <![CDATA[  
+                 
+                  ['นายเท่ง', 'Mike', 'FB'],
+                  [{v:'John', f:'John<div style="color:red; font-style:italic; vertical-align:middle;">VIP<img src="/RentService/images/icons/22x22/lock.png" alt="ปลดล๊อค" style="width:25px;height:22px;"></div>'},
+                   'Mike', 'VP'],
+                  [{v:'สัมฤทธิ์', f:'สัมฤทธิ์<div style="color:red; font-style:italic; vertical-align:middle;">VIP</div>'},
+                   'Mike', 'The President'],
+                  ['ประเสริญ', 'Mike', ''], 
+                  
+                  [{v:'Denice', f:'Denice<div style="color:red; font-style:italic; vertical-align:middle;">VIP</div>'},
+                   'นายเท่ง', 'FB'],
+                  [{v:'โดนัส', f:'โดนัส<div style="color:red; font-style:italic; vertical-align:middle;">VIP<img src="/RentService/images/icons/22x22/lock.png" alt="ปลดล๊อค" style="width:25px;height:22px;"></div>'},
+                   'นายเท่ง', 'FB'],
+                  [{v:'มอส', f:'มอส<div style="color:red; font-style:italic; vertical-align:middle;">VIP<img src="/RentService/images/icons/22x22/lock.png" alt="ปลดล๊อค" style="width:25px;height:22px;"></div>'},
+                   'นายเท่ง', 'FB'],
+                  [{v:'เชอรี่', f:'เชอรี่<div style="color:red; font-style:italic; vertical-align:middle;">VIP<img src="/RentService/images/icons/22x22/lock.png" alt="ปลดล๊อค" style="width:25px;height:22px;"></div>'},
+                   'นายเท่ง', 'FB'],   
+                   
+                  ['Bob', 'Jim', 'Bob Sponge'],
+                  ['Carol', 'Bob', 'FB1'],
+                ]]>
+            <!--
+           [{v:'+1', f:'<img src="/RentService/images/icons/32x32/add-xxl.png" alt="เพิ่ม" style="width:45px;height:45px;"></div>'}, 'Bob', 'FB1'],
+            -->
+                <![CDATA[        
+                    
+                  [{v:'Mark', f:'Mark<div style="color:red; font-style:italic; vertical-align:middle;">VIP</div>'},
+                   'Carol', 'FB1'],
+                  [{v:'Jack Mar', f:'Jack Mar<div style="color:red; font-style:italic; vertical-align:middle;">VIP<img src="/RentService/images/icons/22x22/lock.png" alt="ปลดล๊อค" style="width:25px;height:22px;"></div>'},
+                   'Carol', 'FB1'],
+                   
+                  [{v:'Steve Job', f:'Steve Job<div style="color:red; font-style:italic; vertical-align:middle;">VIP<img src="/RentService/images/icons/22x22/lock.png" alt="ปลดล๊อค" style="width:25px;height:22px;"></div>'},
+                   'Denice', 'FB']
+                  
+                ]);
+                
+                chart = new google.visualization.OrgChart(document.getElementById('chart_div')); 
+                
+                // Draw the chart, setting the allowHtml option to true for the tooltips.
+                chart.draw(data, {allowHtml:true});
+                
+                google.visualization.events.addListener(chart, 'select', selectHandler);
+                google.visualization.events.addListener(chart, 'onmouseover', usefulHandler);
+                google.visualization.events.addListener(chart, 'onmouseout', unUsefulHandler);
+                 
+
+              }  
+              
+              function selectHandler(e) { 
+                <!-- alert( chart.getSelection().length ); -->
+                showdetail( );
+              }
+              
+              function usefulHandler() {
+                showdetail( );
+              }
+              
+              function unUsefulHandler() {
+                hiddendetail();
+              }
+              
+            ]]>
+        </script>
+        <div id="table_div"></div> 
+        <div id="chart_div"></div> 
+         
+        <div id="myobjpanel" width="300px" style="visibility:hidden;overflow: visible;border:1px;Z-INDEX:1px;LEFT:10px;POSITION:relative;TOP:-200px;font-size:12px;" > 
+            <table width="300px" bgcolor="#993300" style='color:#FFFFFF' bordercolor="green" border="0"  cellpadding="0" cellspacing="0"> 
+                <tr >
+                    <td align="left" width="100px" rowspan="6" >
+                        <img id="myPicture" width="100px" height="100px" border="1px" style="border-color:black;" />
+                    </td> 
+                    <td width="70px" />
+                    <td width="130px" />
+                </tr>
+                <tr >  
+                    <td colspan="2" style="padding-left: 10px" >
+                        <span id="valCode" style="font-weight: bold;" />
+                    </td>
+                </tr>
+                <tr >  
+                    <td colspan="2" style="padding-left: 10px" >
+                        <span id="valName" style="font-weight: bold;"/>
+                    </td>
+                </tr> 
+                <tr > 
+                    <td style="color:#FFFF00;" align="center" >
+                        <b>ผู้แนะนำ : </b>
+                    </td>
+                    <td >
+                        <span id="sponsorName" style="font-weight: bold;color:#FFFF00;"/>
+                    </td>
+                </tr> 
+                <tr > 
+                    <td style="color:#FFFF00;" align="center" >
+                        <b>อัฟไลน์ : </b>
+                    </td>
+                    <td >
+                        <span id="uplineName" style="font-weight: bold;color:#66FF00;"/>
+                    </td>
+                </tr> 
+                <tr >
+                    <td colspan="2">
+                        <table width="100%" style="border:1px;" border="1" cellpadding="0" cellspacing="0" > 
+                            <tr style="border:none" > 
+                                <td width="50%" align="center" style="background:#DDDDDD;color:#333333;font-weight: bold;" >ตำแหน่ง</td>
+                                <td width="50%" align="center" style="background:#DDDDDD;color:#333333;font-weight: bold;" >สะสมส่วนตัว</td>
+                            </tr>
+                            <tr style="border:none"> 
+                                <td align="center" style="border:none" >
+                                    <span id="positionName" style="font-weight: bold;"/>
+                                </td>
+                                <td align="center" style="border:none" >
+                                    <span id="mytotalpv" style="font-weight: bold;"></span>PV</td> 
+                            </tr>
+                        </table>
+                    </td> 
+                </tr> 
+            </table> 
+            <table width="300px" bgcolor="#003399" style='color:#FFFFFF' bordercolor="green" border="0"  cellpadding="0" cellspacing="0">  
+                <tr style="height:2px">
+                    <td colspan="2" bgcolor="#000000"></td>
+                </tr>
+                <tr>
+                    <td align="right"> วันทีปรับตำแหน่งล่าสุด </td> 
+                    <td align="right" bgcolor='#003300' style='color:#00FFFF;'>
+                        <b>
+                            <span  id="updateposition"></span> 
+                        </b>
+                    </td> 
+                </tr> 
+ 
+                <tr>
+                    <td colspan="2" bgcolor="#000000">
+                        <font color='#ffff00'>
+                            <b> ช่องทางรายได้ วันที่( 13/07/2016 )</b>
+                        </font>
+                    </td> 
+                </tr> 
+                <tr>
+                    <td colspan="2">
+                        <table width="100%" bgcolor="#003399" style='color:#FFFFFF;border:none;' bordercolor="green"  >  
+                            <tr style="border:none">
+                                <td align="center" style="background:#DDDDDD;color:#333333;font-weight: bold;" width="30%" >ช่องทาง</td>
+                                <td align="right" width="35%" style="background:#DDDDDD;color:#333333;font-weight: bold;cellpadding:2;cellspacing:2" >โบนัส</td> 
+                            </tr>
+                            <tr style="border:none">
+                                <td align="left" >ค่าส่งเสริม</td>
+                                <td align="right" style="cellpadding:2;cellspacing:2" > 30,000 </td> 
+                            </tr>
+                            <tr style="border:none">
+                                <td align="left" >โบนัสบริหาร</td>
+                                <td align="right" style="cellpadding:2;cellspacing:2" > 21,600 </td> 
+                            </tr>
+                            <tr style="border:none">
+                                <td align="left" >ออม/ภาคี</td>
+                                <td align="right" style="cellpadding:2;cellspacing:2" > 6,156 </td> 
+                            </tr>
+                            <tr style="color:#00FFFF;font-weight:bold;border:none;" >
+                                <td align="right" >   - ออมเงิน</td>
+                                <td align="right" style="cellpadding:2;cellspacing:2" > 2,052 </td> 
+                            </tr>
+                            <tr style="color:yellow;font-weight:bold;border:none;" >
+                                <td align="right" >   - ออมทอง</td>
+                                <td align="right" style="cellpadding:2;cellspacing:2" > 2,052 </td> 
+                            </tr>
+                            <tr style="color:red;font-weight:bold;border:none;" >
+                                <td align="right" >   - ภาคี</td>
+                                <td align="right" style="cellpadding:2;cellspacing:2" > 2,052 </td> 
+                            </tr>
+                        </table>
+                    </td>
+                </tr>   
+                <tr>
+                    <td colspan="2" bgcolor="#000000">
+                        <font color='#ffff00'>
+                            <b> คอมฯ วันที่( 13/07/2016 )</b>
+                        </font>
+                    </td> 
+                </tr> 
+                <tr>
+                    <td align="right"> รวมทั้งหมด </td> 
+                    <td align="right" bgcolor='#003300' style='color:#00FFFF;'>
+                        <b>
+                            <span  id="comm"/> 
+                        </b> 
+                    </td> 
+                </tr> 
+            </table> 
+        </div>
+        
+        <script language="javascript" >
+         <![CDATA[       
+          
+            var IE = document.all ? true : false;
+            if (!IE)
+                document.captureEvents(Event.MOUSEMOVE);
+            document.onmousemove = getMouseXY;
+            var tempX = 0;
+            var tempY = 0;
+            function getMouseXY(e) {
+                if (IE) { // grab the x-y pos.s if browser is IE 
+                    tempX = event.clientX + document.body.scrollLeft;
+                    tempY = event.clientY + document.body.scrollTop;
+                } else {  // grab the x-y pos.s if browser is NS 
+                    tempX = e.pageX;
+                    tempY = e.pageY;
+                }
+                if (tempX < 0) {
+                    tempX = 0;
+                }
+                if (tempY < 0) {
+                    tempY = 0;
+                }
+                try
+                {
+                    var myobj = document.getElementById("myobjpanel");
+                    var left = 0;
+                    var top = 0;
+                    var width = 300;
+                    var caseOver = 1;
+                    if ((((tempX + width) - window.innerWidth) > 0) && (((tempY + myobj.offsetHeight) - window.innerHeight) > 0)) {
+                        caseOver = 4; // over height and width
+                    } else if ((((tempX + width) - window.innerWidth) <= 0) && (((tempY + myobj.offsetHeight) - window.innerHeight) > 0)) {
+                        caseOver = 3; // over height
+                    } else if ((((tempX + width) - window.innerWidth) > 0) && (((tempY + myobj.offsetHeight) - window.innerHeight) <= 0)) {
+                        caseOver = 2; // over width
+                    }
+                    switch (caseOver) {
+                        case 1:
+                            {
+                                left = tempX;
+                                top = tempY;
+                                break;
+                            }
+                        case 2:
+                            {
+                                left = (tempX - width) - 50;
+                                top = tempY - 30;
+                                break;
+                            }
+                        case 3:
+                            {
+                                top = (tempY - myobj.offsetHeight) - 10;
+                                left = tempX + 10;
+                                break;
+                            }
+                        case 4:
+                            {
+                                left = (tempX - width) - 50;
+                                top = (tempY - myobj.offsetHeight) - 40;
+                                break;
+                            }
+                    }
+                    if (top < 0)
+                        top = 0;
+
+                    myobj.style.left = left + "px";
+                    top = top - 450 ;
+                    myobj.style.top = top + "px";
+
+                }
+                catch (e) {
+                }
+                return true;
+            }
+
+            function fuclRefreash() {
+                var form = document.getElementById("myform");
+                form.submit();
+            }
+
+            function fuclSubmit(value) {
+                var form = document.getElementById("myform");
+                form.customerCode.value = value;
+                form.submit();
+            }
+            function fuclRoot() {
+                var form = document.getElementById("myform");
+                form.stepUp.value = "0";
+                form.submit();
+            }
+            function fuclUp1Step() {
+                var form = document.getElementById("myform");
+                form.stepUp.value = "1";
+                form.submit();
+            }
+ 
+ 
+                function showdetail( ) {
+
+                        document.getElementById("valCode").innerHTML = "0000340";
+                        document.getElementById("valName").innerHTML = "Steve Job";
+                        document.getElementById("positionName").innerHTML = "VIP";
+                        document.getElementById("sponsorName").innerHTML = "Denice";
+                        document.getElementById("uplineName").innerHTML = "Denice";
+                        document.getElementById("updateposition").innerHTML = "13/07/2016";
+                        document.getElementById("mytotalpv").innerHTML = "600";  
+
+                        document.getElementById("comm").innerHTML = "57,756";
+
+                        document.getElementById("myPicture").src = "/RentService/images/logo.png"; 
+                        
+                        var myobj = document.getElementById("myobjpanel");
+                        myobj.style.visibility = "visible";
+                    }
+                    function hiddendetail() {
+                        var myobj = document.getElementById("myobjpanel");
+                        myobj.style.visibility = "hidden";
+                    }
+
+              ]]> 
+    </script> 
+    
+    </zk:window>
+</zk>

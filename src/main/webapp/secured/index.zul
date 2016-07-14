@@ -2,8 +2,14 @@
 <?page title="โปรแกรมบริการค่าเช่ารายเดือน"?>  
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
 <zk xmlns="http://www.zkoss.org/2005/zul" >      
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="/script/maskedinput-1.2.2.min.js" />
     <script type="text/javascript" src="/script/jquery.watermarkinput.js" /> 
+    <script type="text/javascript">
+        <![CDATA[  
+            google.charts.load('current', {packages:["orgchart"]}); 
+        ]]>
+    </script>
         
     <include src="/css/mainstyle.zul" />
     <borderlayout apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.SecuredIndexVM')" > 
@@ -137,8 +143,13 @@
                                                 ,icon='/images/icons/32x32/unilevel.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสยูนิเลเวล(หลายชั้น)" />
                                 
-                                <toolbarbutton label="Test System Plan" image="/images/icons/32x32/Graph32.png" 
-                                               onClick="@command('onClickMenu',target=mycenter,pageName='/viewPdf.zul'
+                                <toolbarbutton label="Demo Charts" image="/images/icons/32x32/unilevel.png" 
+                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/orgChart.zul' 
+                                                ,icon='/images/icons/32x32/Graph32.png'
+                                                ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="DEMO CHARTS" />
+                                
+                                <toolbarbutton label="Test (Over-Pay)" image="/images/icons/32x32/Graph32.png" 
+                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/testPlans.zul' 
                                                 ,icon='/images/icons/32x32/Graph32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="ทดสอบแผนการตลาด(ที่กำหนด)" />
                                 

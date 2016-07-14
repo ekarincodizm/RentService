@@ -15,6 +15,8 @@ import com.sabuymlm.model.systemTest.Position;
 import com.sabuymlm.model.systemTest.SponsorDefKey;
 import com.sabuymlm.model.systemTest.SponsorDefine;
 import com.sabuymlm.model.systemTest.SponsorDefineHeader;
+import com.sabuymlm.model.systemTest.TestPlan;
+import com.sabuymlm.model.systemTest.TestPlanKey;
 import com.sabuymlm.model.systemTest.UnilevelDefKey;
 import com.sabuymlm.model.systemTest.UnilevelDefine;
 import com.sabuymlm.model.systemTest.UnilevelDefineHeader; 
@@ -26,6 +28,7 @@ import com.sabuymlm.repository.systemTest.BinaryWsDefRepository;
 import com.sabuymlm.repository.systemTest.MatchingDefRepository;
 import com.sabuymlm.repository.systemTest.PositionRepository; 
 import com.sabuymlm.repository.systemTest.SponsorDefRepository;
+import com.sabuymlm.repository.systemTest.TestPlanRepository;
 import com.sabuymlm.repository.systemTest.UnilevelDefRepository;
 import com.sabuymlm.repository.systemTest.XSponsorDefRepository;
 import com.sabuymlm.repository.systemTest.XSponsorHeaderRepository;
@@ -65,6 +68,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     protected BinaryMultiWsDefRepository reposBinaryMultiWsEvent;   
     @Autowired 
     protected BinaryBalanceDefRepository reposBinaryBalEvent;   
+    @Autowired 
+    protected TestPlanRepository reposTestPlanEvent;   
        
 
     @Override
@@ -243,6 +248,21 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     @Override
     public List<BinaryBalanceDefine> saveBinaryBalanceDefine(List<BinaryBalanceDefine> selectItems) {
         return reposBinaryBalEvent.save(selectItems);  
+    }
+
+    @Override
+    public TestPlan findByTestPlanId(TestPlanKey id) {
+        return reposTestPlanEvent.findOne(id);
+    }
+
+    @Override
+    public Collection<? extends TestPlan> findAllTestPlanByCompany() {
+        return reposTestPlanEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany() ,  new Sort(Sort.Direction.ASC, "id.no")  );
+    }
+
+    @Override
+    public List<TestPlan> saveTestPlans(List<TestPlan> selectItems) {
+        return reposTestPlanEvent.save(selectItems); 
     }
     
 }

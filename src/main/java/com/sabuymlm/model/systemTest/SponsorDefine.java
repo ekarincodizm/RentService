@@ -1,8 +1,7 @@
 package com.sabuymlm.model.systemTest;
   
 import com.sabuymlm.model.admin.*;  
-import java.io.Serializable;  
-import java.util.Date;  
+import java.io.Serializable;   
 import javax.persistence.*;  
 import javax.validation.constraints.NotNull; 
 import org.hibernate.validator.constraints.NotEmpty;
