@@ -1,69 +1,91 @@
 package com.sabuymlm.model.systemTest;
-     
-import java.io.Serializable;  
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;   
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Table(name = "test_plan_header", schema = "TestSystem" )
-@Entity 
+@Table(name = "test_plan_header", schema = "TestSystem")
+@Entity
 public class TestPlanHeader extends CommonEntity implements Serializable {
 
-    @Id  
-    @Column(name = "company_id" , columnDefinition = "int"  ,nullable = false )
-    private Integer companyId;      
-     
-    @Column(name = "chart_power", columnDefinition = "int" )
-    private Integer chartPower; 
-    @Column(name = "chart_sponsor_power",  columnDefinition = "int" )
-    private Integer chartSponsorPower; 
-    @Column(name = "chart_level",  columnDefinition = "int" )
-    private Integer chartLevel; 
-    
-    @NotNull(message = "ตำแหน่งที่ต้องการทดสอบ"  ) 
-    @OneToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name = "position_id", referencedColumnName = "position_id"  )
-    private Position position ;  
-    
-    @Column(name = "advance_total",  columnDefinition = "int" )
-    private Integer advanceTotal; 
-    @NotNull(message = "ตำแหน่งที่ (Advance)"  ) 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "advance_position_id", referencedColumnName = "position_id"  )
-    private Position advancePosition ; 
+    @Id
+    @Column(name = "company_id", columnDefinition = "int", nullable = false)
+    private Integer companyId;
 
-    @Column(name = "mobile_pcent",  columnDefinition = "float" )
-    private Float mobilePcent; 
-    @Column(name = "mobile_pcent_from",  columnDefinition = "varchar(5)" )
-    private String mobilePcentFrom; 
-    
-    @Column(name = "allsale_pcent",  columnDefinition = "float" )
-    private Float allsalePcent; 
-    @Column(name = "allsale_pcent_from",  columnDefinition = "varchar(5)" )
-    private String allsalePcentFrom; 
-    @Column(name = "other_pcent",  columnDefinition = "float" )
-    private Float otherPcent;  
-    @Column(name = "other_pcent_from",  columnDefinition = "varchar(5)" )
-    private String otherPcentFrom; 
-    
-    @Column(name = "regis_baht",  columnDefinition = "float" )
-    private Float regisBaht; 
-    @Column(name = "pv_per_baht",  columnDefinition = "float" )
-    private Float pvPerBaht; 
-    @Column(name = "cost_baht",  columnDefinition = "float" )
-    private Float costBaht; 
-    @Column(name = "office_rent_baht",  columnDefinition = "float" )
-    private Float officeRentBaht; 
-    @Column(name = "employee_baht",  columnDefinition = "float" )
-    private Float employeeBaht; 
-    @Column(name = "meeting_baht",  columnDefinition = "float" )
-    private Float meetingBaht; 
-    @Column(name = "other_baht",  columnDefinition = "float" )
-    private Float otherBaht; 
-    
-    @OneToMany(mappedBy = "id.company",  fetch = FetchType.LAZY , cascade = {CascadeType.ALL} ,orphanRemoval = true )
-    private List<TestPlan> items = new ArrayList<TestPlan>();  
+    @Column(name = "chart_power", columnDefinition = "int")
+    private Integer chartPower;
+    @Column(name = "chart_sponsor_power", columnDefinition = "int")
+    private Integer chartSponsorPower;
+    @Column(name = "chart_level", columnDefinition = "int")
+    private Integer chartLevel;
+
+    @NotNull(message = "ตำแหน่งที่ต้องการทดสอบ")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_id", referencedColumnName = "position_id")
+    private Position position;
+
+    @Column(name = "advance_total", columnDefinition = "int")
+    private Integer advanceTotal;
+    @NotNull(message = "ตำแหน่งที่ (Advance)")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "advance_position_id", referencedColumnName = "position_id")
+    private Position advancePosition;
+
+    @Column(name = "mobile_pcent", columnDefinition = "float")
+    private Float mobilePcent;
+    @Column(name = "mobile_pcent_from", columnDefinition = "varchar(5)")
+    private String mobilePcentFrom;
+
+    @Column(name = "allsale_pcent", columnDefinition = "float")
+    private Float allsalePcent;
+    @Column(name = "allsale_pcent_from", columnDefinition = "varchar(5)")
+    private String allsalePcentFrom;
+    @Column(name = "other_pcent", columnDefinition = "float")
+    private Float otherPcent;
+    @Column(name = "other_pcent_from", columnDefinition = "varchar(5)")
+    private String otherPcentFrom;
+
+    @Column(name = "regis_baht", columnDefinition = "float")
+    private Float regisBaht;
+    @Column(name = "pv_per_baht", columnDefinition = "float")
+    private Float pvPerBaht;
+    @Column(name = "cost_baht", columnDefinition = "float")
+    private Float costBaht;
+    @Column(name = "office_rent_baht", columnDefinition = "float")
+    private Float officeRentBaht;
+    @Column(name = "employee_baht", columnDefinition = "float")
+    private Float employeeBaht;
+    @Column(name = "meeting_baht", columnDefinition = "float")
+    private Float meetingBaht;
+    @Column(name = "other_baht", columnDefinition = "float")
+    private Float otherBaht;
+
+    @OneToMany(mappedBy = "id.company", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<TestPlan> items = new ArrayList<TestPlan>();
+
+    public TestPlanHeader() {
+        this.advanceTotal = 0;
+        this.allsalePcent = 0f;
+        this.allsalePcentFrom = "PV";
+        this.mobilePcent = 0f;
+        this.mobilePcentFrom = "PV";
+        this.otherPcent = 0f;
+        this.otherPcentFrom = "PV";
+
+        this.chartLevel = 2;
+        this.chartPower = 2;
+        this.chartSponsorPower = 2;
+
+        this.regisBaht = 0f;
+        this.pvPerBaht = 1f;
+        this.costBaht = 0f;
+        this.officeRentBaht = 0f;
+        this.employeeBaht = 0f;
+        this.otherBaht = 0f;
+        this.meetingBaht = 0f;
+    }
 
     public List<TestPlan> getItems() {
         return items;
@@ -71,12 +93,14 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
 
     public void setItems(List<TestPlan> items) {
         this.items = items;
-    }
-
-    
+    } 
     
     public Integer getChartPower() {
         return chartPower;
+    }
+    
+    public String getChartPowerStr() {
+        return chartPower + "" ;
     }
 
     public void setChartPower(Integer chartPower) {
@@ -86,6 +110,9 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
     public Integer getChartSponsorPower() {
         return chartSponsorPower;
     }
+    public String getChartSponsorPowerStr() {
+        return chartSponsorPower + "";
+    }
 
     public void setChartSponsorPower(Integer chartSponsorPower) {
         this.chartSponsorPower = chartSponsorPower;
@@ -93,6 +120,10 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
 
     public Integer getChartLevel() {
         return chartLevel;
+    }
+    
+    public String getChartLevelStr() {
+        return chartLevel + "";
     }
 
     public void setChartLevel(Integer chartLevel) {
@@ -225,7 +256,7 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
 
     public void setOtherBaht(Float otherBaht) {
         this.otherBaht = otherBaht;
-    } 
+    }
 
     public Integer getCompanyId() {
         return companyId;
@@ -233,8 +264,8 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
-    } 
-    
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -259,6 +290,5 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
         }
         return true;
     }
- 
-    
+
 }

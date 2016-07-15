@@ -11,7 +11,10 @@ import com.sabuymlm.model.systemTest.TestPlanKey;
 import com.sabuymlm.service.SystemTestService;
 import com.sabuymlm.vm.CommonVM;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 import org.springframework.transaction.annotation.Transactional;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -33,15 +36,15 @@ import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanHeader> implements Serializable {
 
     @WireVariable
-    private SystemTestService systemTestService;
+    private SystemTestService systemTestService; 
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
-        pageHasDetail = false;
+        pageHasDetail = false; 
         positions.addAll(systemTestService.findAllPositions());
         super.initial(item, icon, headerLabel);
-        setStatusEdit();
-    }
+        setStatusEdit(); 
+    }   
 
     @Override
     protected void setEditItem() {
@@ -57,26 +60,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         if (!positions.isEmpty()) {
             item.setPosition(positions.get(0));
             item.setAdvancePosition(positions.get(0));
-        }
-        item.setAdvanceTotal(0);
-        item.setAllsalePcent(0f);
-        item.setAllsalePcentFrom("PV");
-        item.setMobilePcent(0f);
-        item.setMobilePcentFrom("PV");
-        item.setOtherPcent(0f);
-        item.setOtherPcentFrom("PV");
-
-        item.setChartLevel(2);
-        item.setChartPower(2);
-        item.setChartSponsorPower(2);
-
-        item.setRegisBaht(0f);
-        item.setPvPerBaht(1f);
-        item.setCostBaht(0f);
-        item.setOfficeRentBaht(0f);
-        item.setEmployeeBaht(0f);
-        item.setOtherBaht(0f);
-        item.setMeetingBaht(0f);
+        } 
     }
 
     @Override

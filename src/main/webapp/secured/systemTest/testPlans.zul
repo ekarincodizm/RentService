@@ -55,8 +55,8 @@
                             <listitem >
                                 <listcell label="เลือกโครงสรัางสายงาน"  />    
                                 <listcell >
-                                    <combobox readonly="true" mold="rounded" width="150px"   
-                                              selectedItem="@init(vm.item.chartPower ) @load(vm.item.chartPower ) @save(vm.item.chartPower, before={'onSave'})"  >
+                                    <combobox  readonly="true" mold="rounded" width="150px"  
+                                               selectedItem="@load(vm.item.chartPowerStr ) @save(vm.item.chartPower, before={'onSave','onValidateTable'})" >
                                         <comboitem label="โครงสร้าง 1 แตก 2" value="2" /> 
                                         <comboitem label="โครงสร้าง 1 แตก 3" value="3" /> 
                                         <comboitem label="โครงสร้าง 1 แตก 4" value="4" /> 
@@ -67,8 +67,7 @@
                                 <listcell label="กำหนดการแนะนำ"  />    
                                 <listcell >
                                     <combobox readonly="true" mold="rounded" width="150px"  
-                                              selectedItem="@load(vm.item.chartSponsorPower ) @save(vm.item.chartSponsorPower, before={'onSave'})" 
-                                              value="@load(vm.item.chartSponsorPower )" >
+                                              selectedItem="@load(vm.item.chartSponsorPowerStr ) @save(vm.item.chartSponsorPower, before={'onSave','onValidateTable'})" >
                                         <comboitem label="1 รหัส แนะนำ 2 รหัส" value="2" /> 
                                         <comboitem label="1 รหัส แนะนำ 3 รหัส" value="3" /> 
                                         <comboitem label="1 รหัส แนะนำ 4 รหัส" value="4" /> 
@@ -81,9 +80,8 @@
                                 <listcell label="จำนวนรหัส (ทดสอบ)"  />    
                                 <listcell >
                                     <hbox align="buttom">
-                                        <combobox readonly="true" mold="rounded" width="120px"  
-                                                  selectedItem="@load(vm.item.chartLevel ) @save(vm.item.chartLevel, before={'onSave'})"   
-                                                  value="@load(vm.item.chartLevel )" >
+                                        <combobox readonly="true" mold="rounded" width="120px"   
+                                                  selectedItem="@load(vm.item.chartLevelStr ) @save(vm.item.chartLevel, before={'onSave','onValidateTable'})" >
                                             <comboitem label="1 รหัส" value="2" /> 
                                             <comboitem label="3 รหัส" value="3" /> 
                                             <comboitem label="7 รหัส" value="4" /> 
@@ -96,7 +94,7 @@
                                 <listcell label="ตำแหน่งที่ต้องการทดสอบ"  />    
                                 <listcell > 
                                     <combobox model="@load(vm.positions)" readonly="true" mold="rounded" width="150px" 
-                                              selectedItem="@load(vm.item.position ) @save(vm.item.position, before={'onSave'})"  
+                                              selectedItem="@load(vm.item.position ) @save(vm.item.position, before={'onSave','onValidateTable'})"  
                                               value="@load(vm.item.position.name )">
                                         <template name="model" var="pos">
                                             <comboitem label="@load(pos.name)" value="@load(pos)" />
@@ -108,14 +106,14 @@
                                 <listcell label="จำนวนรหัส (Advance)"  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <intbox style="text-align:right" format="#,##0" value="@load(vm.item.advanceTotal) @save(vm.item.advanceTotal, before={'onSave'})" width="90px" mold="rounded" />
+                                        <intbox style="text-align:right" format="#,##0" value="@load(vm.item.advanceTotal) @save(vm.item.advanceTotal, before={'onSave','onValidateTable'})" width="90px" mold="rounded" />
                                         <label value=" รหัส "/>
                                     </hbox>
                                 </listcell>        
                                 <listcell label="ตำแหน่งที่ (Advance)"  />    
                                 <listcell > 
                                     <combobox model="@load(vm.positions)" readonly="true" mold="rounded" width="150px" 
-                                              selectedItem="@load(vm.item.advancePosition ) @save(vm.item.advancePosition, before={'onSave'})"  
+                                              selectedItem="@load(vm.item.advancePosition ) @save(vm.item.advancePosition, before={'onSave','onValidateTable'})"  
                                               value="@load(vm.item.advancePosition.name )">
                                         <template name="model" var="pos">
                                             <comboitem label="@load(pos.name)" value="@load(pos)" />
@@ -127,10 +125,9 @@
                                 <listcell label="โมบาย/เซ็นเตอร์ (สูงสุด) "  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.mobilePcent) @save(vm.item.mobilePcent, before={'onSave'})" width="60px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.mobilePcent) @save(vm.item.mobilePcent, before={'onSave','onValidateTable'})" width="60px" mold="rounded" />
                                         <combobox readonly="true" mold="rounded" width="100px"  
-                                                  selectedItem="@load(vm.item.mobilePcentFrom ) @save(vm.item.mobilePcentFrom, before={'onSave'})"  
-                                                  value="@load(vm.item.mobilePcentFrom )"> 
+                                                  selectedItem="@bind(vm.item.mobilePcentFrom ) "   > 
                                             <comboitem label="จาก PV" value="PV" /> 
                                             <comboitem label="จาก บาท" value="BAHT" />  
                                         </combobox>
@@ -139,10 +136,9 @@
                                 <listcell label="ALL SALE (สูงสุด) "  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.allsalePcent) @save(vm.item.allsalePcent, before={'onSave'})" width="60px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.allsalePcent) @save(vm.item.allsalePcent, before={'onSave','onValidateTable'})" width="60px" mold="rounded" />
                                         <combobox readonly="true" mold="rounded" width="100px"  
-                                                  selectedItem="@load(vm.item.allsalePcentFrom ) @save(vm.item.allsalePcentFrom, before={'onSave'})"  
-                                                  value="@load(vm.item.allsalePcentFrom )"> 
+                                                  selectedItem="@bind(vm.item.allsalePcentFrom ) "   > 
                                             <comboitem label="จาก PV" value="PV" /> 
                                             <comboitem label="จาก บาท" value="BAHT" />  
                                         </combobox>
@@ -153,12 +149,11 @@
                                 <listcell label="จ่ายเพิ่มส่วนอื่นๆ (สูงสุด) "  />    
                                 <listcell span="3" >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.otherPcent) @save(vm.item.otherPcent, before={'onSave'})" width="60px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.otherPcent) @save(vm.item.otherPcent, before={'onSave','onValidateTable'})" width="60px" mold="rounded" />
                                         <combobox readonly="true" mold="rounded" width="100px"  
-                                                  selectedItem="@load(vm.item.otherPcentFrom ) @save(vm.item.otherPcentFrom, before={'onSave'})"  
-                                                  value="@load(vm.item.otherPcentFrom )"> 
-                                            <comboitem label="จาก PV" value="PV" /> 
-                                            <comboitem label="จาก บาท" value="BAHT" />  
+                                                  selectedItem="@bind(vm.item.otherPcentFrom )"  > 
+                                            <comboitem description="" label="จาก PV" value="PV"  /> 
+                                            <comboitem label="จาก บาท" value="BAHT" />   
                                         </combobox>
                                     </hbox>
                                 </listcell>    
@@ -167,7 +162,7 @@
                                 <listcell label="ค่าสมัครสมาชิก "  />    
                                 <listcell span="3" >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.regisBaht) @save(vm.item.regisBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.regisBaht) @save(vm.item.regisBaht, before={'onSave','onValidateTable'})" width="90px" mold="rounded" />
                                         <label value=" บาท "/>
                                     </hbox>
                                 </listcell>       
@@ -176,14 +171,14 @@
                                 <listcell label="กำหนดอัตรา (สัดส่วน) 1PV : "  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.pvPerBaht) @save(vm.item.pvPerBaht, before={'onSave'})" width="60px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.pvPerBaht) @save(vm.item.pvPerBaht, before={'onSave','onValidateTable'})" width="60px" mold="rounded" />
                                         <label value=" บาท "/>
                                     </hbox>
                                 </listcell>       
                                 <listcell label="ต้นทุนสินค้า"  />    
                                 <listcell > 
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.costBaht) @save(vm.item.costBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.costBaht) @save(vm.item.costBaht, before={'onSave','onValidateTable'})" width="90px" mold="rounded" />
                                         <label value=" บาท "/>
                                     </hbox>
                                 </listcell>
@@ -192,14 +187,14 @@
                                 <listcell label="ค่าเช่าตึก (Office) "  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.officeRentBaht) @save(vm.item.officeRentBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.officeRentBaht) @save(vm.item.officeRentBaht, before={'onSave','onValidateTable'})" width="90px" mold="rounded" />
                                         <label value=" /เดือน "/>
                                     </hbox>
                                 </listcell>     
                                 <listcell label="ค่าพนักงาน (Office) "  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.employeeBaht) @save(vm.item.employeeBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.employeeBaht) @save(vm.item.employeeBaht, before={'onSave','onValidateTable'})" width="90px" mold="rounded" />
                                         <label value=" /เดือน "/>
                                     </hbox>
                                 </listcell>   
@@ -208,14 +203,14 @@
                                 <listcell label="ค่าจัดประชุม-สัมนา (Office) "  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.meetingBaht) @save(vm.item.meetingBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.meetingBaht) @save(vm.item.meetingBaht, before={'onSave','onValidateTable'})" width="90px" mold="rounded" />
                                         <label value=" /เดือน "/>
                                     </hbox>
                                 </listcell>     
                                 <listcell label="ค่าน้ำ+ไฟฟ้า+กาแฟ+อื่นๆ (Office)"  />    
                                 <listcell >
                                     <hbox align="bottom"> 
-                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.otherBaht) @save(vm.item.otherBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.otherBaht) @save(vm.item.otherBaht, before={'onSave','onValidateTable'})" width="90px" mold="rounded" />
                                         <label value=" /เดือน "/>
                                     </hbox>
                                 </listcell>   
