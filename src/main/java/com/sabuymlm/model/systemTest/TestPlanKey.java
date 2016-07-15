@@ -13,8 +13,8 @@ public class TestPlanKey implements Serializable {
     private Integer no ;   
     
     @NotNull(message = "กำหนดบริษัทผู้ใช้งาน"  ) 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", referencedColumnName = "company_id"  ,nullable = false )
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "company_id", referencedColumnName = "company_id"  ,nullable = false     )
     private Company company;     
 
     public TestPlanKey(){}

@@ -1,6 +1,5 @@
 package com.sabuymlm.model.systemTest;
-    
-import com.sabuymlm.model.admin.Company;
+     
 import java.io.Serializable;  
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +10,10 @@ import javax.validation.constraints.NotNull;
 @Entity 
 public class TestPlanHeader extends CommonEntity implements Serializable {
 
-    @Id
-    @NotNull(message = "กำหนดบริษัทผู้ใช้งาน"  ) 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", referencedColumnName = "company_id"  ,nullable = false )
-    private Company company;      
-    
+    @Id  
+    @Column(name = "company_id" , columnDefinition = "int"  ,nullable = false )
+    private Integer companyId;      
+     
     @Column(name = "chart_power", columnDefinition = "int" )
     private Integer chartPower; 
     @Column(name = "chart_sponsor_power",  columnDefinition = "int" )
@@ -228,20 +225,20 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
 
     public void setOtherBaht(Float otherBaht) {
         this.otherBaht = otherBaht;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     } 
 
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    } 
+    
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 61 * hash + (this.company != null ? this.company.hashCode() : 0);
+        hash = 37 * hash + (this.companyId != null ? this.companyId.hashCode() : 0);
         return hash;
     }
 
@@ -257,16 +254,11 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
             return false;
         }
         final TestPlanHeader other = (TestPlanHeader) obj;
-        if (this.company != other.company && (this.company == null || !this.company.equals(other.company))) {
+        if (this.companyId != other.companyId && (this.companyId == null || !this.companyId.equals(other.companyId))) {
             return false;
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "TestPlanHeader{" + "companyId=" + company + ", position=" + position + ", advancePosition=" + advancePosition + ", items=" + items + '}';
-    } 
-    
+ 
     
 }

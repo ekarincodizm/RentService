@@ -45,13 +45,15 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
 
     @Override
     protected void setEditItem() {
-        item = systemTestService.findByTestPlanHeader(item.getCompany());
+        item = systemTestService.findByTestPlanHeader(SecurityUtil.getUserDetails().getCompany().getId());
+        if(item == null ) {
+            item = new TestPlanHeader();
+        }
         item.getItems();
     }
 
-    private void initItem() {
-        item = new TestPlanHeader();
-        item.setCompany(SecurityUtil.getUserDetails().getCompany()); 
+    private void initItem() { 
+        item.setCompanyId(SecurityUtil.getUserDetails().getCompany().getId()); 
         if (!positions.isEmpty()) {
             item.setPosition(positions.get(0));
             item.setAdvancePosition(positions.get(0));
@@ -79,8 +81,9 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
 
     @Override
     protected void setNewItem() {
-        initItem(); 
+        setEditItem(); 
         if (item.getItems().isEmpty()) {  
+            initItem(); 
             setStatusAdd(); 
             for (int i = 1; i <= 7; i++) {
                 TestPlan itm = new TestPlan();
@@ -155,9 +158,9 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     @Override
-    protected void privateValidate() {
-        System.out.println(" ลองดูดิ้ ");
+    protected void privateValidate() { 
         for (TestPlan itm : item.getItems()) { 
+            constraintViolations.addAll(validator.validate(itm.getId()));
             constraintViolations.addAll(validator.validate(itm));
         }
     }
