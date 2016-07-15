@@ -19,6 +19,11 @@
                         <listheader sort="auto(memberPosition.name)" onSort="@command('onOrderBy')" align="center" width="150px" label="ตำแหน่ง(แนะนำ)" />    
                         <listheader sort="auto(isFixSponsorLevel)" onSort="@command('onOrderBy')" align="center" label="Fix(Level)" />
                         <listheader sort="auto(sponsorLevel)" onSort="@command('onOrderBy')" align="center" label="แนะนำ(Level)" />
+                        
+                        <listheader sort="auto(mtaBaht)" onSort="@command('onOrderBy')" align="center" label="รักษายอด" />
+                        <listheader sort="auto(autoPcent)" onSort="@command('onOrderBy')" align="center" label="หัก(Auto)" />
+                        <listheader sort="auto(autoMax)" onSort="@command('onOrderBy')" align="center" label="หัก(Auto)สูงสุด" />
+                        
                     </listhead>
                     <template name="model"  var="item">
                         <listitem context="viewPopup" >
@@ -33,6 +38,10 @@
                             <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@load(item.memberPosition.name)" />      
                             <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@load(item.isFixSponsorLevel)" />     
                             <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@load(item.sponsorLevel) @converter('formatedNumber', format='#,##0')" />   
+                            
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@load(item.mtaBaht) @converter('formatedNumber', format='#,##0.##')" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@load(item.autoPcent) @converter('formatedNumber', format='#,##0.##\'%\'')" />   
+                            <listcell onDoubleClick="@command('onDoubleEdit',selectItem=item)"  style="@load(item.style)" label="@load(item.autoMax) @converter('formatedNumber', format='#,##0.##')" />   
                         </listitem> 
                     </template>  
                 </listbox>

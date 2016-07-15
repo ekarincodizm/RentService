@@ -68,6 +68,23 @@
                             </groupbox>
                         </row> 
                         <row spans="1,3" style="border:none">
+                            <label value="รักษายอด/เดือน : " />
+                            <hbox align="bottom">
+                                <doublebox format="#,##0.##" width="150px" mold="rounded" value="@load(vm.item.mtaBaht) @save(vm.item.mtaBaht, before={'onSave'})"  />      
+                                <label value="บาท" /> 
+                            </hbox>
+                        </row>
+                        <row spans="1,3" style="border:none">
+                            <label value="หัก(Auto) : " /> 
+                            <hbox align="bottom">
+                                <doublebox format="#,##0.## '%'" width="150px" mold="rounded" value="@load(vm.item.autoPcent) @save(vm.item.autoPcent, before={'onSave'})"  />      
+                                <space/>
+                                <label value="หัก(Auto)สูงสุด : " />  
+                                <doublebox format="#,##0.##" width="150px" mold="rounded" value="@load(vm.item.autoMax) @save(vm.item.autoMax, before={'onSave'})"  />      
+                                <label value="บาท" /> 
+                            </hbox>
+                        </row>
+                        <row spans="1,3" style="border:none">
                             <label value="" /> 
                             <label value="" /> 
                         </row>

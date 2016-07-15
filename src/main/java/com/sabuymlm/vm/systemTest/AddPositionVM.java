@@ -47,6 +47,9 @@ public class AddPositionVM extends AddCommonRefSponsorDefineVM<Position,Position
     protected void setNewItem() {
         item = new Position(); 
         item.setTopupPv(0.0f);
+        item.setMtaBaht(0.0f);
+        item.setAutoMax(0.0f);
+        item.setAutoPcent(0.0f);
         clearNotSponsorRaw();
     }  
     

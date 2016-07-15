@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Table(name = "test_plan", schema = "TestSystem" )
 @Entity 
-public class TestPlan extends CommonEntity implements Serializable {
+public class TestPlan implements Serializable {
 
     @EmbeddedId
     private TestPlanKey id ;  
@@ -19,6 +19,9 @@ public class TestPlan extends CommonEntity implements Serializable {
     private String passMatchingWeakOrBonus; 
     @Column(name = "pass_matching_strong", length = 10, nullable = false)
     private String passMatchingStrong; 
+    
+    @Column(name = "chk_auto", length = 10, nullable = true)
+    private String chkAuto; 
 
     public String getPassMatchingWeakOrBonus() {
         return passMatchingWeakOrBonus;
@@ -34,6 +37,14 @@ public class TestPlan extends CommonEntity implements Serializable {
 
     public void setPassMatchingStrong(String passMatchingStrong) {
         this.passMatchingStrong = passMatchingStrong;
+    }
+
+    public String getChkAuto() {
+        return chkAuto;
+    }
+
+    public void setChkAuto(String chkAuto) {
+        this.chkAuto = chkAuto;
     }
 
     public TestPlanKey getId() {

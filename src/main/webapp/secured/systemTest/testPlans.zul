@@ -11,12 +11,13 @@
                 <tabpanel>
                     <groupbox mold="3d" >
                         <caption height="25px" style="padding:5px;" label=" ภายในตารางด้านล่างนี้ ให้เลือกว่าต้องการจ่ายช่องทางไดบ้าง ให้ทำเครื่องหมายถูกต้องช่อง [เลือกจ่าย] "  /> 
-                        <listbox model="@init(vm.selectItems) @load(vm.selectItems, after={'onSave'})" multiple="true" sizedByContent="true" > 
+                        <listbox model="@init(vm.item.items) @load(vm.item.items, after={'onSave'})" multiple="true" sizedByContent="true" > 
                             <listhead sizable="true"  >
-                                <listheader align="center" label="ลำดับ" width="60px" /> 
+                                <listheader align="center" label="ลำดับ" width="50px" /> 
                                 <listheader width="350px" align="left" label="ช่องทางรายได้" />       
-                                <listheader width="70px" label="เลือกจ่าย" />        
+                                <listheader width="70px" align="center" label="เลือกจ่าย" />        
                                 <listheader width="200px" label="คำนวณโบนัสแมทชิ่ง(ต่อ)" />        
+                                <listheader width="100%" align="center" label="หัก(Auto)" />        
                             </listhead>  
                             <template name="model"  var="item">
                                 <listitem onClick="@command('onValidateTable' ,item = item)" 
@@ -32,8 +33,11 @@
                                             <checkbox label="โบนัสทีมแข็ง" disabled="@init(item.chkPay eq false) @load(item.chkPay eq false, after={'onSave','onValidateTable'})" visible="@load( item.id.no eq 3 ||  item.id.no eq 4 )" checked="@load(item.passMatchingStrong) @save(item.passMatchingStrong, before={'onSave','onValidateTable'})" /> 
                                         </hbox>
                                     </listcell> 
+                                    <listcell  > 
+                                        <checkbox label="หัก(Auto)" disabled="@init(item.chkPay eq false) @load(item.chkPay eq false, after={'onSave','onValidateTable'})" checked="@load(item.chkAuto) @save(item.chkAuto, before={'onSave','onValidateTable'})" /> 
+                                    </listcell> 
                                 </listitem>  
-                            </template>   
+                            </template> 
                         </listbox>
                     </groupbox>
                 </tabpanel>
@@ -42,11 +46,180 @@
                     <groupbox mold="3d" >
                         <caption height="25px" style="padding:5px;" label=" กำหนดคุณสมบัติการทดสอบ "  /> 
                         <listbox >  
+                            <listhead sizable="true"  >
+                                <listheader align="right" width="180px" /> 
+                                <listheader align="left" />       
+                                <listheader align="right" width="200px" />        
+                                <listheader align="left" />        
+                            </listhead> 
                             <listitem >
-                                <listcell label="เลือกโครงสรัางผัง"  />    
-                                <listcell label="" />       
+                                <listcell label="เลือกโครงสรัางสายงาน"  />    
+                                <listcell >
+                                    <combobox readonly="true" mold="rounded" width="150px"   
+                                              selectedItem="@init(vm.item.chartPower ) @load(vm.item.chartPower ) @save(vm.item.chartPower, before={'onSave'})"  >
+                                        <comboitem label="โครงสร้าง 1 แตก 2" value="2" /> 
+                                        <comboitem label="โครงสร้าง 1 แตก 3" value="3" /> 
+                                        <comboitem label="โครงสร้าง 1 แตก 4" value="4" /> 
+                                        <comboitem label="โครงสร้าง 1 แตก 5" value="5" /> 
+                                        <comboitem label="โครงสร้าง 1 แตก 6" value="6" /> 
+                                    </combobox>
+                                </listcell>       
+                                <listcell label="กำหนดการแนะนำ"  />    
+                                <listcell >
+                                    <combobox readonly="true" mold="rounded" width="150px"  
+                                              selectedItem="@load(vm.item.chartSponsorPower ) @save(vm.item.chartSponsorPower, before={'onSave'})" 
+                                              value="@load(vm.item.chartSponsorPower )" >
+                                        <comboitem label="1 รหัส แนะนำ 2 รหัส" value="2" /> 
+                                        <comboitem label="1 รหัส แนะนำ 3 รหัส" value="3" /> 
+                                        <comboitem label="1 รหัส แนะนำ 4 รหัส" value="4" /> 
+                                        <comboitem label="1 รหัส แนะนำ 5 รหัส" value="5" /> 
+                                        <comboitem label="1 รหัส แนะนำ 6 รหัส" value="6" /> 
+                                    </combobox>
+                                </listcell>
                             </listitem>  
-                             
+                            <listitem >
+                                <listcell label="จำนวนรหัส (ทดสอบ)"  />    
+                                <listcell >
+                                    <hbox align="buttom">
+                                        <combobox readonly="true" mold="rounded" width="120px"  
+                                                  selectedItem="@load(vm.item.chartLevel ) @save(vm.item.chartLevel, before={'onSave'})"   
+                                                  value="@load(vm.item.chartLevel )" >
+                                            <comboitem label="1 รหัส" value="2" /> 
+                                            <comboitem label="3 รหัส" value="3" /> 
+                                            <comboitem label="7 รหัส" value="4" /> 
+                                            <comboitem label="15 รหัส" value="5" /> 
+                                            <comboitem label="31 รหัส" value="6" /> 
+                                        </combobox>
+                                        <label value=" (ผังเต็ม) "/>
+                                    </hbox>
+                                </listcell>        
+                                <listcell label="ตำแหน่งที่ต้องการทดสอบ"  />    
+                                <listcell > 
+                                    <combobox model="@load(vm.positions)" readonly="true" mold="rounded" width="150px" 
+                                              selectedItem="@load(vm.item.position ) @save(vm.item.position, before={'onSave'})"  
+                                              value="@load(vm.item.position.name )">
+                                        <template name="model" var="pos">
+                                            <comboitem label="@load(pos.name)" value="@load(pos)" />
+                                        </template>
+                                    </combobox>
+                                </listcell>
+                            </listitem>
+                            <listitem >
+                                <listcell label="จำนวนรหัส (Advance)"  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <intbox style="text-align:right" format="#,##0" value="@load(vm.item.advanceTotal) @save(vm.item.advanceTotal, before={'onSave'})" width="90px" mold="rounded" />
+                                        <label value=" รหัส "/>
+                                    </hbox>
+                                </listcell>        
+                                <listcell label="ตำแหน่งที่ (Advance)"  />    
+                                <listcell > 
+                                    <combobox model="@load(vm.positions)" readonly="true" mold="rounded" width="150px" 
+                                              selectedItem="@load(vm.item.advancePosition ) @save(vm.item.advancePosition, before={'onSave'})"  
+                                              value="@load(vm.item.advancePosition.name )">
+                                        <template name="model" var="pos">
+                                            <comboitem label="@load(pos.name)" value="@load(pos)" />
+                                        </template>
+                                    </combobox>
+                                </listcell>
+                            </listitem> 
+                            <listitem >
+                                <listcell label="โมบาย/เซ็นเตอร์ (สูงสุด) "  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.mobilePcent) @save(vm.item.mobilePcent, before={'onSave'})" width="60px" mold="rounded" />
+                                        <combobox readonly="true" mold="rounded" width="100px"  
+                                                  selectedItem="@load(vm.item.mobilePcentFrom ) @save(vm.item.mobilePcentFrom, before={'onSave'})"  
+                                                  value="@load(vm.item.mobilePcentFrom )"> 
+                                            <comboitem label="จาก PV" value="PV" /> 
+                                            <comboitem label="จาก บาท" value="BAHT" />  
+                                        </combobox>
+                                    </hbox>
+                                </listcell>       
+                                <listcell label="ALL SALE (สูงสุด) "  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.allsalePcent) @save(vm.item.allsalePcent, before={'onSave'})" width="60px" mold="rounded" />
+                                        <combobox readonly="true" mold="rounded" width="100px"  
+                                                  selectedItem="@load(vm.item.allsalePcentFrom ) @save(vm.item.allsalePcentFrom, before={'onSave'})"  
+                                                  value="@load(vm.item.allsalePcentFrom )"> 
+                                            <comboitem label="จาก PV" value="PV" /> 
+                                            <comboitem label="จาก บาท" value="BAHT" />  
+                                        </combobox>
+                                    </hbox>
+                                </listcell>
+                            </listitem>  
+                            <listitem >
+                                <listcell label="จ่ายเพิ่มส่วนอื่นๆ (สูงสุด) "  />    
+                                <listcell span="3" >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.## '%'" value="@load(vm.item.otherPcent) @save(vm.item.otherPcent, before={'onSave'})" width="60px" mold="rounded" />
+                                        <combobox readonly="true" mold="rounded" width="100px"  
+                                                  selectedItem="@load(vm.item.otherPcentFrom ) @save(vm.item.otherPcentFrom, before={'onSave'})"  
+                                                  value="@load(vm.item.otherPcentFrom )"> 
+                                            <comboitem label="จาก PV" value="PV" /> 
+                                            <comboitem label="จาก บาท" value="BAHT" />  
+                                        </combobox>
+                                    </hbox>
+                                </listcell>    
+                            </listitem>
+                            <listitem >
+                                <listcell label="ค่าสมัครสมาชิก "  />    
+                                <listcell span="3" >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.regisBaht) @save(vm.item.regisBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <label value=" บาท "/>
+                                    </hbox>
+                                </listcell>       
+                            </listitem>
+                            <listitem >
+                                <listcell label="กำหนดอัตรา (สัดส่วน) 1PV : "  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.pvPerBaht) @save(vm.item.pvPerBaht, before={'onSave'})" width="60px" mold="rounded" />
+                                        <label value=" บาท "/>
+                                    </hbox>
+                                </listcell>       
+                                <listcell label="ต้นทุนสินค้า"  />    
+                                <listcell > 
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.costBaht) @save(vm.item.costBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <label value=" บาท "/>
+                                    </hbox>
+                                </listcell>
+                            </listitem>
+                            <listitem >
+                                <listcell label="ค่าเช่าตึก (Office) "  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.officeRentBaht) @save(vm.item.officeRentBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <label value=" /เดือน "/>
+                                    </hbox>
+                                </listcell>     
+                                <listcell label="ค่าพนักงาน (Office) "  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.employeeBaht) @save(vm.item.employeeBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <label value=" /เดือน "/>
+                                    </hbox>
+                                </listcell>   
+                            </listitem>
+                            <listitem >
+                                <listcell label="ค่าจัดประชุม-สัมนา (Office) "  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.meetingBaht) @save(vm.item.meetingBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <label value=" /เดือน "/>
+                                    </hbox>
+                                </listcell>     
+                                <listcell label="ค่าน้ำ+ไฟฟ้า+กาแฟ+อื่นๆ (Office)"  />    
+                                <listcell >
+                                    <hbox align="bottom"> 
+                                        <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.otherBaht) @save(vm.item.otherBaht, before={'onSave'})" width="90px" mold="rounded" />
+                                        <label value=" /เดือน "/>
+                                    </hbox>
+                                </listcell>   
+                            </listitem>
                         </listbox>
                     </groupbox>
                 </tabpanel>

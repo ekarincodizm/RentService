@@ -9,12 +9,12 @@ import javax.validation.constraints.NotNull;
 public class TestPlanKey implements Serializable {
      
     @NotNull(message = "กำหนด Plan Index"  ) 
-    @Column(name = "plan_id", columnDefinition = "int" ) 
+    @Column(name = "plan_id", columnDefinition = "int" , nullable = false ) 
     private Integer no ;   
     
     @NotNull(message = "กำหนดบริษัทผู้ใช้งาน"  ) 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", referencedColumnName = "company_id")
+    @JoinColumn(name = "company_id", referencedColumnName = "company_id"  ,nullable = false )
     private Company company;     
 
     public TestPlanKey(){}

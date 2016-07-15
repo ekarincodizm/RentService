@@ -4,7 +4,8 @@
  */
 package com.sabuymlm.service; 
 
-import com.sabuymlm.authen.SecurityUtil; 
+import com.sabuymlm.authen.SecurityUtil;  
+import com.sabuymlm.model.admin.Company;
 import com.sabuymlm.model.systemTest.BinaryBalanceDefine;
 import com.sabuymlm.model.systemTest.BinaryMultiWsDefine;
 import com.sabuymlm.model.systemTest.BinaryWsDefine;
@@ -16,7 +17,7 @@ import com.sabuymlm.model.systemTest.SponsorDefKey;
 import com.sabuymlm.model.systemTest.SponsorDefine;
 import com.sabuymlm.model.systemTest.SponsorDefineHeader;
 import com.sabuymlm.model.systemTest.TestPlan;
-import com.sabuymlm.model.systemTest.TestPlanKey;
+import com.sabuymlm.model.systemTest.TestPlanHeader; 
 import com.sabuymlm.model.systemTest.UnilevelDefKey;
 import com.sabuymlm.model.systemTest.UnilevelDefine;
 import com.sabuymlm.model.systemTest.UnilevelDefineHeader; 
@@ -251,8 +252,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     }
 
     @Override
-    public TestPlan findByTestPlanId(TestPlanKey id) {
-        return reposTestPlanEvent.findOne(id);
+    public TestPlanHeader findByTestPlanHeader(Company company) {
+        return reposTestPlanEvent.findOne(company); 
     }
 
     @Override
@@ -261,8 +262,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     }
 
     @Override
-    public List<TestPlan> saveTestPlans(List<TestPlan> selectItems) {
-        return reposTestPlanEvent.save(selectItems); 
+    public TestPlanHeader saveTestPlanHeader(TestPlanHeader testPlanHeader) {
+        return reposTestPlanEvent.save(testPlanHeader); 
     }
     
 }

@@ -3,14 +3,14 @@
  * and open the template in the editor.
  */
 package com.sabuymlm.vm.systemTest;
-   
+
 import com.sabuymlm.authen.SecurityUtil;
-import com.sabuymlm.model.systemTest.Position;
 import com.sabuymlm.model.systemTest.TestPlan;
+import com.sabuymlm.model.systemTest.TestPlanHeader;
 import com.sabuymlm.model.systemTest.TestPlanKey;
 import com.sabuymlm.service.SystemTestService;
 import com.sabuymlm.vm.CommonVM;
-import java.io.Serializable;  
+import java.io.Serializable;
 import java.util.Date;
 import org.springframework.transaction.annotation.Transactional;
 import org.zkoss.bind.annotation.BindingParam;
@@ -23,94 +23,143 @@ import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zkplus.spring.DelegatingVariableResolver; 
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+
 /**
  *
  * @author MY-TENG
  */
 @VariableResolver(DelegatingVariableResolver.class)
-public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan,TestPlan>  implements Serializable {
+public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanHeader> implements Serializable {
 
     @WireVariable
-    private SystemTestService systemTestService; 
-    
+    private SystemTestService systemTestService;
+
     @Init
-    public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlan item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
-        selectItems.addAll(systemTestService.findAllTestPlanByCompany()) ; 
-        pageHasDetail = false ;
-        super.initial(item, icon, headerLabel);      
+    public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
+        pageHasDetail = false;
+        positions.addAll(systemTestService.findAllPositions());
+        super.initial(item, icon, headerLabel);
         setStatusEdit();
     }
 
     @Override
-    protected void setEditItem() { 
-        selectItems.addAll(systemTestService.findAllTestPlanByCompany()) ;
-    } 
-
-    @Override
-    protected void setNewItem() { 
-        if(selectItems.isEmpty()) {
-            setStatusAdd(); 
-            selectItems.clear();
-            for(int i = 1; i <= 7 ;i++ ){
-                TestPlan itm = new TestPlan(); 
-                TestPlanKey itemKey = new TestPlanKey(); 
-                itemKey.setCompany(SecurityUtil.getUserDetails().getCompany()); 
-                itemKey.setNo(i); 
-                itm.setId(itemKey);
-                itm.setChkPay("false"); 
-                itm.setPassMatchingStrong("false"); 
-                itm.setPassMatchingWeakOrBonus("false"); 
-                switch(i){
-                    case 1 : itm.setPlanName("Sponsor (โบนัสแนะนำ)"); break; 
-                    case 2 : itm.setPlanName("X-Diff Sponsor (โบนัสแนะนำแบบส่วนต่างจ่ายหมด)"); break; 
-                    case 3 : itm.setPlanName("W/S(%) (โบนัสบริหารทีมแบบจ่าย อ่อน/แข็ง)"); break; 
-                    case 4 : itm.setPlanName("Multi W/S(%) (โบนัสบริหารทีมแบบจ่าย อ่อน/แข็ง) คำนวณมากกว่า 1 ครั้ง(ผัง 3 ขาขึ้นไป)"); break; 
-                    case 5 : itm.setPlanName("W/S(Balance) (โบนัสบริหารทีมแบบจ่าย จับคู่)"); break; 
-                    case 6 : itm.setPlanName("Matching (โบนัสแมทชิ่งตามสายแนะนำ)"); break; 
-                    case 7 : itm.setPlanName("Uni-level (โบนัส Uni-Level)"); break; 
-                    default : break;
-                }        
-                selectItems.add(itm);
-            } 
-        }else {
-            setStatusEdit();
-        }
-    }    
-    
-    @Transactional
-    @Override 
-    protected void saveItem() {  
-        systemTestService.saveTestPlans(selectItems);
-    }  
-    
-    @Override
-    protected void setItems(){ 
-        for(TestPlan def: selectItems){
-            if(def.getCreateUser() != null){
-                def.setUpdateDate(new Date());
-                def.setUpdateUser(SecurityUtil.getUserDetails().getUser());
-            }else {
-                def.setCreateDate(new Date());
-                def.setCreateUser(SecurityUtil.getUserDetails().getUser());
-            } 
-        } 
-    }   
-    
-    @Command(value = {"onValidateTable"})
-    @NotifyChange({"items","item"}) 
-    public void validateTable(@BindingParam("item") TestPlan item) {  
-        if(item.getChkPay().equals("true")){
-            item.setChkPay("false");
-        }else {
-            item.setChkPay("true");
-        }  
-    } 
-
-    @Override
-    protected void privateValidate() { 
+    protected void setEditItem() {
+        item = systemTestService.findByTestPlanHeader(item.getCompany());
+        item.getItems();
     }
 
-    
-    
+    private void initItem() {
+        item = new TestPlanHeader();
+        item.setCompany(SecurityUtil.getUserDetails().getCompany()); 
+        if (!positions.isEmpty()) {
+            item.setPosition(positions.get(0));
+            item.setAdvancePosition(positions.get(0));
+        }
+        item.setAdvanceTotal(0);
+        item.setAllsalePcent(0f);
+        item.setAllsalePcentFrom("PV");
+        item.setMobilePcent(0f);
+        item.setMobilePcentFrom("PV");
+        item.setOtherPcent(0f);
+        item.setOtherPcentFrom("PV");
+
+        item.setChartLevel(2);
+        item.setChartPower(2);
+        item.setChartSponsorPower(2);
+
+        item.setRegisBaht(0f);
+        item.setPvPerBaht(1f);
+        item.setCostBaht(0f);
+        item.setOfficeRentBaht(0f);
+        item.setEmployeeBaht(0f);
+        item.setOtherBaht(0f);
+        item.setMeetingBaht(0f);
+    }
+
+    @Override
+    protected void setNewItem() {
+        initItem(); 
+        if (item.getItems().isEmpty()) {  
+            setStatusAdd(); 
+            for (int i = 1; i <= 7; i++) {
+                TestPlan itm = new TestPlan();
+                TestPlanKey itemKey = new TestPlanKey();
+                itemKey.setCompany(SecurityUtil.getUserDetails().getCompany());
+                itemKey.setNo(i);
+                itm.setId(itemKey);
+                itm.setChkPay("false");
+                itm.setPassMatchingStrong("false");
+                itm.setPassMatchingWeakOrBonus("false");
+                switch (i) {
+                    case 1:
+                        itm.setPlanName("Sponsor (โบนัสแนะนำ)");
+                        break;
+                    case 2:
+                        itm.setPlanName("X-Diff Sponsor (โบนัสแนะนำแบบส่วนต่างจ่ายหมด)");
+                        break;
+                    case 3:
+                        itm.setPlanName("W/S(%) (โบนัสบริหารทีมแบบจ่าย อ่อน/แข็ง)");
+                        break;
+                    case 4:
+                        itm.setPlanName("Multi W/S(%) (โบนัสบริหารทีมแบบจ่าย อ่อน/แข็ง) คำนวณมากกว่า 1 ครั้ง(ผัง 3 ขาขึ้นไป)");
+                        break;
+                    case 5:
+                        itm.setPlanName("W/S(Balance) (โบนัสบริหารทีมแบบจ่าย จับคู่)");
+                        break;
+                    case 6:
+                        itm.setPlanName("Matching (โบนัสแมทชิ่งตามสายแนะนำ)");
+                        break;
+                    case 7:
+                        itm.setPlanName("Uni-level (โบนัส Uni-Level)");
+                        break;
+                    default:
+                        break;
+                }
+                item.getItems().add(itm);
+            }
+
+        } else {
+            setStatusEdit();
+        } 
+    }
+
+    @Transactional
+    @Override
+    protected void saveItem() {
+        systemTestService.saveTestPlanHeader(item);
+    }
+
+    @Override
+    protected void setItems() { 
+        if (item.getCreateUser() != null) {
+            item.setUpdateDate(new Date());
+            item.setUpdateUser(SecurityUtil.getUserDetails().getUser());
+        } else {
+            item.setCreateDate(new Date());
+            item.setCreateUser(SecurityUtil.getUserDetails().getUser());
+        } 
+    }
+
+    @Command(value = {"onValidateTable"})
+    @NotifyChange({"items", "item"})
+    public void validateTable(@BindingParam("item") TestPlan item) {
+        if (item.getChkPay().equals("true")) {
+            item.setChkPay("false");
+            item.setChkAuto("false");
+            item.setPassMatchingStrong("false");
+            item.setPassMatchingWeakOrBonus("false");
+        } else {
+            item.setChkPay("true");
+        }
+    }
+
+    @Override
+    protected void privateValidate() {
+        System.out.println(" ลองดูดิ้ ");
+        for (TestPlan itm : item.getItems()) { 
+            constraintViolations.addAll(validator.validate(itm));
+        }
+    }
+
 }

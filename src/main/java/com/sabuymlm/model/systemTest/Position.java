@@ -22,6 +22,13 @@ public class Position extends CommonEntity implements Serializable {
     @NotNull(message = "กรอกคะแนนสะสม(TOP-UP PV)"  ) 
     @Column(name = "topup_pv", columnDefinition = "float", nullable = false)
     private Float topupPv;  
+     
+    @Column(name = "mta_baht", columnDefinition = "float", nullable = true)
+    private Float mtaBaht;  
+    @Column(name = "auto_pcent", columnDefinition = "float", nullable = true)
+    private Float autoPcent;  
+    @Column(name = "auto_max", columnDefinition = "float", nullable = true)
+    private Float autoMax;  
     
     @Column(name = "sponsor_or_and_state", columnDefinition = "varchar(5)" )
     private String sponsorOrAndState; 
@@ -46,6 +53,30 @@ public class Position extends CommonEntity implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     } 
+
+    public Float getMtaBaht() {
+        return mtaBaht;
+    }
+
+    public void setMtaBaht(Float mtaBaht) {
+        this.mtaBaht = mtaBaht;
+    }
+
+    public Float getAutoPcent() {
+        return autoPcent;
+    }
+
+    public void setAutoPcent(Float autoPcent) {
+        this.autoPcent = autoPcent;
+    }
+
+    public Float getAutoMax() {
+        return autoMax;
+    }
+
+    public void setAutoMax(Float autoMax) {
+        this.autoMax = autoMax;
+    }
 
     public String getName() {
         return name;
