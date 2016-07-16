@@ -1,8 +1,11 @@
 package com.sabuymlm.model.systemTest;
 
+import com.sabuymlm.utils.Format;
+import com.sabuymlm.vm.systemTest.LabelValue;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -120,14 +123,18 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
 
     public Integer getChartLevel() {
         return chartLevel;
-    }
-    
-    public String getChartLevelStr() {
-        return chartLevel + "";
-    }
+    } 
 
     public void setChartLevel(Integer chartLevel) {
         this.chartLevel = chartLevel;
+    } 
+    
+    public void setChartLevel(LabelValue labelValue) { 
+         this.chartLevel = labelValue.getValue().intValue() ;
+    }
+    
+    public LabelValue getChartLevelValue() { 
+        return new LabelValue(Format.formatNumber("#,##0 'รหัส'", Math.pow(chartPower, chartLevel) ) ,chartLevel); 
     }
 
     public Position getPosition() {

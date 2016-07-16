@@ -56,7 +56,8 @@
                                 <listcell label="เลือกโครงสรัางสายงาน"  />    
                                 <listcell >
                                     <combobox  readonly="true" mold="rounded" width="150px"  
-                                               selectedItem="@load(vm.item.chartPowerStr ) @save(vm.item.chartPower, before={'onSave','onValidateTable'})" >
+                                               selectedItem="@load(vm.item.chartPowerStr ) @save(vm.item.chartPower, before={'onSave','onValidateTable'})" 
+                                                onSelect="@command('onValidateTable' , power = self.selectedItem.value )" >
                                         <comboitem label="โครงสร้าง 1 แตก 2" value="2" /> 
                                         <comboitem label="โครงสร้าง 1 แตก 3" value="3" /> 
                                         <comboitem label="โครงสร้าง 1 แตก 4" value="4" /> 
@@ -80,13 +81,11 @@
                                 <listcell label="จำนวนรหัส (ทดสอบ)"  />    
                                 <listcell >
                                     <hbox align="buttom">
-                                        <combobox readonly="true" mold="rounded" width="120px"   
-                                                  selectedItem="@load(vm.item.chartLevelStr ) @save(vm.item.chartLevel, before={'onSave','onValidateTable'})" >
-                                            <comboitem label="1 รหัส" value="2" /> 
-                                            <comboitem label="3 รหัส" value="3" /> 
-                                            <comboitem label="7 รหัส" value="4" /> 
-                                            <comboitem label="15 รหัส" value="5" /> 
-                                            <comboitem label="31 รหัส" value="6" /> 
+                                        <combobox readonly="true" mold="rounded" width="120px"   model="@init(vm.powerLevels) @load(vm.powerLevels, after={'onValidateTable'} )"
+                                                  selectedItem="@load(vm.item.chartLevelValue ) @save(vm.item.chartLevel , before={'onSave','onValidateTable'})"  >
+                                            <template name="model" var="level">
+                                                <comboitem label="@load(level.label)" value="@load(level)"  />
+                                            </template> 
                                         </combobox>
                                         <label value=" (ผังเต็ม) "/>
                                     </hbox>

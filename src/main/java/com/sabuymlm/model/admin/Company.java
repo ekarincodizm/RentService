@@ -68,6 +68,9 @@ public class Company implements Serializable {
     
     @Column(name = "remark_invoice", length = 500)
     private String remarkInvoice;
+    
+    @Column(name = "max_mlm_member" , columnDefinition = "int")
+    private Integer maxMlmMember; 
 
     public Integer getId() {
         return id;
@@ -75,6 +78,14 @@ public class Company implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getMaxMlmMember() {
+        return maxMlmMember;
+    }
+
+    public void setMaxMlmMember(Integer maxMlmMember) {
+        this.maxMlmMember = maxMlmMember;
     }
 
     public String getRemarkInvoice() {
