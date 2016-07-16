@@ -4,8 +4,7 @@
  */
 package com.sabuymlm.service;
 
-import com.sabuymlm.authen.SecurityUtil;
-import com.sabuymlm.model.admin.Company;
+import com.sabuymlm.authen.SecurityUtil; 
 import com.sabuymlm.model.systemTest.BinaryBalanceDefine;
 import com.sabuymlm.model.systemTest.BinaryMultiWsDefine;
 import com.sabuymlm.model.systemTest.BinaryWsDefine;
@@ -36,6 +35,7 @@ import com.sabuymlm.repository.systemTest.XSponsorDefRepository;
 import com.sabuymlm.repository.systemTest.XSponsorHeaderRepository;
 import java.util.Collection;
 import java.util.List;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -267,4 +267,11 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
         return reposTestPlanHeaderEvent.save(testPlanHeader); 
     }
 
+    @Override
+    public void procRunTest() {
+        Query query = unwrapHibernateSession().createSQLQuery("{call TestSystem.run_test_plan }") ; 
+         query.uniqueResult(); 
+    }
 }
+
+

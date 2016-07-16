@@ -112,8 +112,13 @@
                             </hbox>
                         </row>
                         <row spans="1,3" style="border:none">
-                            <label visible="@load(vm.admin)" value="MAX GEN MEMBER : " />
-                             <intbox width="120px" mold="rounded" format="#,##0" value="@bind(vm.item.maxMlmMember)" visible="@load(vm.admin)" />  
+                            <label visible="@load(vm.admin)" value="BACKUP DBase PATH : " />
+                            <hbox align="middle">
+                                <textbox width="542px" mold="rounded" value="@bind(vm.item.backupDbPath)" visible="@load(vm.admin)" />
+                                <space visible="@load(vm.admin)" />
+                                <label visible="@load(vm.admin)" value="MAX GEN MEMBER : " />
+                                <intbox width="120px" mold="rounded" format="#,##0" value="@bind(vm.item.maxMlmMember)" visible="@load(vm.admin)" />  
+                            </hbox> 
                         </row>
                         <row spans="1,3" style="border:none">
                             <label value="" /> 

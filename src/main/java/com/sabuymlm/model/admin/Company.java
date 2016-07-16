@@ -55,6 +55,8 @@ public class Company implements Serializable {
 
     @Column(name = "upload_path", length = 500)
     private String uploadPath;
+    @Column(name = "backup_db_path", length = 500)
+    private String backupDbPath;
 
     @Column(name = "disc_tax")
     private Double discTax;
@@ -78,6 +80,14 @@ public class Company implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getBackupDbPath() {
+        return backupDbPath;
+    }
+
+    public void setBackupDbPath(String backupDbPath) {
+        this.backupDbPath = backupDbPath;
     }
 
     public Integer getMaxMlmMember() {

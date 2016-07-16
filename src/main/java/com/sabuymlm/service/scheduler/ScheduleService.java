@@ -5,12 +5,15 @@
  */
 package com.sabuymlm.service.scheduler;
 
+import com.sabuymlm.model.admin.Company;
+import com.sabuymlm.service.CommonService;
 import com.sabuymlm.utils.DateUtils;
 import com.sabuymlm.utils.Entry;
 import com.sabuymlm.utils.FileEntry;
 import com.sabuymlm.utils.Format;
 import java.io.File;
 import java.util.Date; 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service; 
 
@@ -21,15 +24,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ScheduleService {
 
-    private final String FOLDER_PATH = "C:\\Backup Database";
+    @Autowired
+    private CommonService services;
+    private String FOLDER_PATH  ;
 
     //  "* * * * * *"  pattern /// "ss mm HH dd MM yy"
     @Scheduled(cron = "0 0 3 * * *") /// delete file in folder 
     public void autoDeleteBackupDatabaseFile() {
+        
+        Company comp = services.findByCompanyId(1);
+        FOLDER_PATH = comp.getBackupDbPath();
   
         long compareLess =  Long.parseLong( Format.formatDateEn("yyyyMMdd", DateUtils.addDate( new Date(), -7) ));
-        String substr = ""; 
-        System.out.println(" START DELETE FILE ");
+        String substr  ; 
+        
+        System.out.println(" START DELETE FILE " + Format.formatDateEn("dd-MM-yyyy HH:mm:ss", new Date() ) );
+        
         FileEntry entryfile = new FileEntry(FOLDER_PATH);
         for (Entry en : entryfile.lsEntry) {
             try {

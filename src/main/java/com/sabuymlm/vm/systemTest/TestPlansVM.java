@@ -13,10 +13,8 @@ import com.sabuymlm.utils.Format;
 import com.sabuymlm.vm.CommonVM;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Date; 
+import java.util.List; 
 import org.springframework.transaction.annotation.Transactional;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -57,7 +55,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             max_count_member = SecurityUtil.getUserDetails().getCompany().getMaxMlmMember();
         }
         int level = 0 ;
-        double count_member = 0 ;
+        double count_member  ;
         do{
             count_member =   Math.pow(item.getChartPower(), level) ;
             LabelValue labelValue = new LabelValue( Format.formatNumber("#,##0 'รหัส'", count_member),level); 
@@ -143,6 +141,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     @Override
     protected void saveItem() {
         systemTestService.saveTestPlanHeader(item);
+        systemTestService.procRunTest();
     }
 
     @Override
