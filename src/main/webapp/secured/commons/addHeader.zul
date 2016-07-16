@@ -3,7 +3,7 @@
     <hbox align="bottom">
         <toolbar style="background-color:transparent;" >
             <toolbarbutton onClick="@command('onSave')" label="Save" image="/images/icons/24x24/Save-icon.png" autodisable="self" tooltiptext="บันทึกข้อมูล" />
-            <toolbarbutton onClick="@command('onClose')" label="Close" image="/images/icons/24x24/614339-.svg-24.png" autodisable="self" tooltiptext="ปิดหน้าต่าง" /> 
+            <toolbarbutton onClick="@command('onClose')" label="Close" image="/images/icons/24x24/close24.png" autodisable="self" tooltiptext="ปิดหน้าต่าง" /> 
             <space/>
             <label value="@load(vm.lbStatus)" style="@load(vm.lbStatusStyle)" />  
             <space/>

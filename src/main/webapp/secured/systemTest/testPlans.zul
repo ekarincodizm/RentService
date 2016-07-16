@@ -42,7 +42,7 @@
                     </groupbox>
                 </tabpanel>
                 <tabpanel>
-                    <toolbarbutton onClick="@command('onSave')" label="Save" image="/images/icons/24x24/Save-icon.png" autodisable="self" tooltiptext="บันทึกข้อมูล" />
+                    <toolbarbutton onClick="@command('onSave')" label="เริ่มคำนวณ" image="/images/icons/32x32/actions.png" autodisable="self" tooltiptext="ปุ่มเริ่มต้นการคำนวณ" />
                     <groupbox mold="3d" >
                         <caption height="25px" style="padding:5px;" label=" กำหนดคุณสมบัติการทดสอบ "  /> 
                         <listbox >  
