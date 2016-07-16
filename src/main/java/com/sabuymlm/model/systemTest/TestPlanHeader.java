@@ -134,7 +134,11 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
     }
     
     public LabelValue getChartLevelValue() { 
-        return new LabelValue(Format.formatNumber("#,##0 'รหัส'", Math.pow(chartPower, chartLevel) ) ,chartLevel); 
+        if(chartPower == null || chartLevel == null ) {
+            return null ; 
+        }else {
+            return new LabelValue(Format.formatNumber("#,##0 'รหัส'", Math.pow(chartPower, chartLevel) ) ,chartLevel); 
+        }
     }
 
     public Position getPosition() {

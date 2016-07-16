@@ -64,7 +64,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             powerLevels.add(labelValue);
             level++;
         }while(count_member < max_count_member); 
-        if(item.getChartLevel() > (level-1)){ 
+        if(item.getChartLevel() !=null && item.getChartLevel() > (level-1)){ 
             item.setChartLevel((level-1)); 
         }
         
