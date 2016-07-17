@@ -8,14 +8,18 @@ import com.sabuymlm.authen.SecurityUtil;
 import com.sabuymlm.model.systemTest.TestPlan;
 import com.sabuymlm.model.systemTest.TestPlanHeader;
 import com.sabuymlm.model.systemTest.TestPlanKey;
+import com.sabuymlm.model.test.GenMember;
 import com.sabuymlm.service.SystemTestService;
+import com.sabuymlm.service.TestService;
 import com.sabuymlm.utils.Format;
 import com.sabuymlm.vm.CommonVM;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date; 
 import java.util.List; 
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
@@ -37,7 +41,13 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
 
     @WireVariable
     private SystemTestService systemTestService;
+    @WireVariable
+    private TestService testService;
     private final List<LabelValue> powerLevels = new ArrayList<LabelValue>();
+    
+    private final int pageMemberSize = 10;
+    private int activeMemberPage; 
+    protected Page<GenMember> genMemberPage;
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
@@ -46,6 +56,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         super.initial(item, icon, headerLabel);
         setStatusEdit();
         genPowerLevels();
+        loadTestData();
     }
 
     private void genPowerLevels() {
@@ -142,7 +153,8 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     protected void saveItem() {
         systemTestService.saveTestPlanHeader(item);
         systemTestService.procRunTest();
-    }
+        loadTestData();
+    } 
 
     @Override
     protected void setItems() {
@@ -180,4 +192,34 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         }
     }
 
+    /// ======================
+    private void loadTestData(){
+        searchGenMember();
+    }
+    
+    @Command(value = {"searchGenMember"}) 
+    public void searchGenMember() { 
+        genMemberPage= testService.findAllGenMembers(activeMemberPage, pageMemberSize); 
+        BindUtils.postNotifyChange(null,null,this,"genMemberPage");
+    }
+    
+    public int getPageMemberSize() {
+        return pageMemberSize;
+    } 
+
+    public int getActiveMemberPage() {
+        return activeMemberPage;
+    }
+
+    public void setActiveMemberPage(int activeMemberPage) {
+        this.activeMemberPage = activeMemberPage;
+    }
+
+    public Page<GenMember> getGenMemberPage() {
+        return genMemberPage ;
+    }
+
+     
+    
+    
 }

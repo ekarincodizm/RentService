@@ -269,8 +269,9 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
 
     @Override
     public void procRunTest() {
-        Query query = unwrapHibernateSession().createSQLQuery("{call TestSystem.run_test_plan }") ; 
-         query.uniqueResult(); 
+        Query query = unwrapHibernateSession().createSQLQuery("{call Test.run_test_plan(:companyId) }") ; 
+        query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());
+        query.uniqueResult(); 
     }
 }
 

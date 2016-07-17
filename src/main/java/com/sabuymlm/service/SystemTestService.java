@@ -3,8 +3,7 @@
  * and open the template in the editor.
  */
 package com.sabuymlm.service;
-          
-import com.sabuymlm.model.admin.Company;
+           
 import com.sabuymlm.model.systemTest.BinaryBalanceDefine;
 import com.sabuymlm.model.systemTest.BinaryMultiWsDefine;
 import com.sabuymlm.model.systemTest.BinaryWsDefine;
@@ -16,13 +15,12 @@ import com.sabuymlm.model.systemTest.MatchingDefine;
 import com.sabuymlm.model.systemTest.MatchingDefineHeader;
 import com.sabuymlm.model.systemTest.MatchingDefKey;
 import com.sabuymlm.model.systemTest.TestPlan;
-import com.sabuymlm.model.systemTest.TestPlanHeader;
-import com.sabuymlm.model.systemTest.TestPlanKey;
+import com.sabuymlm.model.systemTest.TestPlanHeader; 
 import com.sabuymlm.model.systemTest.UnilevelDefKey;
 import com.sabuymlm.model.systemTest.UnilevelDefine;
 import com.sabuymlm.model.systemTest.UnilevelDefineHeader;
 import com.sabuymlm.model.systemTest.XSponsorDefineHeader;
-import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
+import com.sabuymlm.model.systemTest.XSponsorHeaderKey; 
 import java.util.Collection;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -80,6 +78,6 @@ public interface SystemTestService {
     public Collection<? extends TestPlan> findAllTestPlanByCompany(); 
     public TestPlanHeader saveTestPlanHeader(TestPlanHeader testPlanHeader);
 
-    public void procRunTest();
+    public void procRunTest(); 
     
 }

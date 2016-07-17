@@ -137,7 +137,7 @@ public abstract class CommonVM<T> implements Serializable {
             Messagebox.show("ต้องการลบข้อมูล หรือไม่?", "คำยืนยัน", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
                 @Override
                 public void onEvent(Event event) throws Exception {
-                    if (((Integer) event.getData()).intValue() == Messagebox.YES) {
+                    if (((Integer) event.getData()) == Messagebox.YES) {
                         selectItems.clear();
                         selectItems.add(selectItem);
                         deleteSelected();
