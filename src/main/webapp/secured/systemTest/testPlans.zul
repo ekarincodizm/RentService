@@ -242,33 +242,37 @@
                             <tabpanel>
                                 <paging width="455px" onPaging="@command('searchGenMember')"  pageSize="@load(vm.pageMemberSize)"  activePage="@bind(vm.activeMemberPage)" totalSize="@bind(vm.genMemberPage.totalElements)" detailed="true" />
                                 <listbox width="100%"  model="@bind(vm.genMemberPage.content)"  sizedByContent="true" sclass="vertical-scroll" > 
-                                    <listhead sizable="true" > 
-                                        <listheader align="center" width="45px" label="ชั้นที่" />              
+                                    <listhead sizable="true" >  
                                         <listheader align="center" width="65px" label="รหัส" />       
+                                        <listheader align="center" width="45px" label="ชั้นที่" />       
                                         <listheader align="right" width="70px" label="TOP-UP" />  
                                         <listheader align="center" width="100px" label="ตำแหน่ง" />  
+                                        <listheader align="center" width="80px" label="ชั้น(แนะนำ)" />     
                                         <listheader align="center" width="65px" label="(แนะนำ)" />    
                                         <listheader align="center" width="65px" label="(อัพไลน์)" />    
-                                        <listheader align="center" width="55px" label="ทีมด้าน" />     
                                         
+                                        <listheader align="center" width="55px" label="ทีมด้าน" />     
                                         <listheader style="background:#C5EAE3;"  align="center" width="90px" label="รหัส(ภายใต้)" />     
                                         <listheader style="background:#C5EAE3;"  align="right" width="120px" label="PV(ภายใต้)" />      
+                                         
                                         <listheader style="background:#C5EAE3;"  align="right" width="100px" label="แนะนำ(ภายใต้)" />      
                                         <listheader style="background:#C5EAE3;"  align="right" width="120px" label="PVแนะนำ(ภายใต้)" />      
                                         
                                     </listhead>
                                     <template name="model"  var="item">
                                         <listitem >    
-                                            <listcell label="@load(item.levelGen)" />   
                                             <listcell label="@load(item.id) @converter('formatedNumber', format='000000')" />    
+                                            <listcell label="@load(item.levelGen)" />    
                                             <listcell label="@load(item.topupPv) @converter('formatedNumber', format='#,##0.## \'PV\'')" />   
                                             <listcell label="@load(item.position.name)" />   
+                                            <listcell label="@load(item.levelSponsorGen) @converter('formatedNumber', format='#,##0')" />   
                                             <listcell label="@load(item.sponsorId) @converter('formatedNumber', format='000000') " />   
                                             <listcell label="@load(item.uplineId) @converter('formatedNumber', format='000000')" />   
-                                            <listcell label="@load(item.align)" />  
                                             
+                                            <listcell label="@load(item.align)" />  
                                             <listcell label="@load(item.totalMember) @converter('formatedNumber', format='#,##0.## \'รหัส\'')" />   
-                                            <listcell label="@load(item.organizationPv) @converter('formatedNumber', format='#,##0.## \'PV\'')" />    
+                                            <listcell label="@load(item.organizationPv) @converter('formatedNumber', format='#,##0.## \'PV\'')" />     
+                                            
                                             <listcell label="@load(item.totalSponsorCount) @converter('formatedNumber', format='#,##0.## \'รหัส\'')" />   
                                             <listcell label="@load(item.organizationSponsorPv) @converter('formatedNumber', format='#,##0.## \'PV\'')" />    
                                             

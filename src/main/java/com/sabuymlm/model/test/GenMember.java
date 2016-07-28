@@ -17,6 +17,8 @@ public class GenMember implements Serializable {
     private Integer levelGen;
     @Column(name = "upline_id", columnDefinition = "bigint" )
     private Long uplineId;
+    @Column(name = "level_sponsor_gen", columnDefinition = "int")
+    private Integer levelSponsorGen;
     @Column(name = "sponsor_id", columnDefinition = "bigint" )
     private Long sponsorId;
     @Column(name = "align", columnDefinition = "int" )
@@ -72,6 +74,14 @@ public class GenMember implements Serializable {
 
     public void setLevelGen(Integer levelGen) {
         this.levelGen = levelGen;
+    }
+
+    public Integer getLevelSponsorGen() {
+        return levelSponsorGen;
+    }
+
+    public void setLevelSponsorGen(Integer levelSponsorGen) {
+        this.levelSponsorGen = levelSponsorGen;
     }
 
     public Long getUplineId() {
