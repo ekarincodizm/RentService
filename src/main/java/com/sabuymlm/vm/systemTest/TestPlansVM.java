@@ -9,9 +9,11 @@ import com.sabuymlm.model.systemTest.TestPlan;
 import com.sabuymlm.model.systemTest.TestPlanHeader;
 import com.sabuymlm.model.systemTest.TestPlanKey;
 import com.sabuymlm.model.test.GenMember;
+import com.sabuymlm.model.test.Ws;
 import com.sabuymlm.service.SystemTestService;
 import com.sabuymlm.service.TestService;
 import com.sabuymlm.utils.Format;
+import com.sabuymlm.utils.Pageable;
 import com.sabuymlm.vm.CommonVM;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,6 +54,10 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private final int pageBonusMemberSize = 10;
     private int activeBonusMemberPage; 
     protected Page<GenMember> genBonusMemberPage;
+    
+    private final int pageWsSize = 10;
+    private int activeWsPage; 
+    protected Pageable<Ws> genWsPage = new Pageable<Ws>();
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
@@ -200,12 +206,17 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private void loadTestData(){
         setActiveMemberPage(0);
         setActiveBonusMemberPage(0); 
+        setActiveWsPage(0); 
         searchGenMember(); 
         bonusGenMember(); 
+        bonusWsGen(); 
         BindUtils.postNotifyChange(null,null,this,"genMemberPage");
         BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage"); 
+        BindUtils.postNotifyChange(null,null,this,"genWsPage"); 
         BindUtils.postNotifyChange(null,null,this,"activeMemberPage"); 
         BindUtils.postNotifyChange(null,null,this,"activeBonusMemberPage");   
+        BindUtils.postNotifyChange(null,null,this,"activeWsPage");  
+        
     }
     
     @Command(value = {"searchGenMember"}) 
@@ -251,6 +262,30 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     public Page<GenMember> getGenBonusMemberPage() {
         return genBonusMemberPage;
     }
+
+    @Command(value = {"bonusWsGen"}) 
+    public void bonusWsGen() { 
+        genWsPage= testService.findAllBonusWsGen(activeWsPage, pageWsSize); 
+        BindUtils.postNotifyChange(null,null,this,"genWsPage");
+    }
+
+    public void setActiveWsPage(int activeWsPage) {
+        this.activeWsPage = activeWsPage;
+    }
+    
+    public int getActiveWsPage() {
+        return activeWsPage;
+    }
+
+    public int getPageWsSize() {
+        return pageWsSize;
+    }
+
+    public Pageable<Ws> getGenWsPage() {
+        return genWsPage;
+    }
+
+     
     
     
 }
