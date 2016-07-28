@@ -48,6 +48,10 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private final int pageMemberSize = 10;
     private int activeMemberPage; 
     protected Page<GenMember> genMemberPage;
+    
+    private final int pageBonusMemberSize = 10;
+    private int activeBonusMemberPage; 
+    protected Page<GenMember> genBonusMemberPage;
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
@@ -153,7 +157,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     protected void saveItem() {
         systemTestService.saveTestPlanHeader(item);
         systemTestService.procRunTest();
-        loadTestData();
+        loadTestData(); 
     } 
 
     @Override
@@ -194,14 +198,21 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
 
     /// ======================
     private void loadTestData(){
-        searchGenMember();
+        setActiveMemberPage(0);
+        setActiveBonusMemberPage(0); 
+        searchGenMember(); 
+        bonusGenMember(); 
+        BindUtils.postNotifyChange(null,null,this,"genMemberPage");
+        BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage"); 
+        BindUtils.postNotifyChange(null,null,this,"activeMemberPage"); 
+        BindUtils.postNotifyChange(null,null,this,"activeBonusMemberPage");   
     }
     
     @Command(value = {"searchGenMember"}) 
     public void searchGenMember() { 
         genMemberPage= testService.findAllGenMembers(activeMemberPage, pageMemberSize); 
         BindUtils.postNotifyChange(null,null,this,"genMemberPage");
-    }
+    } 
     
     public int getPageMemberSize() {
         return pageMemberSize;
@@ -219,7 +230,27 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         return genMemberPage ;
     }
 
-     
+    @Command(value = {"bonusGenMember"}) 
+    public void bonusGenMember() { 
+        genBonusMemberPage= testService.findAllBonusGenMembers(activeBonusMemberPage, pageBonusMemberSize); 
+        BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage");
+    }
+
+    public int getActiveBonusMemberPage() {
+        return activeBonusMemberPage;
+    }
+
+    public void setActiveBonusMemberPage(int activeBonusMemberPage) {
+        this.activeBonusMemberPage = activeBonusMemberPage;
+    }
+
+    public int getPageBonusMemberSize() {
+        return pageBonusMemberSize;
+    }
+
+    public Page<GenMember> getGenBonusMemberPage() {
+        return genBonusMemberPage;
+    }
     
     
 }

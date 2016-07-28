@@ -15,5 +15,6 @@ import org.springframework.data.domain.Page;
 public interface TestService {  
 
     public Page<GenMember> findAllGenMembers(int activeMemberPage, int pageMemberSize);
+    public Page<GenMember> findAllBonusGenMembers(int activePage, int pageSize);
       
 }

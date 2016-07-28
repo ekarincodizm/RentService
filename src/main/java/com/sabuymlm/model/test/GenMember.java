@@ -33,6 +33,8 @@ public class GenMember implements Serializable {
     private Float organizationPv;     
     @Column(name = "total_sponsor_count", columnDefinition = "bigint" )
     private Long totalSponsorCount;
+    @Column(name = "organization_sponsor_pv", columnDefinition = "float" )
+    private Float organizationSponsorPv;     
     @Column(name = "sponsor_bonus", columnDefinition = "float" )
     private Float sponsorBonus;  
     @Column(name = "sponsor_pro_bonus", columnDefinition = "float" )
@@ -54,6 +56,14 @@ public class GenMember implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Float getOrganizationSponsorPv() {
+        return organizationSponsorPv;
+    }
+
+    public void setOrganizationSponsorPv(Float organizationSponsorPv) {
+        this.organizationSponsorPv = organizationSponsorPv;
     }
 
     public Integer getLevelGen() {

@@ -32,6 +32,12 @@ public class TestServiceImpl extends ConfigEntityManager implements TestService 
         return reposGenMemberEvent.findByLike(SecurityUtil.getUserDetails().getCompany(), pageRequest);
     }
     
+    @Override
+    public Page<GenMember> findAllBonusGenMembers(int activePage, int pageSize) {
+        setPageRequest(activePage, pageSize, new Sort.Order(Sort.Direction.ASC, "id"));
+        return reposGenMemberEvent.findByLike(SecurityUtil.getUserDetails().getCompany(), pageRequest);
+    }
+    
     
 }
 
