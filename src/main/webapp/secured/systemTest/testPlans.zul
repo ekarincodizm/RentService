@@ -49,6 +49,8 @@
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="Sponsor"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="X-Diff Sponsor"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="W/S(%)"  /> 
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="Multi W/S(%)"  /> 
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="W/S(Balance)"  /> 
                         </tabs>
                         <tabpanels>
                             <tabpanel>
@@ -371,6 +373,63 @@
                                     </listfoot>
                                 </listbox>
                             </tabpanel>
+                            <tabpanel>
+                                
+                                -----  Multi WS %
+                                
+                            </tabpanel>
+                            <tabpanel>
+                                <paging width="544px" onPaging="@command('bonusWsBlGen')"  pageSize="@load(vm.pageWsBlSize)"  activePage="@bind(vm.activeWsBlPage)" totalSize="@bind(vm.genWsBlPage.totalElements)" detailed="true" />
+                                <listbox width="100%"  model="@bind(vm.genWsBlPage.content)"  sizedByContent="true" sclass="vertical-scroll" > 
+                                    <listhead sizable="true" >  
+                                        <listheader align="center" width="65px" label="รหัส" />        
+                                        <listheader align="center" width="50px" label="ชั้นที่" />               
+                                        <listheader align="center" width="100px" label="ตำแหน่ง" />   
+                                        <listheader align="center" width="65px" label="อัพไลน์" /> 
+                                        <listheader align="center" width="65px" label="ทีม(ด้าน)" /> 
+                                        <listheader style="background:#C5EAE3;"  align="center" width="90px" label="รหัส(ภายใต้)" />     
+                                        <listheader style="background:#C5EAE3;"  align="right" width="120px" label="PV(ภายใต้)" /> 
+                                        
+                                        <listheader style="background:#FFEFE3;"  align="right" width="90px" label="weak" />     
+                                        <listheader style="background:#FFEFE3;"  align="right" width="90px" label="strong" />  
+                                        <listheader style="background:#FFEFE3;"  align="right" width="90px" label="PV/unit" />  
+                                        <listheader style="background:#FFEFE3;"  align="right" width="90px" label="bonus/unit" />   
+                                        <listheader style="background:#FFEFE3;"  align="right" width="70px" label="max unit" />  
+                                        <listheader style="background:#FFEFE3;"  align="right" width="100px" label="weak( BL.)" />  
+                                        <listheader style="background:#C5EAE3;"  align="right" width="70px" label="total unit" />   
+                                        <listheader style="background:#C5EAE3;"  align="right" width="90px" label="bonus" />  
+                                        <listheader align="right" width="55px" label="รอบจ่าย" />  
+                                        
+                                    </listhead>
+                                    <template name="model"  var="item">
+                                        <listitem >    
+                                            <listcell label="@load(item.id) @converter('formatedNumber', format='000000')" />   
+                                            <listcell label="@load(item.levelGen)" />     
+                                            <listcell label="@load(item.positionName)" />    
+                                            <listcell label="@load(item.uplineId) @converter('formatedNumber', format='000000') " /> 
+                                            <listcell label="@load(item.align)" />    
+                                            <listcell label="@load(item.totalMember) @converter('formatedNumber', format='#,##0.## \'รหัส\'')" />   
+                                            <listcell label="@load(item.organizationPv) @converter('formatedNumber', format='#,##0.## \'PV\'')" />    
+                                            
+                                            <listcell label="@load(item.weak) @converter('formatedNumber', format='#,##0.##')" />   
+                                            <listcell label="@load(item.strong) @converter('formatedNumber', format='#,##0.##')" />   
+                                            <listcell label="@load(item.wkPcent) @converter('formatedNumber', format='#,##0.##')" />   
+                                            <listcell label="@load(item.stPcent) @converter('formatedNumber', format='#,##0.##')" />    
+                                            <listcell label="@load(item.maxUnit) @converter('formatedNumber', format='#,##0')" />   
+                                            <listcell label="@load(item.weakBonus) @converter('formatedNumber', format='#,##0.##')" />   
+                                            <listcell label="@load(item.unit) @converter('formatedNumber', format='#,##0')" />   
+                                            <listcell label="@load(item.bonus) @converter('formatedNumber', format='#,##0.##')" />   
+                                            <listcell label="@load(item.circle)  @converter('formatedNumber', format='#,##0 \'วัน\'')" />    
+                                        </listitem> 
+                                    </template>  
+                                    <listfoot>
+                                        <listfooter span="12"/>
+                                        <listfooter span="2" align="right" label="Summary :"/>
+                                        <listfooter align="right"  label="@load(vm.genWsBlPage.sum1) @converter('formatedNumber', format='#,##0.##')" />  
+                                    </listfoot>
+                                </listbox>
+                            </tabpanel>
+                            
                         </tabpanels>
                     </tabbox> 
                     

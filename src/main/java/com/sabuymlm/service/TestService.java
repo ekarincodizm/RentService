@@ -20,5 +20,6 @@ public interface TestService {
     public Page<GenMember> findAllBonusGenMembers(int activePage, int pageSize);
 
     public Pageable<Ws> findAllBonusWsGen(int activeWsPage, int pageWsSize);
+    public Pageable<Ws> findAllBonusWsBlGen(int activeWsPage, int pageWsSize); 
       
 }

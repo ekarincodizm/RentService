@@ -30,6 +30,10 @@ public class Ws implements Serializable {
     private Double strongBonus;
     private Double bonus;
     private Integer circle;
+    
+    /// ฺbean for WS Balance Bonus 
+    private Integer maxUnit;
+    private Integer unit;
 
     public BigInteger getId() {
         return id;
@@ -37,6 +41,22 @@ public class Ws implements Serializable {
 
     public void setId(BigInteger id) {
         this.id = id;
+    }
+
+    public Integer getMaxUnit() {
+        return maxUnit;
+    }
+
+    public void setMaxUnit(Integer maxUnit) {
+        this.maxUnit = maxUnit;
+    }
+
+    public Integer getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Integer unit) {
+        this.unit = unit;
     }
 
     public Integer getLevelGen() {

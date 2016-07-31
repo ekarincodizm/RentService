@@ -74,6 +74,38 @@ public class TestServiceImpl extends ConfigEntityManager implements TestService 
         return pageable; 
     }
     
+    @Override
+    public Pageable<Ws> findAllBonusWsBlGen(int pageIndex, int pageSize) {
+        Query query = unwrapHibernateSession().createSQLQuery("select count(*) totalElements \n" 
+                + "   , sum(bonus) sum1 \n" 
+                + "  from test.weakstrong_balance_bonus_report(:companyId)  ")
+                .setResultTransformer(Transformers.aliasToBean(Pageable.class));
+        query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());  
+        Object o = query.uniqueResult();
+        Pageable<Ws> pageable;
+        if (o instanceof Pageable) {
+            pageable = (Pageable<Ws>) o;
+            pageable.setPageIndex(pageIndex);
+            pageable.setPageSize(pageSize); 
+            if(pageable.getTotalElements() > 0 ) {
+                
+                query = unwrapHibernateSession().createSQLQuery("  select  id ,  level_gen levelGen , position_name positionName , upline_id uplineId , align , total_member totalMember , organization_pv organizationPv \n" +
+"		, weak ,  strong ,  wk_balance wkPcent , wk_bonus stPcent , max_bonus maxBonus , max_unit maxUnit , balance weakBonus , bonus_unit unit , bonus , circle  \n" 
+                + "   from test.weakstrong_balance_bonus_report(:companyId)  \n"  
+                + " WHERE id BETWEEN :firstRow AND :maxRow ORDER BY id ")
+                    .setResultTransformer(Transformers.aliasToBean(Ws.class));
+                query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());   
+                query.setInteger("firstRow", pageable.getFirstRow());
+                query.setInteger("maxRow", pageable.getMaxRow());
+                pageable.setContent(query.list()); 
+                
+            }
+        }else { 
+            pageable = new Pageable<Ws>();
+        } 
+        return pageable; 
+    }
+    
     
 }
 

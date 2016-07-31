@@ -58,6 +58,10 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private final int pageWsSize = 10;
     private int activeWsPage; 
     protected Pageable<Ws> genWsPage = new Pageable<Ws>();
+    
+    private final int pageWsBlSize = 10;
+    private int activeWsBlPage; 
+    protected Pageable<Ws> genWsBlPage = new Pageable<Ws>();
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
@@ -207,15 +211,19 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setActiveMemberPage(0);
         setActiveBonusMemberPage(0); 
         setActiveWsPage(0); 
+        setActiveWsBlPage(0); 
         searchGenMember(); 
         bonusGenMember(); 
         bonusWsGen(); 
+        bonusWsBlGen(); 
         BindUtils.postNotifyChange(null,null,this,"genMemberPage");
         BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage"); 
         BindUtils.postNotifyChange(null,null,this,"genWsPage"); 
+        BindUtils.postNotifyChange(null,null,this,"genWsBlPage"); 
         BindUtils.postNotifyChange(null,null,this,"activeMemberPage"); 
         BindUtils.postNotifyChange(null,null,this,"activeBonusMemberPage");   
         BindUtils.postNotifyChange(null,null,this,"activeWsPage");  
+        BindUtils.postNotifyChange(null,null,this,"activeWsBlPage");  
         
     }
     
@@ -286,6 +294,26 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
      
+   @Command(value = {"bonusWsBlGen"}) 
+    public void bonusWsBlGen() { 
+        genWsBlPage= testService.findAllBonusWsBlGen(activeWsBlPage, pageWsBlSize); 
+        BindUtils.postNotifyChange(null,null,this,"genWsBlPage");
+    }
+
+    public void setActiveWsBlPage(int activeWsBlPage) {
+        this.activeWsBlPage = activeWsBlPage;
+    }
     
+    public int getActiveWsBlPage() {
+        return activeWsBlPage;
+    }
+
+    public int getPageWsBlSize() {
+        return pageWsBlSize;
+    }
+
+    public Pageable<Ws> getGenWsBlPage() {
+        return genWsBlPage;
+    } 
     
 }
