@@ -17,9 +17,9 @@ import org.springframework.data.domain.Page;
 public interface TestService {  
 
     public Page<GenMember> findAllGenMembers(int activeMemberPage, int pageMemberSize);
-    public Page<GenMember> findAllBonusGenMembers(int activePage, int pageSize);
-
+    public Pageable<GenMember> findAllBonusSponsorGen(int activePage, int pageSize); 
     public Pageable<Ws> findAllBonusWsGen(int activeWsPage, int pageWsSize);
     public Pageable<Ws> findAllBonusWsBlGen(int activeWsPage, int pageWsSize); 
+    public Pageable<GenMember> findAllBonusMatchungGen(int pageIndex, int pageSize) ;
       
 }

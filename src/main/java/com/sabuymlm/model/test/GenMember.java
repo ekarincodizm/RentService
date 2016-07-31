@@ -40,13 +40,12 @@ public class GenMember implements Serializable {
     @Column(name = "sponsor_bonus", columnDefinition = "float" )
     private Float sponsorBonus;  
     @Column(name = "sponsor_pro_bonus", columnDefinition = "float" )
-    private Float sponsorProBonus;  
-    @Column(name = "weak_bonus", columnDefinition = "float" )
-    private Float weakBonus;  
-    @Column(name = "strong_bonus", columnDefinition = "float" )
-    private Float strongBonus;  
-    @Column(name = "ws_bonus", columnDefinition = "float" )
-    private Float wsBonus;   
+    private Float sponsorProBonus;   
+    
+    @Column(name = "matching_bonus", columnDefinition = "float" )
+    private Float matchingBonus;   
+    @Column(name = "matching_pro_bonus", columnDefinition = "float" )
+    private Float matchingProBonus;    
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
@@ -58,6 +57,22 @@ public class GenMember implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Float getMatchingBonus() {
+        return matchingBonus;
+    }
+
+    public void setMatchingBonus(Float matchingBonus) {
+        this.matchingBonus = matchingBonus;
+    }
+
+    public Float getMatchingProBonus() {
+        return matchingProBonus;
+    }
+
+    public void setMatchingProBonus(Float matchingProBonus) {
+        this.matchingProBonus = matchingProBonus;
     }
 
     public Float getOrganizationSponsorPv() {
@@ -162,31 +177,7 @@ public class GenMember implements Serializable {
 
     public void setSponsorProBonus(Float sponsorProBonus) {
         this.sponsorProBonus = sponsorProBonus;
-    }
-
-    public Float getWeakBonus() {
-        return weakBonus;
-    }
-
-    public void setWeakBonus(Float weakBonus) {
-        this.weakBonus = weakBonus;
-    }
-
-    public Float getStrongBonus() {
-        return strongBonus;
-    }
-
-    public void setStrongBonus(Float strongBonus) {
-        this.strongBonus = strongBonus;
-    }
-
-    public Float getWsBonus() {
-        return wsBonus;
-    }
-
-    public void setWsBonus(Float wsBonus) {
-        this.wsBonus = wsBonus;
-    }
+    } 
 
     public Company getCompany() {
         return company;

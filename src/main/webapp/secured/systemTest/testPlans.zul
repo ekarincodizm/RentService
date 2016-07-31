@@ -46,11 +46,12 @@
                         <tabs> 
                             <tab label="กำหนดคุณสมบัติ"/>
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="ตารางรหัส/สายงาน"  /> 
-                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="Sponsor"  /> 
+                            <tab visible="@bind(not empty vm.genBonusMemberPage.content)" label="Sponsor"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="X-Diff Sponsor"  /> 
-                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="W/S(%)"  /> 
+                            <tab visible="@bind(not empty vm.genWsPage.content)" label="W/S(%)"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="Multi W/S(%)"  /> 
-                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="W/S(Balance)"  /> 
+                            <tab visible="@bind(not empty vm.genWsBlPage.content)" label="W/S(Balance)"  /> 
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="Matching"  /> 
                         </tabs>
                         <tabpanels>
                             <tabpanel>
@@ -313,6 +314,13 @@
                                             
                                         </listitem> 
                                     </template>  
+                                    <listfoot>
+                                        <listfooter span="5"/>
+                                        <listfooter align="right" label="Summary :"/>
+                                        <listfooter align="right"  label="@load(vm.genBonusMemberPage.sum1) @converter('formatedNumber', format='#,##0.##')" />  
+                                        <listfooter align="right"  label="@load(vm.genBonusMemberPage.sum2) @converter('formatedNumber', format='#,##0.##')" />  
+                                    </listfoot>
+                                    
                                 </listbox>
                             </tabpanel>
                             <tabpanel>
@@ -427,6 +435,44 @@
                                         <listfooter span="2" align="right" label="Summary :"/>
                                         <listfooter align="right"  label="@load(vm.genWsBlPage.sum1) @converter('formatedNumber', format='#,##0.##')" />  
                                     </listfoot>
+                                </listbox>
+                            </tabpanel>
+                            <tabpanel>
+                                <paging width="779px" onPaging="@command('bonusMatchingGen')"  pageSize="@load(vm.pageMatchingSize)"  activePage="@bind(vm.activeMatchingPage)" totalSize="@bind(vm.genMatchingPage.totalElements)" detailed="true" />
+                                <listbox width="100%"  model="@bind(vm.genMatchingPage.content)"  sizedByContent="true" sclass="vertical-scroll" > 
+                                    <listhead sizable="true" >  
+                                        <listheader align="center" width="65px" label="รหัส" />        
+                                        <listheader align="center" width="80px" label="ชั้น(แนะนำ)" />               
+                                        <listheader align="center" width="120px" label="ตำแหน่ง" />   
+                                        <listheader align="center" width="65px" label="ผู้แนะนำ" /> 
+                                        <listheader style="background:#C5EAE3;"  align="right" width="100px" label="แนะนำ(ภายใต้)" />      
+                                        <listheader style="background:#C5EAE3;"  align="right" width="120px" label="PVแนะนำ(ภายใต้)" />
+                                        
+                                        <listheader style="background:#FFEFE3;"  align="right" width="120px" label="โบนัสแมทชิ่ง" />     
+                                        <listheader style="background:#FFEFE3;"  align="right" width="120px" label="โบนัสแมทชิ่ง(Pro.)" />  
+                                        
+                                    </listhead>
+                                    <template name="model"  var="item">
+                                        <listitem >    
+                                            <listcell label="@load(item.id) @converter('formatedNumber', format='000000')" />   
+                                            <listcell label="@load(item.levelSponsorGen)" />     
+                                            <listcell label="@load(item.position.name)" />    
+                                            <listcell label="@load(item.sponsorId) @converter('formatedNumber', format='000000') " /> 
+                                            <listcell label="@load(item.totalSponsorCount) @converter('formatedNumber', format='#,##0.## \'รหัส\'')" />   
+                                            <listcell label="@load(item.organizationSponsorPv) @converter('formatedNumber', format='#,##0.## \'PV\'')" />    
+                                            
+                                            <listcell label="@load(item.matchingBonus) @converter('formatedNumber', format='#,##0.##')" />   
+                                            <listcell label="@load(item.matchingProBonus) @converter('formatedNumber', format='#,##0.##')" />   
+                                            
+                                        </listitem> 
+                                    </template>  
+                                    <listfoot>
+                                        <listfooter span="5"/>
+                                        <listfooter align="right" label="Summary :"/>
+                                        <listfooter align="right"  label="@load(vm.genMatchingPage.sum1) @converter('formatedNumber', format='#,##0.##')" />  
+                                        <listfooter align="right"  label="@load(vm.genMatchingPage.sum2) @converter('formatedNumber', format='#,##0.##')" />  
+                                    </listfoot>
+                                    
                                 </listbox>
                             </tabpanel>
                             

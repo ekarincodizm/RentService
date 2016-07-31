@@ -53,7 +53,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     
     private final int pageBonusMemberSize = 10;
     private int activeBonusMemberPage; 
-    protected Page<GenMember> genBonusMemberPage;
+    protected Pageable<GenMember> genBonusMemberPage;
     
     private final int pageWsSize = 10;
     private int activeWsPage; 
@@ -62,6 +62,10 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private final int pageWsBlSize = 10;
     private int activeWsBlPage; 
     protected Pageable<Ws> genWsBlPage = new Pageable<Ws>();
+    
+    private final int pageMatchingSize = 10;
+    private int activeMatchingPage; 
+    protected Pageable<GenMember> genMatchingPage; 
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
@@ -212,18 +216,22 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setActiveBonusMemberPage(0); 
         setActiveWsPage(0); 
         setActiveWsBlPage(0); 
-        searchGenMember(); 
+        setActiveMatchingPage(0);
+        searchGenMember();  
         bonusGenMember(); 
         bonusWsGen(); 
         bonusWsBlGen(); 
+        bonusMatchingGen(); 
         BindUtils.postNotifyChange(null,null,this,"genMemberPage");
         BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage"); 
         BindUtils.postNotifyChange(null,null,this,"genWsPage"); 
         BindUtils.postNotifyChange(null,null,this,"genWsBlPage"); 
+        BindUtils.postNotifyChange(null,null,this,"genMatchingPage"); 
         BindUtils.postNotifyChange(null,null,this,"activeMemberPage"); 
         BindUtils.postNotifyChange(null,null,this,"activeBonusMemberPage");   
         BindUtils.postNotifyChange(null,null,this,"activeWsPage");  
         BindUtils.postNotifyChange(null,null,this,"activeWsBlPage");  
+        BindUtils.postNotifyChange(null,null,this,"activeMatchingPage");  
         
     }
     
@@ -251,8 +259,8 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
 
     @Command(value = {"bonusGenMember"}) 
     public void bonusGenMember() { 
-        genBonusMemberPage= testService.findAllBonusGenMembers(activeBonusMemberPage, pageBonusMemberSize); 
-        BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage");
+        genBonusMemberPage= testService.findAllBonusSponsorGen(activeBonusMemberPage, pageBonusMemberSize); 
+        BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage"); 
     }
 
     public int getActiveBonusMemberPage() {
@@ -267,8 +275,8 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         return pageBonusMemberSize;
     }
 
-    public Page<GenMember> getGenBonusMemberPage() {
-        return genBonusMemberPage;
+    public Pageable<GenMember> getGenBonusMemberPage() {
+        return genBonusMemberPage; 
     }
 
     @Command(value = {"bonusWsGen"}) 
@@ -315,5 +323,30 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     public Pageable<Ws> getGenWsBlPage() {
         return genWsBlPage;
     } 
+    
+    
+    @Command(value = {"bonusMatchingGen"}) 
+    public void bonusMatchingGen() { 
+        genMatchingPage= testService.findAllBonusMatchungGen(activeMatchingPage, pageMatchingSize); 
+        BindUtils.postNotifyChange(null,null,this,"genMatchingPage");
+    }
+
+    public int getActiveMatchingPage() {
+        return activeMatchingPage;
+    }
+
+    public void setActiveMatchingPage(int activeMatchingPage) {
+        this.activeMatchingPage = activeMatchingPage;
+    }
+
+    public int getPageMatchingSize() {
+        return pageMatchingSize;
+    }
+
+    public Pageable<GenMember> getGenMatchingPage() {
+        return genMatchingPage;
+    }
+
+     
     
 }

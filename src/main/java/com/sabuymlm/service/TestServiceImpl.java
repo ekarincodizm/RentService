@@ -37,9 +37,32 @@ public class TestServiceImpl extends ConfigEntityManager implements TestService 
     }
     
     @Override
-    public Page<GenMember> findAllBonusGenMembers(int activePage, int pageSize) {
-        setPageRequest(activePage, pageSize, new Sort.Order(Sort.Direction.ASC, "id"));
-        return reposGenMemberEvent.findByLike(SecurityUtil.getUserDetails().getCompany(), pageRequest);
+    public Pageable<GenMember> findAllBonusSponsorGen(int pageIndex, int pageSize) {
+        Query query = unwrapHibernateSession().createSQLQuery("select count(*) totalElements \n" 
+                + "   , sum(sponsor_bonus) sum1 , sum(sponsor_pro_bonus) sum2  \n" 
+                + "  from test.member_gen u where u.company_id = :companyId  ")
+                .setResultTransformer(Transformers.aliasToBean(Pageable.class));
+        query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());  
+        Object o = query.uniqueResult();
+        Pageable<GenMember> pageable;
+        if (o instanceof Pageable) {
+            pageable = (Pageable<GenMember>) o;
+            pageable.setPageIndex(pageIndex);
+            pageable.setPageSize(pageSize); 
+            if(pageable.getTotalElements() > 0 ) { 
+                        
+                query = unwrapHibernateSession().createSQLQuery("  select * from test.member_gen u  WHERE u.company_id = :companyId and u.id BETWEEN :firstRow AND :maxRow ORDER BY id ")
+                        .addEntity(GenMember.class); 
+                query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());   
+                query.setInteger("firstRow", pageable.getFirstRow());
+                query.setInteger("maxRow", pageable.getMaxRow());
+                pageable.setContent(query.list()); 
+                
+            }
+        }else { 
+            pageable = new Pageable<GenMember>();
+        } 
+        return pageable; 
     }
 
     @Override
@@ -106,6 +129,34 @@ public class TestServiceImpl extends ConfigEntityManager implements TestService 
         return pageable; 
     }
     
+    @Override
+    public Pageable<GenMember> findAllBonusMatchungGen(int pageIndex, int pageSize) {
+        Query query = unwrapHibernateSession().createSQLQuery("select count(*) totalElements \n" 
+                + "   , sum(matching_bonus) sum1 , sum(matching_pro_bonus) sum2  \n" 
+                + "  from test.member_gen u where u.company_id = :companyId  ")
+                .setResultTransformer(Transformers.aliasToBean(Pageable.class));
+        query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());  
+        Object o = query.uniqueResult();
+        Pageable<GenMember> pageable;
+        if (o instanceof Pageable) {
+            pageable = (Pageable<GenMember>) o;
+            pageable.setPageIndex(pageIndex);
+            pageable.setPageSize(pageSize); 
+            if(pageable.getTotalElements() > 0 ) { 
+                        
+                query = unwrapHibernateSession().createSQLQuery("  select * from test.member_gen u  WHERE u.company_id = :companyId and u.id BETWEEN :firstRow AND :maxRow ORDER BY id ")
+                        .addEntity(GenMember.class); 
+                query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());   
+                query.setInteger("firstRow", pageable.getFirstRow());
+                query.setInteger("maxRow", pageable.getMaxRow());
+                pageable.setContent(query.list()); 
+                
+            }
+        }else { 
+            pageable = new Pageable<GenMember>();
+        } 
+        return pageable; 
+    }
     
 }
 

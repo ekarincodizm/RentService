@@ -4,8 +4,7 @@ import com.sabuymlm.utils.Format;
 import com.sabuymlm.vm.systemTest.LabelValue;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
