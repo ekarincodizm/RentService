@@ -45,6 +45,7 @@
                     <tabbox>
                         <tabs> 
                             <tab label="กำหนดคุณสมบัติ"/>
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="สรุป(% Over Pay)"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="ตารางรหัส/สายงาน"  /> 
                             <tab visible="@bind(not empty vm.genBonusMemberPage.content)" label="Sponsor"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="X-Diff Sponsor"  /> 
@@ -52,6 +53,7 @@
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="Multi W/S(%)"  /> 
                             <tab visible="@bind(not empty vm.genWsBlPage.content)" label="W/S(Balance)"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="Matching"  /> 
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="Uni-Level"  /> 
                         </tabs>
                         <tabpanels>
                             <tabpanel>
@@ -244,6 +246,37 @@
                                     </listbox>
                                 </groupbox>
                             </tabpanel>
+                            
+                            <tabpanel>
+                                <groupbox mold="3d" >
+                                    <caption height="25px" style="padding:5px;" label=" ภายในตารางด้านล่างนี้ แสดงถึง %จ่ายแต่ละทาง "  /> 
+                                    <listbox model="@bind(vm.item.items)"  sizedByContent="true" > 
+                                        <listhead sizable="true"  >
+                                            <listheader align="center" label="ลำดับ" width="50px" /> 
+                                            <listheader width="300px" align="left" label="ช่องทางรายได้" />       
+                                            <listheader width="90px" align="center" label="%จ่าย/W" />        
+                                            <listheader width="105px" align="center" label="%จ่าย(Pro)/S" />        
+                                            <listheader width="80px" align="center" label="รวม%จ่าย" />         
+                                        </listhead>  
+                                        <template name="model"  var="item">
+                                            <listitem >
+                                                <listcell label="@load(item.id.no)"  />    
+                                                <listcell label="@load(item.planName)" />      
+                                                <listcell label="@load(item.pcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
+                                                <listcell label="@load(item.pcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
+                                                <listcell label="@load(item.totalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />    
+                                            </listitem>  
+                                        </template> 
+                                        <listfoot> 
+                                            <listfooter span="2" align="right" label="Summary :"/>
+                                            <listfooter align="center"  label="@load(vm.item.sumPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
+                                            <listfooter align="center"  label="@load(vm.item.sumPcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
+                                            <listfooter align="center"  label="@load(vm.item.sumTotalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
+                                        </listfoot>
+                                    </listbox>
+                                </groupbox>
+                            </tabpanel>
+                            
                             <tabpanel>
                                 <paging width="455px" onPaging="@command('searchGenMember')"  pageSize="@load(vm.pageMemberSize)"  activePage="@bind(vm.activeMemberPage)" totalSize="@bind(vm.genMemberPage.totalElements)" detailed="true" />
                                 <listbox width="100%"  model="@bind(vm.genMemberPage.content)"  sizedByContent="true" sclass="vertical-scroll" > 
@@ -471,6 +504,42 @@
                                         <listfooter align="right" label="Summary :"/>
                                         <listfooter align="right"  label="@load(vm.genMatchingPage.sum1) @converter('formatedNumber', format='#,##0.##')" />  
                                         <listfooter align="right"  label="@load(vm.genMatchingPage.sum2) @converter('formatedNumber', format='#,##0.##')" />  
+                                    </listfoot>
+                                    
+                                </listbox>
+                            </tabpanel>
+                            
+                            <tabpanel>
+                                <paging width="779px" onPaging="@command('bonusUniLevelGen')"  pageSize="@load(vm.pageUniSize)"  activePage="@bind(vm.activeUniPage)" totalSize="@bind(vm.genUniPage.totalElements)" detailed="true" />
+                                <listbox width="100%"  model="@bind(vm.genUniPage.content)"  sizedByContent="true" sclass="vertical-scroll" > 
+                                    <listhead sizable="true" >  
+                                        <listheader align="center" width="65px" label="รหัส" />        
+                                        <listheader align="center" width="80px" label="ชั้น(UNI)" />               
+                                        <listheader align="center" width="120px" label="ตำแหน่ง" />    
+                                        <listheader style="background:#C5EAE3;"  align="right" width="100px" label="UNI(ภายใต้)" />      
+                                        <listheader style="background:#C5EAE3;"  align="right" width="120px" label="UNI(PV)(ภายใต้)" />
+                                        
+                                        <listheader style="background:#FFEFE3;"  align="right" width="120px" label="โบนัส UNI" />     
+                                        <listheader style="background:#FFEFE3;"  align="right" width="120px" label="โบนัส UNI(Pro.)" />  
+                                        
+                                    </listhead>
+                                    <template name="model"  var="item">
+                                        <listitem >    
+                                            <listcell label="@load(item.id) @converter('formatedNumber', format='000000')" />   
+                                            <listcell label="@load(item.levelGen)" />      
+                                            <listcell label="@load(item.position.name)" />     
+                                            <listcell label="@load(item.totalMember) @converter('formatedNumber', format='#,##0.## \'รหัส\'')" />   
+                                            <listcell label="@load(item.organizationPv) @converter('formatedNumber', format='#,##0.## \'PV\'')" />     
+                                            <listcell label="@load(item.unilevelBonus) @converter('formatedNumber', format='#,##0.##')" />   
+                                            <listcell label="@load(item.unilevelProBonus) @converter('formatedNumber', format='#,##0.##')" />   
+                                            
+                                        </listitem> 
+                                    </template>  
+                                    <listfoot>
+                                        <listfooter span="4"/>
+                                        <listfooter align="right" label="Summary :"/>
+                                        <listfooter align="right"  label="@load(vm.genUniPage.sum1) @converter('formatedNumber', format='#,##0.##')" />  
+                                        <listfooter align="right"  label="@load(vm.genUniPage.sum2) @converter('formatedNumber', format='#,##0.##')" />  
                                     </listfoot>
                                     
                                 </listbox>
