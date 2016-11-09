@@ -22,6 +22,67 @@ public class TestPlan implements Serializable {
     
     @Column(name = "chk_auto", length = 10, nullable = true)
     private String chkAuto; 
+    
+    @Column(name = "pcent", columnDefinition = "float" )
+    private Float pcent; 
+    @Column(name = "comm", columnDefinition = "float" )
+    private Float comm; 
+    @Column(name = "comm_pro", columnDefinition = "float" )
+    private Float commPro; 
+    @Column(name = "pcent_pro", columnDefinition = "float" )
+    private Float pcentPro; 
+    @Column(name = "total_pcent", columnDefinition = "float" )
+    private Float totalPcent; 
+    @Column(name = "total_comm", columnDefinition = "float" )
+    private Float totalComm; 
+
+    public Float getComm() {
+        return comm;
+    }
+
+    public void setComm(Float comm) {
+        this.comm = comm;
+    }
+
+    public Float getCommPro() {
+        return commPro;
+    }
+
+    public void setCommPro(Float commPro) {
+        this.commPro = commPro;
+    }
+
+    public Float getTotalComm() {
+        return totalComm;
+    }
+
+    public void setTotalComm(Float totalComm) {
+        this.totalComm = totalComm;
+    }
+
+    public Float getPcent() {
+        return pcent;
+    }
+
+    public void setPcent(Float pcent) {
+        this.pcent = pcent;
+    }
+
+    public Float getPcentPro() {
+        return pcentPro;
+    }
+
+    public void setPcentPro(Float pcentPro) {
+        this.pcentPro = pcentPro;
+    }
+
+    public Float getTotalPcent() {
+        return totalPcent;
+    }
+
+    public void setTotalPcent(Float totalPcent) {
+        this.totalPcent = totalPcent;
+    }
 
     public String getPassMatchingWeakOrBonus() {
         return passMatchingWeakOrBonus;
@@ -98,6 +159,9 @@ public class TestPlan implements Serializable {
 
     @Override
     public String toString() {
-        return "TestPlan{" + "id=" + id + ", chkPay=" + chkPay + '}';
-    }  
+        return "TestPlan{" + "id=" + id + ", chkPay=" + chkPay + ", planName=" + planName + ", passMatchingWeakOrBonus=" + passMatchingWeakOrBonus + ", passMatchingStrong=" + passMatchingStrong + ", chkAuto=" + chkAuto + ", pcent=" + pcent + ", comm=" + comm + ", commPro=" + commPro + ", pcentPro=" + pcentPro + ", totalPcent=" + totalPcent + ", totalComm=" + totalComm + '}';
+    }
+
+    
+     
 }

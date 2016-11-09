@@ -258,8 +258,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     }
 
     @Override
-    public Collection<? extends TestPlan> findAllTestPlanByCompany() {
-        return reposTestPlanEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany(), new Sort(Sort.Direction.ASC, "id.no"));
+    public Collection<? extends TestPlan> findAllTestPlanByCompany() {  
+        return reposTestPlanEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany(), new Sort(Sort.Direction.ASC, "id.no")); 
     }
 
     @Override
@@ -273,6 +273,7 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
         query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());
         query.uniqueResult(); 
     }
+  
 }
 
 

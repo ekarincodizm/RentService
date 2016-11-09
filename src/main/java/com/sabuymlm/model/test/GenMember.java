@@ -45,7 +45,12 @@ public class GenMember implements Serializable {
     @Column(name = "matching_bonus", columnDefinition = "float" )
     private Float matchingBonus;   
     @Column(name = "matching_pro_bonus", columnDefinition = "float" )
-    private Float matchingProBonus;    
+    private Float matchingProBonus;   
+    
+    @Column(name = "unilevel_bonus", columnDefinition = "float" )
+    private Float unilevelBonus;   
+    @Column(name = "unilevel_pro_bonus", columnDefinition = "float" )
+    private Float unilevelProBonus;    
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
@@ -57,6 +62,22 @@ public class GenMember implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Float getUnilevelBonus() {
+        return unilevelBonus;
+    }
+
+    public void setUnilevelBonus(Float unilevelBonus) {
+        this.unilevelBonus = unilevelBonus;
+    }
+
+    public Float getUnilevelProBonus() {
+        return unilevelProBonus;
+    }
+
+    public void setUnilevelProBonus(Float unilevelProBonus) {
+        this.unilevelProBonus = unilevelProBonus;
     }
 
     public Float getMatchingBonus() {

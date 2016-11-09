@@ -4,11 +4,11 @@
  */
 package com.sabuymlm.service;
  
-import com.sabuymlm.authen.SecurityUtil;
+import com.sabuymlm.authen.SecurityUtil; 
 import com.sabuymlm.model.test.GenMember;
-import com.sabuymlm.model.test.Ws;
+import com.sabuymlm.model.test.Ws; 
 import com.sabuymlm.repository.test.GenMemberRepository;
-import com.sabuymlm.utils.Pageable;
+import com.sabuymlm.utils.Pageable; 
 import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TestServiceImpl extends ConfigEntityManager implements TestService {
 
     @Autowired
-    protected GenMemberRepository reposGenMemberEvent;
+    protected GenMemberRepository reposGenMemberEvent; 
 
     @Override
     public Page<GenMember> findAllGenMembers(int activeMemberPage, int pageMemberSize) {
@@ -156,7 +156,36 @@ public class TestServiceImpl extends ConfigEntityManager implements TestService 
             pageable = new Pageable<GenMember>();
         } 
         return pageable; 
-    }
+    } 
+    
+    @Override
+    public Pageable<GenMember> findAllBonusUniLevelGen(int pageIndex, int pageSize) {
+        Query query = unwrapHibernateSession().createSQLQuery("select count(*) totalElements \n" 
+                + "   , sum(unilevel_bonus) sum1 , sum(unilevel_pro_bonus) sum2  \n" 
+                + "  from test.member_gen u where u.company_id = :companyId  ")
+                .setResultTransformer(Transformers.aliasToBean(Pageable.class));
+        query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());  
+        Object o = query.uniqueResult();
+        Pageable<GenMember> pageable;
+        if (o instanceof Pageable) {
+            pageable = (Pageable<GenMember>) o;
+            pageable.setPageIndex(pageIndex);
+            pageable.setPageSize(pageSize); 
+            if(pageable.getTotalElements() > 0 ) { 
+                        
+                query = unwrapHibernateSession().createSQLQuery("  select * from test.member_gen u  WHERE u.company_id = :companyId and u.id BETWEEN :firstRow AND :maxRow ORDER BY id ")
+                        .addEntity(GenMember.class); 
+                query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());   
+                query.setInteger("firstRow", pageable.getFirstRow());
+                query.setInteger("maxRow", pageable.getMaxRow());
+                pageable.setContent(query.list()); 
+                
+            }
+        }else { 
+            pageable = new Pageable<GenMember>();
+        } 
+        return pageable; 
+    } 
     
 }
 

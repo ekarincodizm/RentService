@@ -300,5 +300,36 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
         }
         return true;
     }
+    
+    public TestPlan getClassId( Integer id){ 
+        for(TestPlan plan : items ){ 
+            if(plan.getId().getNo().equals(id)){ 
+                return  plan ;
+            }
+        }
+         return new TestPlan() ;
+    }
+    
+    public Float getSumPcent(){
+        float total = 0f;
+        for(TestPlan plan : items ){
+            total += (plan.getPcent() != null?plan.getPcent():0f);
+        }
+        return total;
+    }
+    public Float getSumPcentPro(){
+        float total = 0f;
+        for(TestPlan plan : items ){
+            total += (plan.getPcentPro() != null?plan.getPcentPro():0f);
+        }
+        return total;
+    }
+    public Float getSumTotalPcent(){
+        float total = 0f;
+        for(TestPlan plan : items ){
+            total += (plan.getTotalPcent() != null?plan.getTotalPcent():0f);
+        }
+        return total;
+    }
 
 }

@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 package com.sabuymlm.service;
-           
+            
 import com.sabuymlm.model.test.GenMember;
 import com.sabuymlm.model.test.Ws;
-import com.sabuymlm.utils.Pageable;
+import com.sabuymlm.utils.Pageable; 
 import org.springframework.data.domain.Page;
 
 /**
@@ -20,6 +20,7 @@ public interface TestService {
     public Pageable<GenMember> findAllBonusSponsorGen(int activePage, int pageSize); 
     public Pageable<Ws> findAllBonusWsGen(int activeWsPage, int pageWsSize);
     public Pageable<Ws> findAllBonusWsBlGen(int activeWsPage, int pageWsSize); 
-    public Pageable<GenMember> findAllBonusMatchungGen(int pageIndex, int pageSize) ;
+    public Pageable<GenMember> findAllBonusMatchungGen(int pageIndex, int pageSize) ; 
+    public Pageable<GenMember> findAllBonusUniLevelGen(int pageIndex, int pageSize) ;
       
 }

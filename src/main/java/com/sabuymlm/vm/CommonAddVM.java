@@ -144,4 +144,5 @@ public abstract class CommonAddVM<T> implements Serializable {
     public boolean isUserAdmin(){
         return ((SecurityUtil.getUserDetails().getUser().getAdminLevel().equals("USER-ADMIN")) || isAdmin());
     }
+    
 }

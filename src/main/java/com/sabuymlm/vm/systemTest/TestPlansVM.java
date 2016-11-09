@@ -17,8 +17,8 @@ import com.sabuymlm.utils.Pageable;
 import com.sabuymlm.vm.CommonVM;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date; 
-import java.util.List; 
+import java.util.Date;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import org.zkoss.bind.BindUtils;
@@ -46,26 +46,30 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     @WireVariable
     private TestService testService;
     private final List<LabelValue> powerLevels = new ArrayList<LabelValue>();
-    
+
     private final int pageMemberSize = 10;
-    private int activeMemberPage; 
+    private int activeMemberPage;
     protected Page<GenMember> genMemberPage;
-    
+
     private final int pageBonusMemberSize = 10;
-    private int activeBonusMemberPage; 
+    private int activeBonusMemberPage;
     protected Pageable<GenMember> genBonusMemberPage;
-    
+
     private final int pageWsSize = 10;
-    private int activeWsPage; 
+    private int activeWsPage;
     protected Pageable<Ws> genWsPage = new Pageable<Ws>();
-    
+
     private final int pageWsBlSize = 10;
-    private int activeWsBlPage; 
+    private int activeWsBlPage;
     protected Pageable<Ws> genWsBlPage = new Pageable<Ws>();
-    
+
     private final int pageMatchingSize = 10;
-    private int activeMatchingPage; 
-    protected Pageable<GenMember> genMatchingPage; 
+    private int activeMatchingPage;
+    protected Pageable<GenMember> genMatchingPage;
+    
+    private final int pageUniSize = 10;
+    private int activeUniPage;
+    protected Pageable<GenMember> genUniPage; 
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
@@ -80,25 +84,25 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private void genPowerLevels() {
         powerLevels.clear();
         int max_count_member = 100000;
-        if (isAdmin() && SecurityUtil.getUserDetails().getCompany().getMaxMlmMember() != null ) {
+        if (isAdmin() && SecurityUtil.getUserDetails().getCompany().getMaxMlmMember() != null) {
             max_count_member = SecurityUtil.getUserDetails().getCompany().getMaxMlmMember();
         }
-        int level = 0 ;
-        double count_member  ;
-        do{
-            count_member =   Math.pow(item.getChartPower(), level) ;
-            LabelValue labelValue = new LabelValue( Format.formatNumber("#,##0 'รหัส'", count_member),level); 
+        int level = 0;
+        double count_member;
+        do {
+            count_member = Math.pow(item.getChartPower(), level);
+            LabelValue labelValue = new LabelValue(Format.formatNumber("#,##0 'รหัส'", count_member), level);
             powerLevels.add(labelValue);
             level++;
-        }while(count_member < max_count_member); 
-        if(item.getChartLevel() !=null && item.getChartLevel() > (level-1)){ 
-            item.setChartLevel((level-1)); 
+        } while (count_member < max_count_member);
+        if (item.getChartLevel() != null && item.getChartLevel() > (level - 1)) {
+            item.setChartLevel((level - 1));
         }
-        
+
     }
 
     public List<LabelValue> getPowerLevels() {
-        return powerLevels; 
+        return powerLevels;
     }
 
     @Override
@@ -171,8 +175,10 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     protected void saveItem() {
         systemTestService.saveTestPlanHeader(item);
         systemTestService.procRunTest();
-        loadTestData(); 
-    } 
+        setEditItem();
+        loadTestData();
+
+    }
 
     @Override
     protected void setItems() {
@@ -197,7 +203,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             } else {
                 item.setChkPay("true");
             }
-        } else if (power != null) { 
+        } else if (power != null) {
             genPowerLevels();
         }
     }
@@ -210,40 +216,65 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         }
     }
 
+    private void setSummaryPcent(Integer id, float comm, float commPro) {
+        if(!genMemberPage.getContent().isEmpty()) {
+            float totalComm = comm+ commPro , pv =  genMemberPage.getContent().get(0).getTopupPv(), price = 0f ;
+            long totalCount = genMemberPage.getTotalElements();
+            price = (pv*totalCount)*item.getPvPerBaht() ;
+            item.getClassId(id).setComm(comm);
+            item.getClassId(id).setCommPro(commPro);
+            item.getClassId(id).setTotalComm(totalComm);  
+     
+            item.getClassId(id).setPcent( new Float(comm*100.0/price )) ;
+            item.getClassId(id).setPcentPro( new Float(commPro*100.0/price ));
+            item.getClassId(id).setTotalPcent(new Float(totalComm*100.0/price )); 
+        }
+    }
+
     /// ======================
-    private void loadTestData(){
+    private void loadTestData() {
         setActiveMemberPage(0);
-        setActiveBonusMemberPage(0); 
-        setActiveWsPage(0); 
-        setActiveWsBlPage(0); 
+        setActiveBonusMemberPage(0);
+        setActiveWsPage(0);
+        setActiveWsBlPage(0);
         setActiveMatchingPage(0);
-        searchGenMember();  
-        bonusGenMember(); 
-        bonusWsGen(); 
-        bonusWsBlGen(); 
-        bonusMatchingGen(); 
-        BindUtils.postNotifyChange(null,null,this,"genMemberPage");
-        BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage"); 
-        BindUtils.postNotifyChange(null,null,this,"genWsPage"); 
-        BindUtils.postNotifyChange(null,null,this,"genWsBlPage"); 
-        BindUtils.postNotifyChange(null,null,this,"genMatchingPage"); 
-        BindUtils.postNotifyChange(null,null,this,"activeMemberPage"); 
-        BindUtils.postNotifyChange(null,null,this,"activeBonusMemberPage");   
-        BindUtils.postNotifyChange(null,null,this,"activeWsPage");  
-        BindUtils.postNotifyChange(null,null,this,"activeWsBlPage");  
-        BindUtils.postNotifyChange(null,null,this,"activeMatchingPage");  
+        searchGenMember();
+        bonusGenMember();
+        setSummaryPcent(1,genBonusMemberPage.getSum1().floatValue(), genBonusMemberPage.getSum2().floatValue());
+        bonusWsGen();
+        setSummaryPcent(3,genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
+        bonusWsBlGen();
+        setSummaryPcent(5,genWsBlPage.getSum1().floatValue(), genWsBlPage.getSum2().floatValue());
+        bonusMatchingGen();
+        setSummaryPcent(6,genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
+        bonusUniLevelGen();
+        setSummaryPcent(7,genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
+        systemTestService.saveTestPlanHeader(item);
+        BindUtils.postNotifyChange(null, null, this, "item");
+        BindUtils.postNotifyChange(null, null, this, "genMemberPage");
+        BindUtils.postNotifyChange(null, null, this, "genBonusMemberPage");
+        BindUtils.postNotifyChange(null, null, this, "genWsPage");
+        BindUtils.postNotifyChange(null, null, this, "genWsBlPage");
+        BindUtils.postNotifyChange(null, null, this, "genMatchingPage");
+        BindUtils.postNotifyChange(null, null, this, "genUniPage");
+        BindUtils.postNotifyChange(null, null, this, "activeMemberPage");
+        BindUtils.postNotifyChange(null, null, this, "activeBonusMemberPage");
+        BindUtils.postNotifyChange(null, null, this, "activeWsPage");
+        BindUtils.postNotifyChange(null, null, this, "activeWsBlPage");
+        BindUtils.postNotifyChange(null, null, this, "activeMatchingPage");
+        BindUtils.postNotifyChange(null, null, this, "activeUniPage");
         
     }
-    
-    @Command(value = {"searchGenMember"}) 
-    public void searchGenMember() { 
-        genMemberPage= testService.findAllGenMembers(activeMemberPage, pageMemberSize); 
-        BindUtils.postNotifyChange(null,null,this,"genMemberPage");
-    } 
-    
+
+    @Command(value = {"searchGenMember"})
+    public void searchGenMember() {
+        genMemberPage = testService.findAllGenMembers(activeMemberPage, pageMemberSize);
+        BindUtils.postNotifyChange(null, null, this, "genMemberPage");
+    }
+
     public int getPageMemberSize() {
         return pageMemberSize;
-    } 
+    }
 
     public int getActiveMemberPage() {
         return activeMemberPage;
@@ -254,13 +285,13 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     public Page<GenMember> getGenMemberPage() {
-        return genMemberPage ;
+        return genMemberPage;
     }
 
-    @Command(value = {"bonusGenMember"}) 
-    public void bonusGenMember() { 
-        genBonusMemberPage= testService.findAllBonusSponsorGen(activeBonusMemberPage, pageBonusMemberSize); 
-        BindUtils.postNotifyChange(null,null,this,"genBonusMemberPage"); 
+    @Command(value = {"bonusGenMember"})
+    public void bonusGenMember() {
+        genBonusMemberPage = testService.findAllBonusSponsorGen(activeBonusMemberPage, pageBonusMemberSize);
+        BindUtils.postNotifyChange(null, null, this, "genBonusMemberPage");
     }
 
     public int getActiveBonusMemberPage() {
@@ -276,19 +307,19 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     public Pageable<GenMember> getGenBonusMemberPage() {
-        return genBonusMemberPage; 
+        return genBonusMemberPage;
     }
 
-    @Command(value = {"bonusWsGen"}) 
-    public void bonusWsGen() { 
-        genWsPage= testService.findAllBonusWsGen(activeWsPage, pageWsSize); 
-        BindUtils.postNotifyChange(null,null,this,"genWsPage");
+    @Command(value = {"bonusWsGen"})
+    public void bonusWsGen() {
+        genWsPage = testService.findAllBonusWsGen(activeWsPage, pageWsSize);
+        BindUtils.postNotifyChange(null, null, this, "genWsPage");
     }
 
     public void setActiveWsPage(int activeWsPage) {
         this.activeWsPage = activeWsPage;
     }
-    
+
     public int getActiveWsPage() {
         return activeWsPage;
     }
@@ -301,17 +332,16 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         return genWsPage;
     }
 
-     
-   @Command(value = {"bonusWsBlGen"}) 
-    public void bonusWsBlGen() { 
-        genWsBlPage= testService.findAllBonusWsBlGen(activeWsBlPage, pageWsBlSize); 
-        BindUtils.postNotifyChange(null,null,this,"genWsBlPage");
+    @Command(value = {"bonusWsBlGen"})
+    public void bonusWsBlGen() {
+        genWsBlPage = testService.findAllBonusWsBlGen(activeWsBlPage, pageWsBlSize);
+        BindUtils.postNotifyChange(null, null, this, "genWsBlPage");
     }
 
     public void setActiveWsBlPage(int activeWsBlPage) {
         this.activeWsBlPage = activeWsBlPage;
     }
-    
+
     public int getActiveWsBlPage() {
         return activeWsBlPage;
     }
@@ -322,13 +352,12 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
 
     public Pageable<Ws> getGenWsBlPage() {
         return genWsBlPage;
-    } 
-    
-    
-    @Command(value = {"bonusMatchingGen"}) 
-    public void bonusMatchingGen() { 
-        genMatchingPage= testService.findAllBonusMatchungGen(activeMatchingPage, pageMatchingSize); 
-        BindUtils.postNotifyChange(null,null,this,"genMatchingPage");
+    }
+
+    @Command(value = {"bonusMatchingGen"})
+    public void bonusMatchingGen() {
+        genMatchingPage = testService.findAllBonusMatchungGen(activeMatchingPage, pageMatchingSize);
+        BindUtils.postNotifyChange(null, null, this, "genMatchingPage");
     }
 
     public int getActiveMatchingPage() {
@@ -346,7 +375,29 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     public Pageable<GenMember> getGenMatchingPage() {
         return genMatchingPage;
     }
+    
+    @Command(value = {"bonusUniLevelGen"})
+    public void bonusUniLevelGen() {
+        genUniPage = testService.findAllBonusUniLevelGen(activeUniPage, pageUniSize);
+        BindUtils.postNotifyChange(null, null, this, "genUniPage");
+    }
 
-     
+    public int getActiveUniPage() {
+        return activeUniPage;
+    }
+
+    public void setActiveUniPage(int activeUniPage) {
+        this.activeUniPage = activeUniPage;
+    }
+
+    public int getPageUniSize() {
+        return pageUniSize;
+    }
+
+    public Pageable<GenMember> getGenUniPage() {
+        return genUniPage;
+    }
+    
+
     
 }
