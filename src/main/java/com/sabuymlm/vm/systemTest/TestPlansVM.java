@@ -242,6 +242,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setActiveWsPage(0);
         setActiveWsBlPage(0);
         setActiveMatchingPage(0);
+        setActiveUniPage(0); 
         item.clearSummaryPcent();
         searchGenMember();
         bonusGenMember();
