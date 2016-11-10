@@ -64,7 +64,7 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
     @Column(name = "other_baht", columnDefinition = "float")
     private Float otherBaht;
 
-    @OneToMany(mappedBy = "id.company", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(mappedBy = "id.planHeader", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<TestPlan> items = new ArrayList<TestPlan>();
 
     public TestPlanHeader() {
@@ -308,6 +308,17 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
             }
         }
          return new TestPlan() ;
+    }
+    
+    public void clearSummaryPcent(){ 
+        for(TestPlan plan : items ){ 
+            plan.setPcent(null);
+            plan.setPcentPro(null); 
+            plan.setTotalPcent(null);
+            plan.setComm(null);
+            plan.setCommPro(null);
+            plan.setTotalComm(null);
+        } 
     }
     
     public Float getSumPcent(){

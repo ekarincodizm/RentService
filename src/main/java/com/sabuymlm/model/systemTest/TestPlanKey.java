@@ -1,6 +1,5 @@
 package com.sabuymlm.model.systemTest;
-   
-import com.sabuymlm.model.admin.Company;
+    
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,20 +14,20 @@ public class TestPlanKey implements Serializable {
     @NotNull(message = "กำหนดบริษัทผู้ใช้งาน"  ) 
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "company_id", referencedColumnName = "company_id"  ,nullable = false     )
-    private Company company;     
+    private TestPlanHeader planHeader;     
 
     public TestPlanKey(){}
-    public TestPlanKey(Integer no , Company company){
-        this.company = company ;
+    public TestPlanKey(Integer no , TestPlanHeader planHeader){
+        this.planHeader = planHeader ;
         this.no = no ;
     }
 
-    public Company getCompany() {
-        return company;
+    public TestPlanHeader getPlanHeader() {
+        return planHeader;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setPlanHeader(TestPlanHeader planHeader) {
+        this.planHeader = planHeader;
     }  
 
     public Integer getNo() {
@@ -42,8 +41,8 @@ public class TestPlanKey implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + (this.no != null ? this.no.hashCode() : 0);
-        hash = 97 * hash + (this.company != null ? this.company.hashCode() : 0);
+        hash = 23 * hash + (this.no != null ? this.no.hashCode() : 0);
+        hash = 23 * hash + (this.planHeader != null ? this.planHeader.hashCode() : 0);
         return hash;
     }
 
@@ -62,14 +61,10 @@ public class TestPlanKey implements Serializable {
         if (this.no != other.no && (this.no == null || !this.no.equals(other.no))) {
             return false;
         }
-        if (this.company != other.company && (this.company == null || !this.company.equals(other.company))) {
+        if (this.planHeader != other.planHeader && (this.planHeader == null || !this.planHeader.equals(other.planHeader))) {
             return false;
         }
         return true;
-    } 
-
-    @Override
-    public String toString() {
-        return "TestPlanKey{" + "no=" + no + '}';
-    } 
+    }
+ 
 }

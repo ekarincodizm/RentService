@@ -14,8 +14,7 @@ import com.sabuymlm.model.systemTest.MatchingDefineHeader;
 import com.sabuymlm.model.systemTest.Position;
 import com.sabuymlm.model.systemTest.SponsorDefKey;
 import com.sabuymlm.model.systemTest.SponsorDefine;
-import com.sabuymlm.model.systemTest.SponsorDefineHeader;
-import com.sabuymlm.model.systemTest.TestPlan;
+import com.sabuymlm.model.systemTest.SponsorDefineHeader; 
 import com.sabuymlm.model.systemTest.TestPlanHeader;
 import com.sabuymlm.model.systemTest.UnilevelDefKey;
 import com.sabuymlm.model.systemTest.UnilevelDefine;
@@ -255,16 +254,11 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     @Override
     public TestPlanHeader findByTestPlanHeader(Integer companyId) {
         return reposTestPlanHeaderEvent.findOne(companyId);
-    }
-
-    @Override
-    public Collection<? extends TestPlan> findAllTestPlanByCompany() {  
-        return reposTestPlanEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany(), new Sort(Sort.Direction.ASC, "id.no")); 
-    }
+    } 
 
     @Override
     public TestPlanHeader saveTestPlanHeader(TestPlanHeader testPlanHeader) { 
-        return reposTestPlanHeaderEvent.save(testPlanHeader); 
+        return reposTestPlanHeaderEvent.saveAndFlush(testPlanHeader);  
     }
 
     @Override
@@ -273,7 +267,7 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
         query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());
         query.uniqueResult(); 
     }
-  
+   
 }
 
 

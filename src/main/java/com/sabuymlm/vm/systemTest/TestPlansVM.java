@@ -66,10 +66,10 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private final int pageMatchingSize = 10;
     private int activeMatchingPage;
     protected Pageable<GenMember> genMatchingPage;
-    
+
     private final int pageUniSize = 10;
     private int activeUniPage;
-    protected Pageable<GenMember> genUniPage; 
+    protected Pageable<GenMember> genUniPage;
 
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
@@ -131,7 +131,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             for (int i = 1; i <= 7; i++) {
                 TestPlan itm = new TestPlan();
                 TestPlanKey itemKey = new TestPlanKey();
-                itemKey.setCompany(SecurityUtil.getUserDetails().getCompany());
+                itemKey.setPlanHeader(item);
                 itemKey.setNo(i);
                 itm.setId(itemKey);
                 itm.setChkPay("false");
@@ -171,13 +171,11 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     @Transactional
-    @Override
-    protected void saveItem() {
-        systemTestService.saveTestPlanHeader(item);
-        systemTestService.procRunTest();
-        setEditItem();
-        loadTestData();
-
+    @Override 
+    protected void saveItem() { 
+        item = systemTestService.saveTestPlanHeader(item);
+        systemTestService.procRunTest(); 
+        loadTestData(); 
     }
 
     @Override
@@ -192,20 +190,23 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     @Command(value = {"onValidateTable"})
-    @NotifyChange({"items", "item", "powerLevels"})
-    public void validateTable(@BindingParam("item") TestPlan item, @BindingParam("power") Integer power) {
-        if (item instanceof TestPlan) {
-            if (item.getChkPay().equals("true")) {
-                item.setChkPay("false");
-                item.setChkAuto("false");
-                item.setPassMatchingStrong("false");
-                item.setPassMatchingWeakOrBonus("false");
+    @NotifyChange({"item", "items", "powerLevels"})
+    public void validateTable(@BindingParam("item") TestPlan itm, @BindingParam("power") Integer power) {
+        if (itm instanceof TestPlan) {
+            TestPlan plan = item.getClassId(itm.getId().getNo()); 
+            if (plan.getChkPay().equals("true")) {
+                plan.setChkPay("false");
+                plan.setChkAuto("false");
+                plan.setPassMatchingStrong("false");
+                plan.setPassMatchingWeakOrBonus("false");
             } else {
-                item.setChkPay("true");
-            }
+                plan.setChkPay("true");
+            } 
+
         } else if (power != null) {
             genPowerLevels();
         }
+
     }
 
     @Override
@@ -217,17 +218,17 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     private void setSummaryPcent(Integer id, float comm, float commPro) {
-        if(!genMemberPage.getContent().isEmpty()) {
-            float totalComm = comm+ commPro , pv =  genMemberPage.getContent().get(0).getTopupPv(), price = 0f ;
+        if (!genMemberPage.getContent().isEmpty() && (comm + commPro) > 0 ) {
+            float totalComm = comm + commPro, pv = genMemberPage.getContent().get(0).getTopupPv(), price = 0f;
             long totalCount = genMemberPage.getTotalElements();
-            price = (pv*totalCount)*item.getPvPerBaht() ;
+            price = (pv * totalCount) * item.getPvPerBaht();
             item.getClassId(id).setComm(comm);
             item.getClassId(id).setCommPro(commPro);
-            item.getClassId(id).setTotalComm(totalComm);  
-     
-            item.getClassId(id).setPcent( new Float(comm*100.0/price )) ;
-            item.getClassId(id).setPcentPro( new Float(commPro*100.0/price ));
-            item.getClassId(id).setTotalPcent(new Float(totalComm*100.0/price )); 
+            item.getClassId(id).setTotalComm(totalComm);
+
+            item.getClassId(id).setPcent(new Float(comm * 100.0 / price));
+            item.getClassId(id).setPcentPro(new Float(commPro * 100.0 / price));
+            item.getClassId(id).setTotalPcent(new Float(totalComm * 100.0 / price));
         }
     }
 
@@ -240,17 +241,18 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setActiveMatchingPage(0);
         searchGenMember();
         bonusGenMember();
-        setSummaryPcent(1,genBonusMemberPage.getSum1().floatValue(), genBonusMemberPage.getSum2().floatValue());
+        item.clearSummaryPcent();
+        setSummaryPcent(1, genBonusMemberPage.getSum1().floatValue(), genBonusMemberPage.getSum2().floatValue());
         bonusWsGen();
-        setSummaryPcent(3,genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
+        setSummaryPcent(3, genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
         bonusWsBlGen();
-        setSummaryPcent(5,genWsBlPage.getSum1().floatValue(), genWsBlPage.getSum2().floatValue());
+        setSummaryPcent(5, genWsBlPage.getSum1().floatValue(), genWsBlPage.getSum2().floatValue());
         bonusMatchingGen();
-        setSummaryPcent(6,genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
+        setSummaryPcent(6, genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
         bonusUniLevelGen();
-        setSummaryPcent(7,genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
-        systemTestService.saveTestPlanHeader(item);
-        BindUtils.postNotifyChange(null, null, this, "item");
+        setSummaryPcent(7, genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
+        item = systemTestService.saveTestPlanHeader(item);  
+ 
         BindUtils.postNotifyChange(null, null, this, "genMemberPage");
         BindUtils.postNotifyChange(null, null, this, "genBonusMemberPage");
         BindUtils.postNotifyChange(null, null, this, "genWsPage");
@@ -263,7 +265,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         BindUtils.postNotifyChange(null, null, this, "activeWsBlPage");
         BindUtils.postNotifyChange(null, null, this, "activeMatchingPage");
         BindUtils.postNotifyChange(null, null, this, "activeUniPage");
-        
+
     }
 
     @Command(value = {"searchGenMember"})
@@ -375,7 +377,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     public Pageable<GenMember> getGenMatchingPage() {
         return genMatchingPage;
     }
-    
+
     @Command(value = {"bonusUniLevelGen"})
     public void bonusUniLevelGen() {
         genUniPage = testService.findAllBonusUniLevelGen(activeUniPage, pageUniSize);
@@ -397,7 +399,5 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     public Pageable<GenMember> getGenUniPage() {
         return genUniPage;
     }
-    
 
-    
 }

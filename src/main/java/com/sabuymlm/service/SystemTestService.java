@@ -74,11 +74,9 @@ public interface SystemTestService {
     public Collection<? extends BinaryBalanceDefine> findAllBinaryBalanceByCompany(); 
     public List<BinaryBalanceDefine> saveBinaryBalanceDefine(List<BinaryBalanceDefine> selectItems);
 
-    public TestPlanHeader findByTestPlanHeader(Integer companyId);
-    public Collection<? extends TestPlan> findAllTestPlanByCompany(); 
+    public TestPlanHeader findByTestPlanHeader(Integer companyId); 
     public TestPlanHeader saveTestPlanHeader(TestPlanHeader testPlanHeader);
 
-    public void procRunTest(); 
- 
+    public void procRunTest();  
     
 }
