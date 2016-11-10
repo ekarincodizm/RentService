@@ -239,9 +239,9 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setActiveWsPage(0);
         setActiveWsBlPage(0);
         setActiveMatchingPage(0);
-        searchGenMember();
-        bonusGenMember();
         item.clearSummaryPcent();
+        searchGenMember();
+        bonusGenMember(); 
         setSummaryPcent(1, genBonusMemberPage.getSum1().floatValue(), genBonusMemberPage.getSum2().floatValue());
         bonusWsGen();
         setSummaryPcent(3, genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
@@ -253,6 +253,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setSummaryPcent(7, genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
         item = systemTestService.saveTestPlanHeader(item);  
  
+        BindUtils.postNotifyChange(null, null, this, "item");
         BindUtils.postNotifyChange(null, null, this, "genMemberPage");
         BindUtils.postNotifyChange(null, null, this, "genBonusMemberPage");
         BindUtils.postNotifyChange(null, null, this, "genWsPage");
