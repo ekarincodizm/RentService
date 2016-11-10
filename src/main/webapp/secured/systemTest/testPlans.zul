@@ -258,7 +258,7 @@
                                             <listheader width="300px" align="left" label="ช่องทางรายได้" />       
                                             <listheader width="90px" align="center" label="%จ่าย/W" />        
                                             <listheader width="105px" align="center" label="%จ่าย(Pro)/S" />        
-                                            <listheader width="80px" align="center" label="รวม%จ่าย" />         
+                                            <listheader style="background-color:yellow;" width="80px" align="center" label="รวม%จ่าย" />         
                                         </listhead>  
                                         <template name="model"  var="item">
                                             <listitem >
@@ -266,14 +266,14 @@
                                                 <listcell label="@load(item.planName)" />      
                                                 <listcell label="@load(item.pcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
                                                 <listcell label="@load(item.pcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
-                                                <listcell label="@load(item.totalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />    
+                                                <listcell style="background-color:yellow;" label="@load(item.totalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />    
                                             </listitem>  
                                         </template> 
                                         <listfoot> 
                                             <listfooter span="2" align="right" label="Summary :"/>
                                             <listfooter align="center"  label="@load(vm.item.sumPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
                                             <listfooter align="center"  label="@load(vm.item.sumPcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
-                                            <listfooter align="center"  label="@load(vm.item.sumTotalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
+                                            <listfooter style="background-color:#FFD133;" align="center"  label="@load(vm.item.sumTotalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
                                         </listfoot>
                                     </listbox>
                                 </groupbox>

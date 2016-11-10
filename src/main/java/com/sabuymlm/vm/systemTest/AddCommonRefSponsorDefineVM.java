@@ -45,15 +45,15 @@ public abstract class AddCommonRefSponsorDefineVM<V,T> extends CommonAddVM<T> im
     protected abstract void privateValidate() ;
 
     private Set<ConstraintViolation> validateAll() {  
-        setItems(); 
-        constraintViolations.clear(); 
-        privateValidate(); 
+        setItems();  
+        constraintViolations.clear();  
+        privateValidate();  
         if( item != null ) { 
             constraintViolations.addAll(validator.validate(item)); 
-        } 
+        }  
         for(V dt:selectItems){ 
             constraintViolations.addAll(validator.validate(dt));
-        } 
+        }  
         return constraintViolations;
     } 
 

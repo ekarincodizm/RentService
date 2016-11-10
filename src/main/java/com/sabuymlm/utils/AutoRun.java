@@ -18,4 +18,14 @@ public class AutoRun {
         inputCode++;
         return _f.format(inputCode);
     } 
+    
+    public static Number genSummaryPower(int max_level, double power){
+        int level = 0;
+        double count_member = 0d;
+        do {
+            count_member += Math.pow(power, level); 
+            level++;
+        } while (level <= max_level); 
+        return count_member ;
+    }
 }

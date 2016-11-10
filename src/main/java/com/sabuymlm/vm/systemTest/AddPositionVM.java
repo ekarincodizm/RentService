@@ -87,21 +87,20 @@ public class AddPositionVM extends AddCommonRefSponsorDefineVM<Position,Position
 
     @Transactional
     @Override
-    protected void saveItem() {
-          
-        if (item.getId() == null) { 
+    protected void saveItem() {  
+        systemTestService.savePosition(item);
+    }   
+
+    @Override
+    protected void setItems() { 
+         if (item.getId() == null) { 
             item.setCreateDate(new Date());
             item.setCreateUser(SecurityUtil.getUserDetails().getUser());
         } else {
             item.setUpdateDate(new Date());
             item.setUpdateUser(SecurityUtil.getUserDetails().getUser());
         }  
-        item.setCompany(SecurityUtil.getUserDetails().getCompany());
-        systemTestService.savePosition(item);
-    }   
-
-    @Override
-    protected void setItems() { 
+         item.setCompany(SecurityUtil.getUserDetails().getCompany());
     }
 
     @Override

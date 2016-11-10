@@ -1,7 +1,10 @@
 package com.sabuymlm.model.systemTest;
   
 import com.sabuymlm.model.admin.*;  
+import com.sabuymlm.model.test.GenMember;
 import java.io.Serializable;  
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;  
 import javax.validation.constraints.NotNull; 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -45,6 +48,28 @@ public class Position extends CommonEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     private Company company;   
+    
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<SponsorDefine> sponsorDefs  ;
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<BinaryWsDefine> binaryWsDefines  ;
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<BinaryBalanceDefine> binaryWsBlDefines  ;
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<BinaryMultiWsDefine> binaryMultiWsDefines  ;
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<MatchingDefine> matchingDefines  ;
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<XSponsorDefineHeader> xSponsorDefineHeaders  ; 
+    @OneToMany(mappedBy = "id.xposition", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<XSponsorDefine> xSponsorDefines  ; 
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<UnilevelDefine> unilevelDefines  ;
+    
+    @OneToOne(mappedBy = "position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE} , orphanRemoval = true)
+    private TestPlanHeader testPlanHeader  ;
+    @OneToMany(mappedBy = "position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE} , orphanRemoval = true)
+    private List<GenMember> genMembers ;
 
     public Integer getId() {
         return id;
@@ -53,6 +78,86 @@ public class Position extends CommonEntity implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     } 
+
+    public List<GenMember> getGenMembers() {
+        return genMembers;
+    }
+
+    public void setGenMembers(List<GenMember> genMembers) {
+        this.genMembers = genMembers;
+    }  
+
+    public TestPlanHeader getTestPlanHeader() {
+        return testPlanHeader;
+    }
+
+    public void setTestPlanHeader(TestPlanHeader testPlanHeader) {
+        this.testPlanHeader = testPlanHeader;
+    }
+
+    public List<XSponsorDefine> getxSponsorDefines() {
+        return xSponsorDefines;
+    }
+
+    public void setxSponsorDefines(List<XSponsorDefine> xSponsorDefines) {
+        this.xSponsorDefines = xSponsorDefines;
+    }
+
+    public List<UnilevelDefine> getUnilevelDefines() {
+        return unilevelDefines;
+    }
+
+    public void setUnilevelDefines(List<UnilevelDefine> unilevelDefines) {
+        this.unilevelDefines = unilevelDefines;
+    }
+
+    public List<BinaryMultiWsDefine> getBinaryMultiWsDefines() {
+        return binaryMultiWsDefines;
+    }
+
+    public void setBinaryMultiWsDefines(List<BinaryMultiWsDefine> binaryMultiWsDefines) {
+        this.binaryMultiWsDefines = binaryMultiWsDefines;
+    }
+
+    public List<MatchingDefine> getMatchingDefines() {
+        return matchingDefines;
+    }
+
+    public void setMatchingDefines(List<MatchingDefine> matchingDefines) {
+        this.matchingDefines = matchingDefines;
+    } 
+
+    public List<XSponsorDefineHeader> getxSponsorDefineHeaders() {
+        return xSponsorDefineHeaders;
+    }
+
+    public void setxSponsorDefineHeaders(List<XSponsorDefineHeader> xSponsorDefineHeaders) {
+        this.xSponsorDefineHeaders = xSponsorDefineHeaders;
+    } 
+
+    public List<BinaryBalanceDefine> getBinaryWsBlDefines() {
+        return binaryWsBlDefines;
+    }
+
+    public void setBinaryWsBlDefines(List<BinaryBalanceDefine> binaryWsBlDefines) {
+        this.binaryWsBlDefines = binaryWsBlDefines;
+    }
+
+    public List<BinaryWsDefine> getBinaryWsDefines() {
+        return binaryWsDefines;
+    }
+
+    public void setBinaryWsDefines(List<BinaryWsDefine> binaryWsDefines) {
+        this.binaryWsDefines = binaryWsDefines;
+    }
+
+    public List<SponsorDefine> getSponsorDefs() {
+        return sponsorDefs;
+    }
+
+    public void setSponsorDefs(List<SponsorDefine> sponsorDefs) {
+        this.sponsorDefs = sponsorDefs;
+    }
 
     public Float getMtaBaht() {
         return mtaBaht;

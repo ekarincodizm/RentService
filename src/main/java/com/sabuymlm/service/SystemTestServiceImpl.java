@@ -267,6 +267,11 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
         query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());
         query.uniqueResult(); 
     }
+
+    @Override
+    public boolean isExistsTestPlanHeader() { 
+        return reposTestPlanHeaderEvent.exists(SecurityUtil.getUserDetails().getCompany().getId());
+    } 
    
 }
 

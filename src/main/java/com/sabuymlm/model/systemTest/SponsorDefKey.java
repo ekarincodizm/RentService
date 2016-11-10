@@ -10,8 +10,8 @@ public class SponsorDefKey implements Serializable {
     @Column(name = "level_index", columnDefinition = "int" )
     private Integer levelIndex; 
     @NotNull(message = "กำหนดตำแหน่ง"  ) 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "position_id", referencedColumnName = "position_id")
+    @ManyToOne(fetch = FetchType.LAZY  ) 
+    @JoinColumn(name = "position_id", referencedColumnName = "position_id" )
     private Position position ;   
 
     public SponsorDefKey(){}

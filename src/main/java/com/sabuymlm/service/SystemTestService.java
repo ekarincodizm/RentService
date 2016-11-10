@@ -75,8 +75,10 @@ public interface SystemTestService {
     public List<BinaryBalanceDefine> saveBinaryBalanceDefine(List<BinaryBalanceDefine> selectItems);
 
     public TestPlanHeader findByTestPlanHeader(Integer companyId); 
+    public boolean isExistsTestPlanHeader(); 
     public TestPlanHeader saveTestPlanHeader(TestPlanHeader testPlanHeader);
 
     public void procRunTest();  
+    
     
 }

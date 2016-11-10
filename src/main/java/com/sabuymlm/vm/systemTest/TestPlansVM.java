@@ -78,7 +78,9 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         super.initial(item, icon, headerLabel);
         setStatusEdit();
         genPowerLevels();
-        loadTestData();
+        if( systemTestService.isExistsTestPlanHeader() ){ 
+            loadTestData();
+        } 
     }
 
     private void genPowerLevels() {
@@ -88,13 +90,14 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             max_count_member = SecurityUtil.getUserDetails().getCompany().getMaxMlmMember();
         }
         int level = 0;
-        double count_member;
+        double count_member, total_count_member = 0d;
         do {
             count_member = Math.pow(item.getChartPower(), level);
-            LabelValue labelValue = new LabelValue(Format.formatNumber("#,##0 'รหัส'", count_member), level);
+            total_count_member += count_member;
+            LabelValue labelValue = new LabelValue(Format.formatNumber("#,##0 'รหัส'", total_count_member), level);
             powerLevels.add(labelValue);
             level++;
-        } while (count_member < max_count_member);
+        } while (total_count_member < max_count_member);
         if (item.getChartLevel() != null && item.getChartLevel() > (level - 1)) {
             item.setChartLevel((level - 1));
         }
@@ -171,11 +174,11 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     @Transactional
-    @Override 
-    protected void saveItem() { 
+    @Override
+    protected void saveItem() {
         item = systemTestService.saveTestPlanHeader(item);
-        systemTestService.procRunTest(); 
-        loadTestData(); 
+        systemTestService.procRunTest();
+        loadTestData();
     }
 
     @Override
@@ -193,7 +196,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     @NotifyChange({"item", "items", "powerLevels"})
     public void validateTable(@BindingParam("item") TestPlan itm, @BindingParam("power") Integer power) {
         if (itm instanceof TestPlan) {
-            TestPlan plan = item.getClassId(itm.getId().getNo()); 
+            TestPlan plan = item.getClassId(itm.getId().getNo());
             if (plan.getChkPay().equals("true")) {
                 plan.setChkPay("false");
                 plan.setChkAuto("false");
@@ -201,7 +204,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
                 plan.setPassMatchingWeakOrBonus("false");
             } else {
                 plan.setChkPay("true");
-            } 
+            }
 
         } else if (power != null) {
             genPowerLevels();
@@ -218,7 +221,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     private void setSummaryPcent(Integer id, float comm, float commPro) {
-        if (!genMemberPage.getContent().isEmpty() && (comm + commPro) > 0 ) {
+        if (!genMemberPage.getContent().isEmpty() && (comm + commPro) > 0) {
             float totalComm = comm + commPro, pv = genMemberPage.getContent().get(0).getTopupPv(), price = 0f;
             long totalCount = genMemberPage.getTotalElements();
             price = (pv * totalCount) * item.getPvPerBaht();
@@ -241,7 +244,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setActiveMatchingPage(0);
         item.clearSummaryPcent();
         searchGenMember();
-        bonusGenMember(); 
+        bonusGenMember();
         setSummaryPcent(1, genBonusMemberPage.getSum1().floatValue(), genBonusMemberPage.getSum2().floatValue());
         bonusWsGen();
         setSummaryPcent(3, genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
@@ -251,8 +254,8 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setSummaryPcent(6, genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
         bonusUniLevelGen();
         setSummaryPcent(7, genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
-        item = systemTestService.saveTestPlanHeader(item);  
- 
+        item = systemTestService.saveTestPlanHeader(item);
+
         BindUtils.postNotifyChange(null, null, this, "item");
         BindUtils.postNotifyChange(null, null, this, "genMemberPage");
         BindUtils.postNotifyChange(null, null, this, "genBonusMemberPage");

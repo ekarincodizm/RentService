@@ -83,7 +83,7 @@ public class AddUnilevelDefineVM extends AddCommonRefSponsorDefineVM<UnilevelDef
         if(positions.isEmpty()){ 
             level = item.getLevelIndex();
         }else { 
-            level = systemTestService.findByMatchingDefineMaxId();
+            level = systemTestService.findByUnilevelDefineMaxId();
             if( level == null){
                 level = 1;
             }else {

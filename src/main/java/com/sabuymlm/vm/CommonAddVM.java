@@ -45,7 +45,7 @@ public abstract class CommonAddVM<T> implements Serializable {
             setEditItem();
             setStatusEdit();
         } else { 
-            setNewItem(); 
+            setNewItem();  
             setStatusAdd();
         }
     }

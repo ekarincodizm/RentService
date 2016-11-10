@@ -1,5 +1,6 @@
 package com.sabuymlm.model.systemTest;
 
+import com.sabuymlm.utils.AutoRun;
 import com.sabuymlm.utils.Format;
 import com.sabuymlm.vm.systemTest.LabelValue;
 import java.io.Serializable;
@@ -135,8 +136,8 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
     public LabelValue getChartLevelValue() { 
         if(chartPower == null || chartLevel == null ) {
             return null ; 
-        }else {
-            return new LabelValue(Format.formatNumber("#,##0 'รหัส'", Math.pow(chartPower, chartLevel) ) ,chartLevel); 
+        }else { 
+            return new LabelValue(Format.formatNumber("#,##0 'รหัส'", AutoRun.genSummaryPower(chartLevel, chartPower) ) ,chartLevel); 
         }
     }
 
