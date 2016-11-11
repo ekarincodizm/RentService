@@ -343,5 +343,27 @@ public class TestPlanHeader extends CommonEntity implements Serializable {
         }
         return total;
     }
+    
+    public Float getSumComm(){
+        float total = 0f;
+        for(TestPlan plan : items ){
+            total += (plan.getComm() != null?plan.getComm():0f);
+        }
+        return total;
+    }
+    public Float getSumCommPro(){
+        float total = 0f;
+        for(TestPlan plan : items ){
+            total += (plan.getCommPro() != null?plan.getCommPro():0f);
+        }
+        return total;
+    }
+    public Float getSumTotalComm(){
+        float total = 0f;
+        for(TestPlan plan : items ){
+            total += (plan.getTotalComm()!= null?plan.getTotalComm():0f);
+        }
+        return total;
+    }
 
 }

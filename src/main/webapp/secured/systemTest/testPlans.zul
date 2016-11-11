@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
-<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" >  
-    <window width="100%" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.TestPlansVM')"  >    
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" xmlns:ca="client/attribute" >  
+    <window width="100%" border="none" sizable="true"  apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.TestPlansVM')"  >    
         <tabbox>
             <tabs>
-                <tab label="เลือกช่องทางการจ่าย"/>
-                <tab label="ทดสอบ(%Over-Pay)"/>
+                <tab label="เลือกช่องทางการจ่าย" selected="@init(vm.item.sumTotalComm le 0)"  />
+                <tab label="ทดสอบ(%Over-Pay)" selected="@init(vm.item.sumTotalComm gt 0)" /> 
             </tabs>
             <tabpanels>
                 <tabpanel>
                     <groupbox mold="3d" >
-                        <caption height="25px" style="padding:5px;" label=" ภายในตารางด้านล่างนี้ ให้เลือกว่าต้องการจ่ายช่องทางไดบ้าง ให้ทำเครื่องหมายถูกต้องช่อง [เลือกจ่าย] "  /> 
-                        <!--<listbox model="@init(vm.item.items) @load(vm.item.items, after={'onSave','onValidateTable'})" multiple="true" sizedByContent="true" >--> 
+                        <caption height="25px" style="padding:5px;" label=" ภายในตารางด้านล่างนี้ ให้เลือกว่าต้องการจ่ายช่องทางไดบ้าง ให้ทำเครื่องหมายถูกต้องช่อง [เลือกจ่าย] "  />  
                         <listbox model="@init(vm.item.items) @load(vm.item.items, after={'onSave','onValidateTable'})" multiple="true" sizedByContent="true" > 
                             <listhead sizable="true"  >
-                                <listheader align="center" label="ลำดับ" width="50px" /> 
+                                <listheader align="center" label="@load(vm.item.sumTotalComm > 0)" width="50px" /> 
                                 <listheader width="350px" align="left" label="ช่องทางรายได้" />       
                                 <listheader width="70px" align="center" label="เลือกจ่าย" />        
                                 <listheader width="200px" label="คำนวณโบนัสแมทชิ่ง(ต่อ)" />        
@@ -44,10 +43,10 @@
                     </groupbox>
                 </tabpanel>
                 <tabpanel> 
-                    <tabbox>
+                    <tabbox  > 
                         <tabs> 
                             <tab label="กำหนดคุณสมบัติ"/>
-                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="สรุป(% Over Pay)"  /> 
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" selected="true" label="สรุป(% Over Pay)"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="ตารางรหัส/สายงาน"  /> 
                             <tab visible="@bind(not empty vm.genBonusMemberPage.content)" label="Sponsor"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="X-Diff Sponsor"  /> 
@@ -249,34 +248,45 @@
                                 </groupbox>
                             </tabpanel>
                             
-                            <tabpanel>
-                                <groupbox mold="3d" >
-                                    <caption height="25px" style="padding:5px;" label=" ภายในตารางด้านล่างนี้ แสดงถึง %จ่ายแต่ละทาง "  /> 
-                                    <listbox model="@bind(vm.item.items)"  sizedByContent="true" > 
-                                        <listhead sizable="true"  >
-                                            <listheader align="center" label="ลำดับ" width="50px" /> 
-                                            <listheader width="300px" align="left" label="ช่องทางรายได้" />       
-                                            <listheader width="90px" align="center" label="%จ่าย/W" />        
-                                            <listheader width="105px" align="center" label="%จ่าย(Pro)/S" />        
-                                            <listheader style="background-color:yellow;" width="80px" align="center" label="รวม%จ่าย" />         
-                                        </listhead>  
-                                        <template name="model"  var="item">
-                                            <listitem >
-                                                <listcell label="@load(item.id.no)"  />    
-                                                <listcell label="@load(item.planName)" />      
-                                                <listcell label="@load(item.pcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
-                                                <listcell label="@load(item.pcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
-                                                <listcell style="background-color:yellow;" label="@load(item.totalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />    
-                                            </listitem>  
-                                        </template> 
-                                        <listfoot> 
-                                            <listfooter span="2" align="right" label="Summary :"/>
-                                            <listfooter align="center"  label="@load(vm.item.sumPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
-                                            <listfooter align="center"  label="@load(vm.item.sumPcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
-                                            <listfooter style="background-color:#FFD133;" align="center"  label="@load(vm.item.sumTotalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
-                                        </listfoot>
-                                    </listbox>
-                                </groupbox>
+                            <tabpanel > 
+                                <vlayout vflex="1" width="100%"  height="500px" style="overflow: auto"  >  
+                                    <hbox align="top"  > 
+                                        <listbox  model="@bind(vm.item.items)" sizedByContent="true" > 
+                                            <listhead sizable="true"  >
+                                                <listheader align="center" label="No." width="40px" /> 
+                                                <listheader width="300px"  align="left" label="ช่องทางรายได้" />       
+                                                <listheader width="120px" align="right" label="จ่าย/W" />        
+                                                <listheader width="80px" align="center" label="%จ่าย/W" />        
+                                                <listheader width="110px" align="right" label="จ่าย(Pro)/S" />        
+                                                <listheader width="105px" align="center" label="%จ่าย(Pro)/S" />        
+                                                <listheader style="background-color:yellow;" width="120px" align="right" label="รวมจ่าย" />         
+                                                <listheader style="background-color:yellow;" width="80px" align="center" label="รวม%จ่าย" />          
+                                            </listhead>  
+                                            <template name="model"  var="item">
+                                                <listitem >
+                                                    <listcell label="@load(item.id.no)"  />    
+                                                    <listcell label="@load(item.planName)" />      
+                                                    <listcell label="@load(item.comm) @converter('formatedNumber', format='#,##0.00')" />   
+                                                    <listcell label="@load(item.pcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
+                                                    <listcell label="@load(item.commPro) @converter('formatedNumber', format='#,##0.00')" />   
+                                                    <listcell label="@load(item.pcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
+                                                    <listcell style="background-color:yellow;" label="@load(item.totalComm) @converter('formatedNumber', format='#,##0.00')" />    
+                                                    <listcell style="background-color:yellow;" label="@load(item.totalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />    
+                                                </listitem>  
+                                            </template> 
+                                            <listfoot> 
+                                                <listfooter span="2" align="right" label="Summary :"/>
+                                                <listfooter align="right"  label="@load(vm.item.sumComm) @converter('formatedNumber', format='#,##0.00')" />  
+                                                <listfooter align="center"  label="@load(vm.item.sumPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
+                                                <listfooter align="right"  label="@load(vm.item.sumCommPro) @converter('formatedNumber', format='#,##0.00')" />  
+                                                <listfooter align="center"  label="@load(vm.item.sumPcentPro) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
+                                                <listfooter style="background-color:#FFD133;" align="right"  label="@load(vm.item.sumTotalComm) @converter('formatedNumber', format='#,##0.00')" />  
+                                                <listfooter style="background-color:#FFD133;" align="center"  label="@load(vm.item.sumTotalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" />  
+                                            </listfoot>
+                                        </listbox>
+                                        <n:div id="chart_div"></n:div>  
+                                    </hbox>
+                                </vlayout>
                             </tabpanel>
                             
                             <tabpanel>
@@ -553,6 +563,39 @@
                 </tabpanel>
             </tabpanels>
         </tabbox> 
-            
+          
+         <n:script type="text/javascript">
+           <![CDATA[   
+                
+                google.charts.load('current', {'packages':['corechart']}); 
+                
+                data = new google.visualization.DataTable(); 
+                data.addColumn('string', 'Header');
+                data.addColumn('number', 'Value'); 
+                 
+                function setDatas(arrays){ 
+                    removeChart();
+                    data.addRows(arrays);
+                } 
+                
+                function removeChart() {    
+                    for (var i = (data.getNumberOfRows()-1) ; i >= 0 ; i--) {
+                         data.removeRow(i);
+                    }
+                } 
+                 
+                function drawChart() { 
+                
+                  // Set chart options
+                  var options = {'title':'แสดงผลเปรียบเทียบ % จ่าย แต่ละช่องทางรายได้',
+                                 'width':400,
+                                 'height':291, pieHole: 0.3};
+ 
+                  var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+                  chart.draw(data, options);
+                }  
+                
+            ]]>
+        </n:script>
     </window>
 </zk>

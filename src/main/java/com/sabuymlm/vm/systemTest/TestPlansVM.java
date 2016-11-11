@@ -16,6 +16,7 @@ import com.sabuymlm.utils.Format;
 import com.sabuymlm.utils.Pageable;
 import com.sabuymlm.vm.CommonVM;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,10 +30,11 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.zk.ui.Component;
+import org.zkoss.zk.ui.Component; 
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
-import org.zkoss.zkplus.spring.DelegatingVariableResolver;
+import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.DelegatingVariableResolver; 
 
 /**
  *
@@ -78,10 +80,10 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         super.initial(item, icon, headerLabel);
         setStatusEdit();
         genPowerLevels();
-        if( systemTestService.isExistsTestPlanHeader() ){ 
+        if (systemTestService.isExistsTestPlanHeader()) {
             loadTestData();
         } 
-    }
+    } 
 
     private void genPowerLevels() {
         powerLevels.clear();
@@ -210,7 +212,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             genPowerLevels();
         }
 
-    }
+    } 
 
     @Override
     protected void privateValidate() {
@@ -242,7 +244,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setActiveWsPage(0);
         setActiveWsBlPage(0);
         setActiveMatchingPage(0);
-        setActiveUniPage(0); 
+        setActiveUniPage(0);
         item.clearSummaryPcent();
         searchGenMember();
         bonusGenMember();
@@ -270,7 +272,23 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         BindUtils.postNotifyChange(null, null, this, "activeWsBlPage");
         BindUtils.postNotifyChange(null, null, this, "activeMatchingPage");
         BindUtils.postNotifyChange(null, null, this, "activeUniPage");
-
+        
+        callJavaScriptPrintPie();
+        
+    }
+    
+    private void callJavaScriptPrintPie(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("["); 
+        for(TestPlan plan  : item.getItems()){
+            if(plan.getTotalComm() != null ) {
+                sb.append("['").append(plan.getPlanName().substring(0, 10)).append("',").append(Format.formatNumber("###0.00",  plan.getTotalPcent()) ).append("],");    
+            }
+        }
+        sb.append("['คงเหลือ',").append(Format.formatNumber("###0.00",  (100.00 - (item.getSumTotalPcent() != null ?item.getSumTotalPcent():0) )) ).append("],");    
+        sb.append("]"); 
+        Clients.evalJavaScript("setDatas( " + sb.toString() + " ); " ); 
+        Clients.evalJavaScript("google.charts.setOnLoadCallback(drawChart);");
     }
 
     @Command(value = {"searchGenMember"})
