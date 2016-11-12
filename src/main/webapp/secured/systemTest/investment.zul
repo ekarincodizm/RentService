@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?> 
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:n="http://www.zkoss.org/2005/zk/native" > 
+    <window width="800px" border="none" sizable="true" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.systemTest.InvestmentsVM')"  >   
+        <panel style="border:0px" >
+            <panelchildren> 
+                <include src="/secured/commons/addHeader.zul" />  
+                <groupbox mold="3d" >
+                    <caption label=" กำหนด (%Rate) ตามตำแหน่งโดยตารางด้านล่าง "  /> 
+                    <listbox model="@bind(vm.selectItems)" sizedByContent="true" sclass="vertical-scroll" > 
+                        <listhead sizable="true" menupopup="auto"  >
+                            <listheader align="center" label="No." width="40px" /> 
+                            <listheader sort="auto(id.position.name)"  width="100%" align="left" label="ตำแหน่ง" />       
+                            <listheader sort="auto(id.position.topupPv)" align="center" width="70px" label="Investment" />   
+                            <listheader sort="auto(wsPcent)" align="center" width="110px" label="%(Rate)" />  
+                            <listheader sort="auto(stPcent)" align="center" width="110px" label="โบนัส/วัน" />    
+                            <listheader sort="auto(maxPv)" align="center" width="110px" label="Max(Day)" />  
+                            <listheader sort="auto(maxComm)" align="center" width="110px" label="Max(โบนัส)" />    
+                            <listheader sort="auto(circleUnit)" align="center" width="140px" label="รอบจ่าย" />    
+                        </listhead>
+                        <template name="model"  var="item">
+                            <listitem >
+                                <listcell style="@load(item.style)" label="@load(itemStatus.index+1)"  />    
+                                <listcell  style="@load(item.style)" label="@load(item.id.position.name)" />     
+                                <listcell  style="@load(item.style)" label="@load(item.id.position.topupPv) @converter('formatedNumber', format='#,##0')" />    
+                                <listcell  style="@load(item.style)" >   
+                                    <doublebox onOK="@command('onCalculateMaxComm', item =item)" onBlur="@command('onCalculateMaxComm', item =item)" value="@load(item.ratePcent) @save(item.ratePcent, before={'onSave','onCalculateMaxComm'})" mold="rounded"  style="text-align:right" format="#,##0.##'%'" width="90%" />
+                                </listcell>
+                                <listcell  style="@load(item.style)" >   
+                                    <doublebox readonly="true" value="@load(item.comm) @save(item.comm, before={'onSave','onCalculateMaxComm'})" mold="rounded"  style="text-align:right" format="#,##0.##" width="90%" />
+                                </listcell> 
+                                <listcell  style="@load(item.style)" >   
+                                    <intbox onOK="@command('onCalculateMaxComm', item =item)" onBlur="@command('onCalculateMaxComm', item =item)" value="@load(item.maxDay) @save(item.maxDay, before={'onSave','onCalculateMaxComm'})" mold="rounded"  style="text-align:right" format="#,##0'" width="90%" />
+                                </listcell>
+                                <listcell  style="@load(item.style)" >   
+                                    <doublebox readonly="true" value="@load(item.maxComm) @save(item.maxComm, before={'onSave','onCalculateMaxComm'})" mold="rounded"  style="text-align:right" format="#,##0.##" width="90%"  />
+                                </listcell> 
+                                <listcell  style="@load(item.style)" >   
+                                    <combobox readonly="true" mold="rounded" width="90%" 
+                                           selectedItem="@load(item.circleUnitStr) @save(item.circleUnit, before={'onSave'})"  >
+                                          <comboitem label="ต่อวัน" value="1" /> 
+                                          <comboitem label="ต่อวัน/สัปดาห์" value="7" /> 
+                                          <comboitem label="ต่อ(15วัน)" value="15" /> 
+                                          <comboitem label="ต่อเดือน" value="30" /> 
+                                      </combobox>
+                                </listcell> 
+                            </listitem> 
+                        </template>
+                    </listbox>
+                </groupbox>
+                        
+            </panelchildren>
+        </panel>  
+            
+    </window>
+</zk>

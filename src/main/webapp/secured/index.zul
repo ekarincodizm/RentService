@@ -5,12 +5,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="/script/maskedinput-1.2.2.min.js" />
     <script type="text/javascript" src="/script/jquery.watermarkinput.js" /> 
-    <script type="text/javascript">
-        <![CDATA[  
-            google.charts.load('current', {packages:["orgchart"]}); 
-        ]]>
-    </script>
-        
+ 
     <include src="/css/mainstyle.zul" />
     <borderlayout apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('com.sabuymlm.vm.SecuredIndexVM')" > 
         <north height="120px" margins="0,0,0,0" border="none" splittable="true" collapsible="true" >
@@ -117,6 +112,11 @@
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/xSponsorsDef.zul'
                                                 ,icon='/images/icons/32x32/XSponsor.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="โบนัสแนะนำ ส่วนต่าง(จ่ายหมด)" />
+                                
+                                <toolbarbutton label="Investments" image="/images/icons/32x32/trade.png" 
+                                               onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/investment.zul'
+                                                ,icon='/images/icons/32x32/trade.png'
+                                                ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="คำนวณเบี้ยรายวัน" />
                                 
                                 <toolbarbutton label="W/S(%)" image="/images/icons/32x32/team.png" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryWs.zul'

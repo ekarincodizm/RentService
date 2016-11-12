@@ -8,6 +8,7 @@ import com.sabuymlm.authen.SecurityUtil;
 import com.sabuymlm.model.systemTest.BinaryBalanceDefine;
 import com.sabuymlm.model.systemTest.BinaryMultiWsDefine;
 import com.sabuymlm.model.systemTest.BinaryWsDefine;
+import com.sabuymlm.model.systemTest.InvestmentDefine;
 import com.sabuymlm.model.systemTest.MatchingDefKey;
 import com.sabuymlm.model.systemTest.MatchingDefine;
 import com.sabuymlm.model.systemTest.MatchingDefineHeader;
@@ -24,6 +25,7 @@ import com.sabuymlm.model.systemTest.XSponsorHeaderKey;
 import com.sabuymlm.repository.systemTest.BinaryBalanceDefRepository;
 import com.sabuymlm.repository.systemTest.BinaryMultiWsDefRepository;
 import com.sabuymlm.repository.systemTest.BinaryWsDefRepository;
+import com.sabuymlm.repository.systemTest.InvestmentDefRepository;
 import com.sabuymlm.repository.systemTest.MatchingDefRepository;
 import com.sabuymlm.repository.systemTest.PositionRepository;
 import com.sabuymlm.repository.systemTest.SponsorDefRepository;
@@ -65,6 +67,8 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     protected XSponsorHeaderRepository reposXSponsorHeaderEvent;
     @Autowired
     protected BinaryWsDefRepository reposBinaryWsEvent;
+    @Autowired
+    protected InvestmentDefRepository reposInvestEvent;
     @Autowired
     protected BinaryMultiWsDefRepository reposBinaryMultiWsEvent;
     @Autowired
@@ -229,6 +233,16 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     @Override
     public List<BinaryWsDefine> saveBinaryWsDefine(List<BinaryWsDefine> selectItems) {
         return reposBinaryWsEvent.save(selectItems);
+    }
+    
+    @Override
+    public Collection<? extends InvestmentDefine> findAllInvestmentByCompany() {
+        return reposInvestEvent.findAllByCompany(SecurityUtil.getUserDetails().getCompany(), new Sort(Sort.Direction.ASC, "id.position.id"));
+    }
+
+    @Override
+    public List<InvestmentDefine> saveInvestmentDefine(List<InvestmentDefine> selectItems) {
+        return reposInvestEvent.save(selectItems);
     }
 
     @Override

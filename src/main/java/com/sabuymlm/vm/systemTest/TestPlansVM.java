@@ -15,8 +15,7 @@ import com.sabuymlm.service.TestService;
 import com.sabuymlm.utils.Format;
 import com.sabuymlm.utils.Pageable;
 import com.sabuymlm.vm.CommonVM;
-import java.io.Serializable;
-import java.math.BigDecimal;
+import java.io.Serializable; 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -181,6 +180,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         item = systemTestService.saveTestPlanHeader(item);
         systemTestService.procRunTest();
         loadTestData();
+        
     }
 
     @Override
@@ -272,12 +272,11 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         BindUtils.postNotifyChange(null, null, this, "activeWsBlPage");
         BindUtils.postNotifyChange(null, null, this, "activeMatchingPage");
         BindUtils.postNotifyChange(null, null, this, "activeUniPage");
-        
-        callJavaScriptPrintPie();
+        callJavaScriptPrintPie(); 
         
     }
     
-    private void callJavaScriptPrintPie(){
+    public String getJsonModel(){
         StringBuilder sb = new StringBuilder();
         sb.append("["); 
         for(TestPlan plan  : item.getItems()){
@@ -287,7 +286,12 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         }
         sb.append("['คงเหลือ',").append(Format.formatNumber("###0.00",  (100.00 - (item.getSumTotalPcent() != null ?item.getSumTotalPcent():0) )) ).append("],");    
         sb.append("]"); 
-        Clients.evalJavaScript("setDatas( " + sb.toString() + " ); " ); 
+        return sb.toString();
+    }
+    
+    private void callJavaScriptPrintPie(){  
+        System.out.println(" AA ");
+        Clients.evalJavaScript("setDatas( " + getJsonModel() + " ); " ); 
         Clients.evalJavaScript("google.charts.setOnLoadCallback(drawChart);");
     }
 

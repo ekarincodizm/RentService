@@ -562,18 +562,17 @@
                     
                 </tabpanel>
             </tabpanels>
-        </tabbox> 
-          
+        </tabbox>  
+         
          <n:script type="text/javascript">
            <![CDATA[   
-                
-                google.charts.load('current', {'packages':['corechart']}); 
-                
-                data = new google.visualization.DataTable(); 
-                data.addColumn('string', 'Header');
-                data.addColumn('number', 'Value'); 
+                 
+                google.charts.load('current', {'packages':['corechart']});  
                  
                 function setDatas(arrays){ 
+                    data = new google.visualization.DataTable();  
+                    data.addColumn('string', 'Header');
+                    data.addColumn('number', 'Value'); 
                     removeChart();
                     data.addRows(arrays);
                 } 
@@ -593,7 +592,8 @@
  
                   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                   chart.draw(data, options);
-                }  
+                }
+                 
                 
             ]]>
         </n:script>

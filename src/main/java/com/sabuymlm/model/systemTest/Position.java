@@ -61,6 +61,8 @@ public class Position extends CommonEntity implements Serializable {
     private List<MatchingDefine> matchingDefines  ;
     @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<XSponsorDefineHeader> xSponsorDefineHeaders  ; 
+    @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<InvestmentDefine> investmentDefines  ; 
     @OneToMany(mappedBy = "id.xposition", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<XSponsorDefine> xSponsorDefines  ; 
     @OneToMany(mappedBy = "id.position", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE}, orphanRemoval = true)
@@ -78,6 +80,14 @@ public class Position extends CommonEntity implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     } 
+
+    public List<InvestmentDefine> getInvestmentDefines() {
+        return investmentDefines;
+    }
+
+    public void setInvestmentDefines(List<InvestmentDefine> investmentDefines) {
+        this.investmentDefines = investmentDefines;
+    }
 
     public List<GenMember> getGenMembers() {
         return genMembers;
