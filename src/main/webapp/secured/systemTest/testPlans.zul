@@ -30,7 +30,7 @@
                                     <listcell  >
                                         <hbox align="bottom">
                                             <checkbox label="@load( (item.id.no eq 3 ||  item.id.no eq 4)? 'โบนัสทีมอ่อน' : 'โบนัสรวม' )" disabled="@init(item.chkPay eq false) @load(item.chkPay eq false, after={'onSave','onValidateTable'})" 
-                                                      visible="@init( item.id.no ne 6 ) @load(item.id.no ne 6 )" checked="@load(item.passMatchingWeakOrBonus) @save(item.passMatchingWeakOrBonus, before={'onSave','onValidateTable'})" /> 
+                                                      visible="@init( not (item.id.no eq 6 || item.id.no eq 8) ) @load( not (item.id.no eq 6 || item.id.no eq 8) )" checked="@load(item.passMatchingWeakOrBonus) @save(item.passMatchingWeakOrBonus, before={'onSave','onValidateTable'})" /> 
                                             <checkbox label="โบนัสทีมแข็ง" disabled="@init(item.chkPay eq false) @load(item.chkPay eq false, after={'onSave','onValidateTable'})" visible="@load( item.id.no eq 3 ||  item.id.no eq 4 )" checked="@load(item.passMatchingStrong) @save(item.passMatchingStrong, before={'onSave','onValidateTable'})" /> 
                                         </hbox>
                                     </listcell> 
@@ -46,7 +46,7 @@
                     <tabbox  > 
                         <tabs> 
                             <tab label="กำหนดคุณสมบัติ"/>
-                            <tab visible="@bind(not empty vm.genMemberPage.content)" selected="true" label="สรุป(% Over Pay)"  /> 
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" selected="@init(vm.item.sumTotalComm gt 0)" label="สรุป(% Over Pay)"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="ตารางรหัส/สายงาน"  /> 
                             <tab visible="@bind(not empty vm.genBonusMemberPage.content)" label="Sponsor"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="X-Diff Sponsor"  /> 
@@ -251,14 +251,14 @@
                             <tabpanel > 
                                 <vlayout vflex="1" width="100%"  height="500px" style="overflow: auto"  >  
                                     <hbox align="top"  > 
-                                        <listbox  model="@bind(vm.item.items)" sizedByContent="true" > 
+                                        <listbox   width="955px" model="@bind(vm.item.items)" sizedByContent="true" > 
                                             <listhead sizable="true"  >
                                                 <listheader align="center" label="No." width="40px" /> 
                                                 <listheader width="300px"  align="left" label="ช่องทางรายได้" />       
-                                                <listheader width="120px" align="right" label="จ่าย/W" />        
-                                                <listheader width="80px" align="center" label="%จ่าย/W" />        
+                                                <listheader width="120px" align="right" label="จ่ายหลัก/W" />        
+                                                <listheader width="80px" align="center" label="%หลัก/W" />        
                                                 <listheader width="110px" align="right" label="จ่าย(Pro)/S" />        
-                                                <listheader width="105px" align="center" label="%จ่าย(Pro)/S" />        
+                                                <listheader width="105px" align="center" label="%(Pro)/S" />        
                                                 <listheader style="background-color:yellow;" width="120px" align="right" label="รวมจ่าย" />         
                                                 <listheader style="background-color:yellow;" width="80px" align="center" label="รวม%จ่าย" />          
                                             </listhead>  
@@ -588,7 +588,11 @@
                   // Set chart options
                   var options = {'title':'แสดงผลเปรียบเทียบ % จ่าย แต่ละช่องทางรายได้',
                                  'width':400,
-                                 'height':291, pieHole: 0.3};
+                                 'height':291,
+                                 pieHole: 0.3, 
+                                 'pieResidueSliceLabel' :'คงเหลือ Over-Pay',
+                                 'pieResidueSliceColor':'red'
+                                };
  
                   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                   chart.draw(data, options);

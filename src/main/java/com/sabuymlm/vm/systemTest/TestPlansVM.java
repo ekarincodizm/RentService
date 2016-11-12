@@ -132,7 +132,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         if (item.getItems().isEmpty()) {
             initItem();
             setStatusAdd();
-            for (int i = 1; i <= 7; i++) {
+            for (int i = 1; i <= 8; i++) {
                 TestPlan itm = new TestPlan();
                 TestPlanKey itemKey = new TestPlanKey();
                 itemKey.setPlanHeader(item);
@@ -162,6 +162,9 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
                         break;
                     case 7:
                         itm.setPlanName("Uni-level (โบนัส Uni-Level)");
+                        break;
+                    case 8:
+                        itm.setPlanName("Investment (เบี้ยรายวัน)"); 
                         break;
                     default:
                         break;
@@ -228,11 +231,11 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             long totalCount = genMemberPage.getTotalElements();
             price = (pv * totalCount) * item.getPvPerBaht();
             item.getClassId(id).setComm(comm);
-            item.getClassId(id).setCommPro(commPro);
+            item.getClassId(id).setCommPro(commPro==0?null:commPro);
             item.getClassId(id).setTotalComm(totalComm);
 
             item.getClassId(id).setPcent(new Float(comm * 100.0 / price));
-            item.getClassId(id).setPcentPro(new Float(commPro * 100.0 / price));
+            item.getClassId(id).setPcentPro( commPro==0?null:(new Float(commPro * 100.0 / price)) ); 
             item.getClassId(id).setTotalPcent(new Float(totalComm * 100.0 / price));
         }
     }
@@ -253,11 +256,12 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setSummaryPcent(3, genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
         bonusWsBlGen();
         setSummaryPcent(5, genWsBlPage.getSum1().floatValue(), genWsBlPage.getSum2().floatValue());
-        bonusMatchingGen();
+        bonusMatchingGen(); 
         setSummaryPcent(6, genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
         bonusUniLevelGen();
         setSummaryPcent(7, genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
-        item = systemTestService.saveTestPlanHeader(item);
+        setSummaryPcent(8, systemTestService.summaryTotalInvestment(),0); 
+        item = systemTestService.saveTestPlanHeader(item); 
 
         BindUtils.postNotifyChange(null, null, this, "item");
         BindUtils.postNotifyChange(null, null, this, "genMemberPage");
@@ -284,8 +288,9 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
                 sb.append("['").append(plan.getPlanName().substring(0, 10)).append("',").append(Format.formatNumber("###0.00",  plan.getTotalPcent()) ).append("],");    
             }
         }
-        sb.append("['คงเหลือ',").append(Format.formatNumber("###0.00",  (100.00 - (item.getSumTotalPcent() != null ?item.getSumTotalPcent():0) )) ).append("],");    
-        sb.append("]"); 
+        double remain = (100.00 - (item.getSumTotalPcent() != null ?item.getSumTotalPcent():0) );
+        sb.append("['คงเหลือ',").append(Format.formatNumber("###0.00", (remain < 0 ?0.1:remain) ) ).append("],");     
+        sb.append("]");  
         return sb.toString();
     }
     

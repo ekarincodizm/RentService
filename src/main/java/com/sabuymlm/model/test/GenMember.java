@@ -52,6 +52,9 @@ public class GenMember implements Serializable {
     @Column(name = "unilevel_pro_bonus", columnDefinition = "float" )
     private Float unilevelProBonus;    
     
+    @Column(name = "investment_bonus", columnDefinition = "float" )
+    private Float investmentBonus;    
+    
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     private Company company;    
@@ -62,6 +65,14 @@ public class GenMember implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Float getInvestmentBonus() {
+        return investmentBonus;
+    }
+
+    public void setInvestmentBonus(Float investmentBonus) {
+        this.investmentBonus = investmentBonus;
     }
 
     public Float getUnilevelBonus() {

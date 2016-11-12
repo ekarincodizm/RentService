@@ -286,6 +286,18 @@ public class SystemTestServiceImpl extends ConfigEntityManager implements System
     public boolean isExistsTestPlanHeader() { 
         return reposTestPlanHeaderEvent.exists(SecurityUtil.getUserDetails().getCompany().getId());
     } 
+
+    @Override
+    public float summaryTotalInvestment() {
+        Query query = unwrapHibernateSession().createSQLQuery(" select sum(investment_bonus) from test.member_gen where company_id = :companyId ") ; 
+        query.setInteger("companyId", SecurityUtil.getUserDetails().getCompany().getId());
+        Object o = query.uniqueResult();  
+        if(o != null ) {
+             return ((Double)o).floatValue();     
+        }else {
+             return 0f;     
+        } 
+    }
    
 }
 
