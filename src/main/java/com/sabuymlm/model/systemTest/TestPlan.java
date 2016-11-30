@@ -35,6 +35,14 @@ public class TestPlan implements Serializable {
     private Float totalPcent; 
     @Column(name = "total_comm", columnDefinition = "float" )
     private Float totalComm; 
+    
+    public TestPlan(){}
+    
+    public TestPlan(String planName,Float totalPcent, Float totalComm){
+        this.planName = planName ;
+        this.totalPcent = totalPcent ;
+        this.totalComm = totalComm ;
+    }
 
     public Float getComm() {
         return comm;

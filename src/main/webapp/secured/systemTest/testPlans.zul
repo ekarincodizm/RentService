@@ -42,11 +42,12 @@
                         </listbox>
                     </groupbox>
                 </tabpanel>
-                <tabpanel> 
-                    <tabbox  > 
+                <tabpanel > 
+                    <tabbox > 
                         <tabs> 
                             <tab label="กำหนดคุณสมบัติ"/>
                             <tab visible="@bind(not empty vm.genMemberPage.content)" selected="@init(vm.item.sumTotalComm gt 0)" label="สรุป(% Over Pay)"  /> 
+                            <tab visible="@bind(not empty vm.genMemberPage.content)" label="วิเคราะห์การจ่ายโดยสรุป"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="ตารางรหัส/สายงาน"  /> 
                             <tab visible="@bind(not empty vm.genBonusMemberPage.content)" label="Sponsor"  /> 
                             <tab visible="@bind(not empty vm.genMemberPage.content)" label="X-Diff Sponsor"  /> 
@@ -287,6 +288,166 @@
                                         <n:div id="chart_div"></n:div>  
                                     </hbox>
                                 </vlayout>
+                            </tabpanel>
+                            
+                            <tabpanel > 
+                                
+                                <borderlayout height="600px" width="100%" >
+                                    <west maxsize="600" size="40%" hflex="1" vflex="1" border="0" margins="0,0,5,0" splittable="false">
+                                        <div  >
+                                            <listbox width="100%"  sizedByContent="true" sclass="vertical-scroll"  >  
+                                                <listhead sizable="true" >  
+                                                    <listheader align="left" width="100%" label="ช่องทาง รายรับ" style="background:#145804;color:white;font-size:16px;font-weight:bold;"   />       
+                                                    <listheader align="right" width="90px" label="%" style="background:#145804;color:white;font-size:16px;font-weight:bold;padding-right:5px;"   />       
+                                                    <listheader align="right" width="170px" label="จำนวนเงิน" style="background:#145804;color:white;font-size:16px;font-weight:bold;padding-right:5px;"   />    
+                                                </listhead> 
+                                                <listitem >  
+                                                    <listcell label="รายได้จากการขายสมาชิก" />    
+                                                    <listcell label="-" style="padding-right:9px" />    
+                                                    <listcell label="@load(vm.summaryTotalMoney) @converter('formatedNumber', format='#,##0.00')" style="background:#F3FAAC;padding-right:9px"  />     
+                                                </listitem> 
+                                                <listitem >  
+                                                    <listcell label="คืนเงินตามจำนวน Advance ( คือเงินที่ไม่ได้รับ )" />    
+                                                    <listcell label="@load(vm.summaryTotalMoneyAdvancePcent) @converter('formatedNumber', format='\'-\' #,##0.00 \'%\'')" style="padding-right:9px" />    
+                                                    <listcell label="@load(vm.summaryTotalMoneyAdvance) @converter('formatedNumber', format='\'-\' #,##0.00')" style="background:#E3FD98;padding-right:9px"  />     
+                                                </listitem> 
+                                                <listitem >  
+                                                    <listcell label="ค่าสมัครสมาชิก" />    
+                                                    <listcell label="@load(vm.summaryTotalMoneyRegisPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" style="padding-right:9px" />    
+                                                    <listcell label="@load(vm.summaryTotalMoneyRegis) @converter('formatedNumber', format='#,##0.00')" style="background:#F3FAAC;padding-right:9px"  />     
+                                                </listitem>  
+                                                <listfoot>  
+                                                    <listfooter  span="2" align="right" >
+                                                        <label value="รวมรับทั้งหมด( คิดเป็น 100% )"  style="font-weight:bold;"  />  
+                                                    </listfooter> 
+                                                    <listfooter align="right" style="background:#C8E580;"  >
+                                                        <label value="@load(vm.summaryTotalReceived) @converter('formatedNumber', format='#,##0.00')"  style="font-weight:bold;"  />  
+                                                    </listfooter>   
+                                                </listfoot>
+                                            </listbox>
+                                            <listbox width="100%"  sizedByContent="true" sclass="vertical-scroll"   >  
+                                                <listhead sizable="true" >  
+                                                    <listheader align="left"  width="100%" />        
+                                                    <listheader align="right" width="90px" />   
+                                                    <listheader align="right" width="170px"  />       
+                                                </listhead> 
+                                                <listfoot> 
+                                                    <listfooter align="right"  style="background:#D8EDF7;" > 
+                                                        <label value=" คงเหลือสุทธิ(ทั้งสิ้น) " style="font-size:14px;font-weight:bold;color:#071D8B;" /> 
+                                                    </listfooter> 
+                                                    <listfooter align="right"  style="background:#071D8B;"  >
+                                                        <label style="font-size:16px;font-weight:bold;color:white;" value="@load(vm.summaryPcentRemainAll) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
+                                                    </listfooter>
+                                                    <listfooter align="right"  style="background:#071D8B;"  >
+                                                        <label style="font-size:14px;font-weight:bold;color:white;" value="@load(vm.summaryRemainAll) @converter('formatedNumber', format='#,##0.00')" />   
+                                                    </listfooter> 
+                                                </listfoot> 
+                                            </listbox> 
+                                            <separator/>
+                                            <n:div id="chart_div2"></n:div>  
+                                            
+                                        </div>
+                                    </west>
+                                    <center >
+                                        <div >
+                                            <div >
+                                                <listbox width="600px"  model="@load(vm.summarys)"  sizedByContent="true" sclass="vertical-scroll" > 
+                                                    <auxhead>
+                                                        <auxheader label="สรุปตามช่องทาง การจ่าย" colspan="3" style="background:#A93C05;color:white;font-size:16px;font-weight:bold;"  />
+                                                    </auxhead>
+                                                    <listhead sizable="true" >  
+                                                        <listheader align="left" width="100%" label="ช่องทางการจ่าย" style="background:#D87F07;color:white;"   />        
+                                                        <listheader align="right" width="100px" label="%จ่าย" style="background:#D87F07;color:white;padding-right:5px;"   />   
+                                                        <listheader align="right" width="170px" label="จำนวนเงิน" style="background:#D87F07;color:white;padding-right:5px;"   />       
+                                                    </listhead>
+                                                    <template name="model"  var="item">
+                                                        <listitem > 
+                                                            <listcell label="@load(item.planName)" />     
+                                                            <listcell label="@load(item.totalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" style="padding-right:9px"  />    
+                                                            <listcell label="@load(item.totalComm) @converter('formatedNumber', format='#,##0.00')" style="background:#F3FAAC;padding-right:9px" />    
+                                                        </listitem>
+                                                    </template>
+                                                    <listfoot> 
+                                                        <listfooter align="right" >
+                                                            <label value="สรุป % จ่ายทั้งสิ้น( เทียบ 100% )"  style="font-weight:bold;"  />  
+                                                        </listfooter>  
+                                                        <listfooter align="right" style="background:#CBB9A5;"  >
+                                                            <label value="@load(vm.pcentPay) @converter('formatedNumber', format='#,##0.00 \'%\'')"   style="font-weight:bold;"  />   
+                                                        </listfooter>
+                                                        <listfooter align="right"  style="background:#FBCF7E;"  >   
+                                                            <label value="@load(vm.payNet) @converter('formatedNumber', format='#,##0.00')"  style="font-weight:bold;" /> 
+                                                        </listfooter>
+                                                    </listfoot>
+                                                </listbox>
+                                                <listbox width="600px"  sizedByContent="true" sclass="vertical-scroll" >  
+                                                    <listhead sizable="true" >  
+                                                        <listheader align="left"  width="100%" />        
+                                                        <listheader align="right" width="100px" />   
+                                                        <listheader align="right" width="170px"  />       
+                                                    </listhead> 
+                                                    <listfoot> 
+                                                        <listfooter align="right" >
+                                                            <label value="จ่ายต้นทุนสินค้าทั้งหมด"  style="font-weight:bold;"  />  
+                                                        </listfooter>  
+                                                        <listfooter align="right"   style="background:#FABB73;"  >
+                                                            <label value="@load(vm.pcentCost) @converter('formatedNumber', format='#,##0.00 \'%\'')" style="font-weight:bold;"  />   
+                                                        </listfooter>
+                                                        <listfooter align="right"  style="background:#FBCF7E;"  >
+                                                            <label value="@load(vm.totalCost) @converter('formatedNumber', format='#,##0.00')"    style="font-weight:bold;"  />   
+                                                        </listfooter>
+                                                    </listfoot> 
+                                                </listbox> 
+                                                <listbox width="600px"  model="@load(vm.summarys2)"  sizedByContent="true" sclass="vertical-scroll" > 
+                                                    <auxhead>
+                                                        <auxheader label="Fixed Cost/ Months" colspan="3" style="background:#FFFFFF;font-weight:bold;"  />
+                                                    </auxhead>
+                                                    <listhead sizable="true" visible="false" >  
+                                                        <listheader align="left" width="100%"   />        
+                                                        <listheader align="right" width="100px" />   
+                                                        <listheader align="right" width="170px"  />       
+                                                    </listhead>
+                                                    <template name="model"  var="item">
+                                                        <listitem > 
+                                                            <listcell label="@load(item.planName)" />     
+                                                            <listcell label="@load(item.totalPcent) @converter('formatedNumber', format='#,##0.00 \'%\'')" style="padding-right:9px"  />    
+                                                            <listcell label="@load(item.totalComm) @converter('formatedNumber', format='#,##0.00')" style="background:#F3FAAC;padding-right:9px" />    
+                                                        </listitem>
+                                                    </template>
+                                                    <listfoot>  
+                                                        <listfooter align="right" >
+                                                            <label value="สรุป % Fixed Cost ทั้งสิ้น( เทียบ 100% )"  style="font-weight:bold;"  />  
+                                                        </listfooter> 
+                                                        <listfooter align="right" style="background:#E2EAAD;"  >
+                                                            <label value="@load(vm.pcentPay2) @converter('formatedNumber', format='#,##0.00 \'%\'')" style="font-weight:bold;" />
+                                                        </listfooter>   
+                                                        <listfooter align="right" style="background:#FBCF7E;"  >
+                                                            <label value="@load(vm.payNet2) @converter('formatedNumber', format='#,##0.00')" style="font-weight:bold;" />
+                                                        </listfooter>   
+                                                    </listfoot>
+                                                </listbox> 
+                                                <listbox width="600px"  sizedByContent="true" sclass="vertical-scroll" >  
+                                                    <listhead sizable="true" >  
+                                                        <listheader align="left"  width="100%" />        
+                                                        <listheader align="right" width="100px" />   
+                                                        <listheader align="right" width="170px"  />       
+                                                    </listhead> 
+                                                    <listfoot>   
+                                                        <listfooter align="right"  style="background:#F7E8D8;" > 
+                                                            <label value=" จ่ายสุทธิ(ทั้งสิ้น)  " style="font-size:14px;font-weight:bold;color:#832F06;" /> 
+                                                        </listfooter> 
+                                                        <listfooter align="right"  style="background:#832F06;"  >
+                                                            <label style="font-size:16px;font-weight:bold;color:white;" value="@load(vm.summaryPcentPayAll) @converter('formatedNumber', format='#,##0.00 \'%\'')" />   
+                                                        </listfooter>
+                                                        <listfooter align="right"  style="background:#832F06;"  >
+                                                            <label style="font-size:14px;font-weight:bold;color:white;" value="@load(vm.summaryPayAll) @converter('formatedNumber', format='#,##0.00')" />   
+                                                        </listfooter> 
+                                                    </listfoot> 
+                                                </listbox> 
+                                            </div>
+                                        </div>
+                                    </center> 
+                                </borderlayout>
+                                 
                             </tabpanel>
                             
                             <tabpanel>
@@ -564,7 +725,7 @@
             </tabpanels>
         </tabbox>  
          
-         <n:script type="text/javascript">
+        <n:script type="text/javascript">
            <![CDATA[   
                  
                 google.charts.load('current', {'packages':['corechart']});  
@@ -597,7 +758,21 @@
                   var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                   chart.draw(data, options);
                 }
-                 
+                
+                function drawChart2() { 
+                
+                  // Set chart options
+                  var options = {'title':'แสดงผลเปรียบเทียบ % รับ-จ่าย',
+                                 'width':590,
+                                 'height':340,
+                                 pieHole: 0.1, 
+                                 'pieResidueSliceLabel' :'คงเหลือ Over-Pay',
+                                 'pieResidueSliceColor':'red'
+                                };
+ 
+                  var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
+                  chart.draw(data, options);
+                }  
                 
             ]]>
         </n:script>

@@ -15,7 +15,7 @@ import com.sabuymlm.service.TestService;
 import com.sabuymlm.utils.Format;
 import com.sabuymlm.utils.Pageable;
 import com.sabuymlm.vm.CommonVM;
-import java.io.Serializable; 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,11 +29,11 @@ import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.ExecutionArgParam;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.zk.ui.Component; 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
-import org.zkoss.zkplus.spring.DelegatingVariableResolver; 
+import org.zkoss.zkplus.spring.DelegatingVariableResolver;
 
 /**
  *
@@ -72,6 +72,13 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     private int activeUniPage;
     protected Pageable<GenMember> genUniPage;
 
+    private List<TestPlan> summarys = new ArrayList<TestPlan>();
+    private double pcentPay = 0d, payNet = 0d;
+
+    private List<TestPlan> summarys2 = new ArrayList<TestPlan>();
+    private double pcentPay2 = 0d, payNet2 = 0d ; 
+    private double pcentCost , totalCost; 
+
     @Init
     public void init(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam(CommonVM.PARAM_NAME_OBJECT) TestPlanHeader item, @ExecutionArgParam("icon") String icon, @ExecutionArgParam("headerLabel") String headerLabel) {
         pageHasDetail = false;
@@ -81,8 +88,8 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         genPowerLevels();
         if (systemTestService.isExistsTestPlanHeader()) {
             loadTestData();
-        } 
-    } 
+        }
+    }
 
     private void genPowerLevels() {
         powerLevels.clear();
@@ -164,7 +171,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
                         itm.setPlanName("Uni-level (โบนัส Uni-Level)");
                         break;
                     case 8:
-                        itm.setPlanName("Investment (เบี้ยรายวัน)"); 
+                        itm.setPlanName("Investment (เบี้ยรายวัน)");
                         break;
                     default:
                         break;
@@ -183,7 +190,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         item = systemTestService.saveTestPlanHeader(item);
         systemTestService.procRunTest();
         loadTestData();
-        
+
     }
 
     @Override
@@ -215,7 +222,7 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             genPowerLevels();
         }
 
-    } 
+    }
 
     @Override
     protected void privateValidate() {
@@ -231,11 +238,11 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
             long totalCount = genMemberPage.getTotalElements();
             price = (pv * totalCount) * item.getPvPerBaht();
             item.getClassId(id).setComm(comm);
-            item.getClassId(id).setCommPro(commPro==0?null:commPro);
+            item.getClassId(id).setCommPro(commPro == 0 ? null : commPro);
             item.getClassId(id).setTotalComm(totalComm);
 
             item.getClassId(id).setPcent(new Float(comm * 100.0 / price));
-            item.getClassId(id).setPcentPro( commPro==0?null:(new Float(commPro * 100.0 / price)) ); 
+            item.getClassId(id).setPcentPro(commPro == 0 ? null : (new Float(commPro * 100.0 / price)));
             item.getClassId(id).setTotalPcent(new Float(totalComm * 100.0 / price));
         }
     }
@@ -256,12 +263,12 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         setSummaryPcent(3, genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
         bonusWsBlGen();
         setSummaryPcent(5, genWsBlPage.getSum1().floatValue(), genWsBlPage.getSum2().floatValue());
-        bonusMatchingGen(); 
+        bonusMatchingGen();
         setSummaryPcent(6, genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
         bonusUniLevelGen();
         setSummaryPcent(7, genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
-        setSummaryPcent(8, systemTestService.summaryTotalInvestment(),0); 
-        item = systemTestService.saveTestPlanHeader(item); 
+        setSummaryPcent(8, systemTestService.summaryTotalInvestment(), 0);
+        item = systemTestService.saveTestPlanHeader(item);
 
         BindUtils.postNotifyChange(null, null, this, "item");
         BindUtils.postNotifyChange(null, null, this, "genMemberPage");
@@ -276,28 +283,229 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         BindUtils.postNotifyChange(null, null, this, "activeWsBlPage");
         BindUtils.postNotifyChange(null, null, this, "activeMatchingPage");
         BindUtils.postNotifyChange(null, null, this, "activeUniPage");
-        callJavaScriptPrintPie(); 
-        
+        BindUtils.postNotifyChange(null, null, this, "summaryTotalMoney");
+
+        setCalculateSummarys();
+        setCalculateSummarys2();
+        BindUtils.postNotifyChange(null, null, this, "summaryTotalMoneyRegis");
+        BindUtils.postNotifyChange(null, null, this, "summaryTotalMoneyRegisPcent");
+        BindUtils.postNotifyChange(null, null, this, "summaryTotalReceived");
+        BindUtils.postNotifyChange(null, null, this, "summaryTotalMoneyAdvance");
+        BindUtils.postNotifyChange(null, null, this, "summaryTotalMoneyAdvancePcent");
+        BindUtils.postNotifyChange(null, null, this, "summarys");
+        BindUtils.postNotifyChange(null, null, this, "summarys2");
+        BindUtils.postNotifyChange(null, null, this, "pcentPay");
+        BindUtils.postNotifyChange(null, null, this, "payNet");
+        BindUtils.postNotifyChange(null, null, this, "pcentPay2");
+        BindUtils.postNotifyChange(null, null, this, "payNet2");
+        BindUtils.postNotifyChange(null, null, this, "totalCost");
+        BindUtils.postNotifyChange(null, null, this, "pcentCost"); 
+        BindUtils.postNotifyChange(null, null, this, "summaryPayAll"); 
+        BindUtils.postNotifyChange(null, null, this, "summaryPcentPayAll"); 
+        BindUtils.postNotifyChange(null, null, this, "summaryRemainAll"); 
+        BindUtils.postNotifyChange(null, null, this, "summaryPcentRemainAll"); 
+        callJavaScriptPrintPie();
+        callJavaScriptPrintPie2();
+
     }
     
-    public String getJsonModel(){
+    public Double getSummaryPayAll(){
+        return payNet + totalCost + payNet2 ;
+    }
+    
+    public Double getSummaryPcentPayAll(){
+        return pcentPay + pcentCost + pcentPay2 ;
+    }
+
+    public Double getSummaryRemainAll(){
+        return getSummaryTotalReceived() -  getSummaryPayAll();
+    }
+    
+    public Double getSummaryPcentRemainAll(){
+         return  100 - (getSummaryTotalReceived() <= 0 ?  getSummaryPayAll() : ( getSummaryPayAll() * 100.0 / getSummaryTotalReceived()))   ;
+    }
+
+    private void setCalculateSummarys() {
+        summarys.clear();
+        float totalPv = genMemberPage.getTotalElements() * item.getPosition().getTopupPv() - (item.getAdvanceTotal() * item.getPosition().getTopupPv());
+        float netPrice = getSummaryTotalReceived();
+        float totalComm = item.getSumTotalComm();
+        Double commPercent = (netPrice <= 0 ? totalComm : (totalComm * 100.0 / netPrice));
+        summarys.add(new TestPlan("จ่ายตามแผนการตลาดสูงสุด", commPercent.floatValue(), totalComm));
+        // ============ mobile =============
+        String planName = "จ่ายโมบาย/เซ็นเตอร์ (สูงสุด) " + Format.formatNumber("###0.## '%'", item.getMobilePcent());
+        Double mobile, mobilePcent;
+        if (item.getMobilePcentFrom() != null && item.getMobilePcentFrom().equals("PV")) {
+            mobile = totalPv * item.getMobilePcent() / 100.0;
+            planName += " จาก PV ";
+        } else {
+            mobile = netPrice * item.getMobilePcent() / 100.0;
+            planName += " จาก บาท ";
+        }
+        mobilePcent = (netPrice <= 0 ? mobile : (mobile * 100.0 / netPrice));
+        summarys.add(new TestPlan(planName, mobilePcent.floatValue(), mobile.floatValue()));
+        // ============ mobile =============
+        // ============ AllSale =============
+        planName = "จ่าย ALL SALE (สูงสุด) " + Format.formatNumber("###0.## '%'", item.getAllsalePcent());
+        Double allsale, allsalePcent;
+        if (item.getAllsalePcentFrom() != null && item.getAllsalePcentFrom().equals("PV")) {
+            allsale = totalPv * item.getAllsalePcent() / 100.0;
+            planName += " จาก PV ";
+        } else {
+            allsale = netPrice * item.getAllsalePcent() / 100.0;
+            planName += " จาก บาท ";
+        }
+        allsalePcent = (netPrice <= 0 ? allsale : (allsale * 100.0 / netPrice));
+        summarys.add(new TestPlan(planName, allsalePcent.floatValue(), allsale.floatValue()));
+        // ============ AllSale =============
+        // ============ ส่วนอื่นน =============
+        planName = "จ่ายเพิ่มส่วนอื่นๆ (สูงสุด) " + Format.formatNumber("###0.## '%'", item.getOtherPcent());
+        Double other, otherPcent;
+        if (item.getOtherPcentFrom() != null && item.getOtherPcentFrom().equals("PV")) {
+            other = totalPv * item.getOtherPcent() / 100.0;
+            planName += " จาก PV ";
+        } else {
+            other = netPrice * item.getOtherPcent() / 100.0;
+            planName += " จาก บาท ";
+        }
+        otherPcent = (netPrice <= 0 ? other : (other * 100.0 / netPrice));
+        summarys.add(new TestPlan(planName, otherPcent.floatValue(), other.floatValue()));
+        // ============ ส่วนอื่นน =============
+
+        pcentPay = commPercent + mobilePcent + allsalePcent + otherPcent;
+        payNet = totalComm + mobile + allsale + other;
+
+    }
+
+    private void setCalculateSummarys2() {
+        summarys2.clear();
+        totalCost = genMemberPage.getTotalElements() * item.getCostBaht() - (item.getAdvanceTotal() * item.getCostBaht());
+        float netPrice = getSummaryTotalReceived();
+        pcentCost = (netPrice <= 0 ? totalCost : (totalCost * 100.0 / netPrice));
+        
+        // ============ Office ============= 
+        Double officeRentBahtPcent; 
+        officeRentBahtPcent = (netPrice <= 0 ? item.getOfficeRentBaht() : (item.getOfficeRentBaht() * 100.0 / netPrice));
+        summarys2.add(new TestPlan("ค่าเช่าตึก (Office)", officeRentBahtPcent.floatValue(), item.getOfficeRentBaht()));
+        // ============ Office =============
+        
+        // ============ Employee ============= 
+        Double employeeBahtPcent; 
+        employeeBahtPcent = (netPrice <= 0 ? item.getEmployeeBaht(): (item.getEmployeeBaht() * 100.0 / netPrice));
+        summarys2.add(new TestPlan("ค่าพนักงาน (Office)", employeeBahtPcent.floatValue(), item.getEmployeeBaht()));
+        // ============ Employee =============
+         
+        // ============ meeting ============= 
+        Double meetingBahtPcent; 
+        meetingBahtPcent = (netPrice <= 0 ? item.getMeetingBaht(): (item.getMeetingBaht()* 100.0 / netPrice));
+        summarys2.add(new TestPlan("ค่าจัดประชุม-สัมนา (Office)", meetingBahtPcent.floatValue(), item.getMeetingBaht()));
+        // ============ meeting =============
+         
+        // ============ other ============= 
+        Double otherBahtPcent; 
+        otherBahtPcent = (netPrice <= 0 ? item.getOtherBaht(): (item.getOtherBaht()* 100.0 / netPrice));
+        summarys2.add(new TestPlan("ค่าน้ำ+ไฟฟ้า+กาแฟ+อื่นๆ (Office)", otherBahtPcent.floatValue(), item.getOtherBaht()));
+        // ============ other =============
+         
+        payNet2 =  item.getOfficeRentBaht() +  item.getEmployeeBaht() + item.getMeetingBaht() + item.getOtherBaht() ;
+        pcentPay2 = officeRentBahtPcent + employeeBahtPcent + meetingBahtPcent + otherBahtPcent ;
+
+    }
+
+    public List<TestPlan> getSummarys() {
+        return summarys;
+    }
+
+    public double getPcentPay() {
+        return pcentPay;
+    }
+
+    public double getPayNet() {
+        return payNet;
+    }
+
+    public List<TestPlan> getSummarys2() {
+        return summarys2;
+    }
+
+    public double getPcentPay2() {
+        return pcentPay2;
+    }
+
+    public double getPayNet2() {
+        return payNet2;
+    }
+
+    public double getPcentCost() {
+        return pcentCost;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    public Float getSummaryTotalMoney() {
+        return (genMemberPage.getTotalElements() * item.getPvPerBaht()) * item.getPosition().getTopupPv();
+    }
+
+    public Float getSummaryTotalMoneyRegis() {
+        return genMemberPage.getTotalElements() * item.getRegisBaht();
+    }
+
+    public Double getSummaryTotalMoneyRegisPcent() {
+        float netPrice = getSummaryTotalMoney();
+        Double advPercent = (netPrice <= 0 ? getSummaryTotalMoneyRegis() : (getSummaryTotalMoneyRegis() * 100.0 / netPrice));
+        return advPercent;
+    }
+
+    public Float getSummaryTotalMoneyAdvance() {
+        return (item.getAdvanceTotal() * item.getPvPerBaht()) * item.getPosition().getTopupPv();
+    }
+
+    public Double getSummaryTotalMoneyAdvancePcent() {
+        float netPrice = getSummaryTotalMoney();
+        Double advPercent = (netPrice <= 0 ? getSummaryTotalMoneyAdvance() : (getSummaryTotalMoneyAdvance() * 100.0 / netPrice));
+        return advPercent;
+    }
+
+    public Float getSummaryTotalReceived() {
+        return ((genMemberPage.getTotalElements() * item.getPvPerBaht()) * item.getPosition().getTopupPv() + genMemberPage.getTotalElements() * item.getRegisBaht()) - getSummaryTotalMoneyAdvance();
+    }
+
+    public String getJsonModel() {
         StringBuilder sb = new StringBuilder();
-        sb.append("["); 
-        for(TestPlan plan  : item.getItems()){
-            if(plan.getTotalComm() != null ) {
-                sb.append("['").append(plan.getPlanName().substring(0, 10)).append("',").append(Format.formatNumber("###0.00",  plan.getTotalPcent()) ).append("],");    
+        sb.append("[");
+        for (TestPlan plan : item.getItems()) {
+            if (plan.getTotalComm() != null) {
+                sb.append("['").append(plan.getPlanName().substring(0, 10)).append("',").append(Format.formatNumber("###0.00", plan.getTotalPcent())).append("],");
             }
         }
-        double remain = (100.00 - (item.getSumTotalPcent() != null ?item.getSumTotalPcent():0) );
-        sb.append("['คงเหลือ',").append(Format.formatNumber("###0.00", (remain < 0 ?0.1:remain) ) ).append("],");     
-        sb.append("]");  
+        double remain = (100.00 - (item.getSumTotalPcent() != null ? item.getSumTotalPcent() : 0));
+        sb.append("['คงเหลือ',").append(Format.formatNumber("###0.00", (remain < 0 ? 0.1 : remain))).append("],");
+        sb.append("]");
         return sb.toString();
     }
-    
-    private void callJavaScriptPrintPie(){  
-        System.out.println(" AA ");
-        Clients.evalJavaScript("setDatas( " + getJsonModel() + " ); " ); 
+
+    public String getJsonModel2() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        double remain = (100.00 - getSummaryPcentPayAll() ); 
+        sb.append("['").append("จ่ายโบนัส").append("',").append(Format.formatNumber("###0.00", pcentPay)).append("],");
+        sb.append("['").append("ต้นทุน").append("',").append(Format.formatNumber("###0.00", pcentCost)).append("],");
+        sb.append("['").append("Fixed cost").append("',").append(Format.formatNumber("###0.00", pcentPay2)).append("],");
+        sb.append("['คงเหลือ',").append(Format.formatNumber("###0.00", (remain < 0 ? 0.1 : remain))).append("],");
+        sb.append("]");
+        return sb.toString();  
+    }
+
+    private void callJavaScriptPrintPie() {
+        Clients.evalJavaScript("setDatas( " + getJsonModel() + " ); ");
         Clients.evalJavaScript("google.charts.setOnLoadCallback(drawChart);");
+    }
+
+    private void callJavaScriptPrintPie2() {
+        Clients.evalJavaScript("setDatas( " + getJsonModel2() + " ); ");
+        Clients.evalJavaScript("google.charts.setOnLoadCallback(drawChart2);");
     }
 
     @Command(value = {"searchGenMember"})
