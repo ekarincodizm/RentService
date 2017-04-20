@@ -201,7 +201,7 @@
                                             <listcell label="กำหนดอัตรา (สัดส่วน) 1PV : "  />    
                                             <listcell >
                                                 <hbox align="bottom"> 
-                                                    <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.pvPerBaht) @save(vm.item.pvPerBaht, before={'onSave','onValidateTable'})" width="60px" mold="rounded" />
+                                                    <doublebox style="text-align:right" format="#,##0.##" value="@load(vm.item.pvPerBaht) @save(vm.item.pvPerBaht, before={'onSave','onValidateTable'})" constraint="no negative,no zero:no negative and no zero" width="60px" mold="rounded" />
                                                     <label value=" บาท "/>
                                                 </hbox>
                                             </listcell>       

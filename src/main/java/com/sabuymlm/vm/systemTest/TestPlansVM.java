@@ -233,17 +233,25 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
     }
 
     private void setSummaryPcent(Integer id, float comm, float commPro) {
+        
         if (!genMemberPage.getContent().isEmpty() && (comm + commPro) > 0) {
+             
             float totalComm = comm + commPro, pv = genMemberPage.getContent().get(0).getTopupPv(), price = 0f;
             long totalCount = genMemberPage.getTotalElements();
+            
             price = (pv * totalCount) * item.getPvPerBaht();
+            if(price <= 0.0){
+                price = 1f;
+            }
+        
             item.getClassId(id).setComm(comm);
             item.getClassId(id).setCommPro(commPro == 0 ? null : commPro);
             item.getClassId(id).setTotalComm(totalComm);
-
+        
             item.getClassId(id).setPcent(new Float(comm * 100.0 / price));
             item.getClassId(id).setPcentPro(commPro == 0 ? null : (new Float(commPro * 100.0 / price)));
             item.getClassId(id).setTotalPcent(new Float(totalComm * 100.0 / price));
+        
         }
     }
 
@@ -262,12 +270,12 @@ public class TestPlansVM extends AddCommonRefSponsorDefineVM<TestPlan, TestPlanH
         bonusWsGen();
         setSummaryPcent(3, genWsPage.getSum1().floatValue(), genWsPage.getSum2().floatValue());
         bonusWsBlGen();
-        setSummaryPcent(5, genWsBlPage.getSum1().floatValue(), genWsBlPage.getSum2().floatValue());
+//        setSummaryPcent(5, genWsBlPage.getSum1().floatValue(), genWsBlPage.getSum2().floatValue());
         bonusMatchingGen();
-        setSummaryPcent(6, genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
+//        setSummaryPcent(6, genMatchingPage.getSum1().floatValue(), genMatchingPage.getSum2().floatValue());
         bonusUniLevelGen();
-        setSummaryPcent(7, genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
-        setSummaryPcent(8, systemTestService.summaryTotalInvestment(), 0);
+//        setSummaryPcent(7, genUniPage.getSum1().floatValue(), genUniPage.getSum2().floatValue());
+//        setSummaryPcent(8, systemTestService.summaryTotalInvestment(), 0);
         item = systemTestService.saveTestPlanHeader(item);
 
         BindUtils.postNotifyChange(null, null, this, "item");

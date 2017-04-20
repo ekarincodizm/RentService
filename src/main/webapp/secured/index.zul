@@ -33,27 +33,27 @@
                     <tabpanels>
                         <tabpanel>
                             <toolbar hflex="true">
-                                <toolbarbutton label="User Login" image="/images/icons/32x32/admin-icon.png" 
+                                <toolbarbutton label="User Login" image="/images/icons/32x32/admin-icon.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/admin/adminUsers.zul'
                                                 ,icon='/images/icons/32x32/admin-icon.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="ข้อมูลผู้ใข้งาน" />
-                                <toolbarbutton label="Company Profile" image="/images/icons/32x32/home-32.png" 
+                                <toolbarbutton label="Company Profile" image="/images/icons/32x32/home-32.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/admin/company.zul'
                                                 ,icon='/images/icons/32x32/home-32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="ข้อมูลบริษัท" visible="@load(vm.userAdmin)" />
-                                <toolbarbutton label="Country" image="/images/icons/32x32/international32.png" visible="@load(vm.admin)"
+                                <toolbarbutton label="Country" image="/images/icons/32x32/international32.png" visible="@load(vm.admin)" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/admin/country.zul'
                                                 ,icon='/images/icons/32x32/international32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="ข้อมูลประเทศ" />
-                                <toolbarbutton label="Province" image="/images/icons/32x32/southAfrica32.png" visible="@load(vm.admin)"
+                                <toolbarbutton label="Province" image="/images/icons/32x32/southAfrica32.png" visible="@load(vm.admin)" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/admin/province.zul'
                                                 ,icon='/images/icons/32x32/southAfrica32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="ข้อมูลจังหวัด" />
-                                <toolbarbutton label="District" image="/images/icons/32x32/country-icon32.png" visible="@load(vm.admin)"
+                                <toolbarbutton label="District" image="/images/icons/32x32/country-icon32.png" visible="@load(vm.admin)" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/admin/district.zul'
                                                 ,icon='/images/icons/32x32/country-icon32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="ข้อมูลอำเภอ" />
-                                <toolbarbutton label="Inc/Exp Type" image="/images/icons/32x32/packing.png" visible="@load(vm.userAdmin)"
+                                <toolbarbutton label="Inc/Exp Type" image="/images/icons/32x32/packing.png" visible="@load(vm.userAdmin)" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/admin/expensesType.zul'
                                                 ,icon='/images/icons/32x32/packing.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="แยกประเภทรายรับจ่าย" />
@@ -62,11 +62,11 @@
                         </tabpanel>
                         <tabpanel>
                             <toolbar hflex="true">
-                                <toolbarbutton label="Customer" image="/images/icons/32x32/folder-customer.png" 
+                                <toolbarbutton label="Customer" image="/images/icons/32x32/folder-customer.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/customer/customer.zul'
                                                 ,icon='/images/icons/32x32/folder-customer.png'
                                                 ,headerLabel=self.tooltiptext)"  orient="vertical"  tooltiptext="ข้อมูลลูกค้า" /> 
-                                <toolbarbutton label="Treaty rule" image="/images/icons/32x32/User-Files-icon.png" 
+                                <toolbarbutton label="Treaty rule" image="/images/icons/32x32/User-Files-icon.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/customer/treatyRule.zul'
                                                 ,icon='/images/icons/32x32/User-Files-icon.png'
                                                 ,headerLabel=self.tooltiptext)"  orient="vertical"  tooltiptext="หนังสือสัญญา" />  
@@ -74,15 +74,15 @@
                         </tabpanel>
                         <tabpanel style="margin-top:0px;" >
                             <toolbar hflex="true" >
-                                <toolbarbutton label="Rent Event" image="/images/icons/32x32/folder-invoices.png" 
+                                <toolbarbutton label="Rent Event" image="/images/icons/32x32/folder-invoices.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/event/rentEvent.zul'
                                                 ,icon='/images/icons/32x32/folder-invoices.png'
                                                 ,headerLabel=self.tooltiptext)"  orient="vertical"  tooltiptext="ตรวจสอบค่าเช่ารายเดือน" /> 
-                                <toolbarbutton label="Expenses /Income" image="/images/icons/32x32/bookopen.png" 
+                                <toolbarbutton label="Expenses /Income" image="/images/icons/32x32/bookopen.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/event/expensesIncome.zul'
                                                 ,icon='/images/icons/32x32/bookopen.png'
                                                 ,headerLabel=self.tooltiptext)"  orient="vertical"  tooltiptext="บันทึกรายรับ/รายจ่าย" /> 
-                                <toolbarbutton label="Report Statement" image="/images/icons/32x32/reportAudit-32.png" 
+                                <toolbarbutton label="Report Statement" image="/images/icons/32x32/reportAudit-32.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/event/reportStatement.zul'
                                                 ,icon='/images/icons/32x32/reportAudit-32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="Report Statement" /> 
@@ -91,7 +91,7 @@
                         </tabpanel>
                         <tabpanel>
                             <toolbar hflex="true">
-                                <toolbarbutton label="Performance" image="/images/icons/32x32/Graph32.png" 
+                                <toolbarbutton label="Performance" image="/images/icons/32x32/Graph32.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/event/reportPerformance.zul'
                                                 ,icon='/images/icons/32x32/Graph32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="Performance" /> 
@@ -99,56 +99,56 @@
                         </tabpanel>
                         <tabpanel>
                             <toolbar hflex="true">
-                                <toolbarbutton label="Member" image="/images/icons/32x32/User-Files-icon.png" 
+                                <toolbarbutton label="Member" image="/images/icons/32x32/User-Files-icon.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/positions.zul'
                                                 ,icon='/images/icons/32x32/User-Files-icon.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดตำแหน่งทางธุรกิจ" /> 
                              
-                                <toolbarbutton label="Sponsor" image="/images/icons/32x32/sponsor.png" 
+                                <toolbarbutton label="Sponsor" image="/images/icons/32x32/sponsor.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/sponsorsDef.zul'
                                                 ,icon='/images/icons/32x32/sponsor.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสแนะนำ (หลายชั้น)" /> 
-                                <toolbarbutton label="X-Diff Sponsor" image="/images/icons/32x32/XSponsor.png" 
+                                <toolbarbutton label="X-Diff Sponsor" image="/images/icons/32x32/XSponsor.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/xSponsorsDef.zul'
                                                 ,icon='/images/icons/32x32/XSponsor.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="โบนัสแนะนำ ส่วนต่าง(จ่ายหมด)" />
                                 
-                                <toolbarbutton label="Investments" image="/images/icons/32x32/trade.png" 
+                                <toolbarbutton label="Investments" image="/images/icons/32x32/trade.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/investment.zul'
                                                 ,icon='/images/icons/32x32/trade.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="คำนวณเบี้ยรายวัน" />
                                 
-                                <toolbarbutton label="W/S(%)" image="/images/icons/32x32/team.png" 
+                                <toolbarbutton label="W/S(%)" image="/images/icons/32x32/team.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryWs.zul'
                                                 ,icon='/images/icons/32x32/team.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีม(%จ่าย)" />
                                 
-                                <toolbarbutton label="Multi W/S(%)" image="/images/icons/32x32/team.png" 
+                                <toolbarbutton label="Multi W/S(%)" image="/images/icons/32x32/team.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryMultiWs.zul'
                                                 ,icon='/images/icons/32x32/team.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีมแบบ(Multi %จ่าย)" />
                                 
-                                <toolbarbutton label="W/S(Balance)" image="/images/icons/32x32/balance.png" 
+                                <toolbarbutton label="W/S(Balance)" image="/images/icons/32x32/balance.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/binaryBalance.zul'
                                                 ,icon='/images/icons/32x32/balance.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสบริหารทีม(จับคู่จ่าย)" />
                                 
-                                <toolbarbutton label="Matching" image="/images/icons/32x32/matching.png" 
+                                <toolbarbutton label="Matching" image="/images/icons/32x32/matching.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/matchingsDef.zul'
                                                 ,icon='/images/icons/32x32/matching.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสแมทชิ่ง(หลายชั้น)" />
                                 
-                                <toolbarbutton label="Uni-Level" image="/images/icons/32x32/unilevel.png" 
+                                <toolbarbutton label="Uni-Level" image="/images/icons/32x32/unilevel.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/unilevelsDef.zul'
                                                 ,icon='/images/icons/32x32/unilevel.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="กำหนดโบนัสยูนิเลเวล(หลายชั้น)" />
                                 
-                                <toolbarbutton label="Demo Charts" image="/images/icons/32x32/unilevel.png" 
+                                <toolbarbutton label="Demo Charts" image="/images/icons/32x32/unilevel.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/orgChart.zul' 
                                                 ,icon='/images/icons/32x32/Graph32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="DEMO CHARTS" />
                                 
-                                <toolbarbutton label="Test (Over-Pay)" image="/images/icons/32x32/Graph32.png" 
+                                <toolbarbutton label="Test (Over-Pay)" image="/images/icons/32x32/Graph32.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/secured/systemTest/testPlans.zul' 
                                                 ,icon='/images/icons/32x32/Graph32.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="ทดสอบแผนการตลาด(ที่กำหนด)" />
@@ -157,7 +157,7 @@
                         </tabpanel>
                         <tabpanel>
                             <toolbar hflex="true">
-                                <toolbarbutton label="PDF Manual" image="/images/icons/32x32/PDF-icon.png" 
+                                <toolbarbutton label="PDF Manual" image="/images/icons/32x32/PDF-icon.png" mode="toggle" 
                                                onClick="@command('onClickMenu',target=mycenter,pageName='/viewPdf.zul'
                                                 ,icon='/images/icons/32x32/PDF-icon.png'
                                                 ,headerLabel=self.tooltiptext)" orient="vertical"  tooltiptext="PDF Manual" /> 
